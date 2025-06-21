@@ -1,0 +1,94 @@
+.login-container {
+    display: flex;
+    height: 100vh;
+    background-color: #f6f8fc;
+
+    .left-pane {
+        flex: 1;
+        background-color: #f0f4ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 80%;
+            max-width: 500px;
+        }
+    }
+
+    .right-pane {
+        flex: 1;
+        background-color: #002f6c;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        .login-card {
+            width: 80%;
+            max-width: 400px;
+            background: white;
+            color: black;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+
+            .emblem {
+                width: 50px;
+                margin-bottom: 12px;
+            }
+
+            h3 {
+                font-size: 1.2rem;
+                font-weight: bold;
+                margin-bottom: 4px;
+            }
+
+            .subtitle {
+                font-size: 0.8rem;
+                color: #555;
+                margin-bottom: 20px;
+            }
+
+            h4 {
+                margin-bottom: 20px;
+            }
+
+            .full-width {
+                width: 100%;
+                margin-bottom: 16px;
+            }
+
+            .captcha-container {
+                display: flex;
+                align-items: center;
+                margin-bottom: 16px;
+
+                img {
+                    height: 40px;
+                    margin-right: 8px;
+                }
+
+                .captcha-field {
+                    flex: 1;
+                }
+            }
+
+            .actions {
+                display: flex;
+                justify-content: space-between;
+                margin-bottom: 12px;
+            }
+
+            .forgot-link {
+                text-align: right;
+
+                a {
+                    font-size: 0.8rem;
+                    color: #007bff;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}

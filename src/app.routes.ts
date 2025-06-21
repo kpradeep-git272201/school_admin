@@ -6,12 +6,11 @@ import { Landing } from './app/pages/landing/landing';
 import { Notfound } from './app/pages/notfound/notfound';
 
 export const appRoutes: Routes = [
-//     { path: '', redirectTo: 'login', pathMatch: 'full' },
-//   {
-//     path: '',
-//     loadChildren: () =>
-//       import('./app/auth/auth.module').then((m) => m.AuthModule),
-//   },
+    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    {
+        path: '',
+        loadChildren: () => import('./app/auth/auth.module').then((m) => m.AuthModule)
+    },
     {
         path: '',
         component: AppLayout,
