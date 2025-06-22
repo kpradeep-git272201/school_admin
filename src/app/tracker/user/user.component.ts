@@ -29,8 +29,13 @@ export class UserComponent {
     ) {}
 
     ngOnInit() {
-        this.commonService.getUserList().then((user) => (this.userList = user));
-        this.loading = false;
+        this.commonService.getUserList().subscribe((user) => {
+          if(user.status==200){
+            this.userList = user.body;
+          }
+          this.loading = false;
+          
+        });
     }
 
     createUser() {

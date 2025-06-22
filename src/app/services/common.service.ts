@@ -1,10 +1,18 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { catchError, map, Observable, ObservableInput, of } from 'rxjs';
+import { AppConfig } from '../config/app.config';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CommonService {
-    constructor() {}
+    handleError!: (err: any, caught: Observable<any>) => ObservableInput<any>;
+
+    constructor(
+        @Inject(PLATFORM_ID) private platformId: Object,
+        private http: HttpClient
+    ) {}
 
     getReportBugs() {
         return Promise.resolve(this.getData());
@@ -293,15 +301,49 @@ export class CommonService {
             }
         ];
     }
+
+    getUserListJson() {
+        return Promise.resolve([
+            {
+                id: 1,
+                userName: 'John Doe',
+                designation: 'Developer',
+                email: 'john@example.com',
+                isActive: true
+            }
+        ]);
+    }
+
+    /** ********************************* */
+    public request(
+        method: string,
+        url: string,
+        options: {
+            body?: any;
+            headers?: any;
+            responseType?: any;
+            observe?: any;
+            reportProgress?: boolean;
+        }
+    ): Observable<any> {
+        return this.http.request(method, url, options).pipe(catchError(this.handleError));
+    }
+
     getUserList() {
-      return Promise.resolve([
-      {
-        id: 1,
-        userName: 'John Doe',
-        designation: 'Developer',
-        email: 'john@example.com',
-        isActive: true
-      }
-    ]);
-  }
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}`;
+        console.log(url);
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
 }
