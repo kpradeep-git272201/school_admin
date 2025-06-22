@@ -1,0 +1,148 @@
+<p-fluid [formGroup]="issueForm">
+    <div class="flex mt-8">
+        <div class="card flex flex-col gap-6 w-full">
+            <div class="font-semibold text-xl">Create Issue</div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Project Code -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>Project Code</label>
+                    <p-iconfield iconPosition="left">
+                        <p-inputicon styleClass="pi pi-folder-open" />
+                        <input
+                            pInputText
+                            id="projectCode"
+                            formControlName="projectCode"
+                            type="text"
+                            placeholder="Enter Project Code"
+                            class="full-width-input"
+                            [ngClass]="{ 'p-invalid': projectCode?.invalid && (projectCode?.dirty || projectCode?.touched) }"
+                        />
+                    </p-iconfield>
+                    <small *ngIf="projectCode?.errors?.['required'] && (projectCode?.touched || projectCode?.dirty)" class="p-error"> Project Code is required. </small>
+                </div>
+
+                <!-- Title -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>Title</label>
+                    <p-iconfield iconPosition="left">
+                        <p-inputicon styleClass="pi pi-pencil" />
+
+                        <input pInputText formControlName="title" placeholder="Enter Title" [ngClass]="{ 'p-invalid': title?.invalid && (title?.dirty || title?.touched) }" />
+                    </p-iconfield>
+
+                    <small *ngIf="title?.errors?.['required'] && (title?.touched || title?.dirty)" class="p-error"> Title is required. </small>
+                </div>
+
+                <!-- Requester -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>Requester</label>
+                    <p-iconfield iconPosition="left">
+                        <p-inputicon styleClass="pi pi-user" />
+                        <input pInputText formControlName="requester" placeholder="Enter Requester Name" [ngClass]="{ 'p-invalid': requester?.invalid && (requester?.dirty || requester?.touched) }" />
+                        <small *ngIf="requester?.errors?.['required'] && (requester?.touched || requester?.dirty)" class="p-error"> Requester is required. </small>
+                    </p-iconfield>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Status -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>Status</label>
+                    <p-iconfield iconPosition="left">
+                        <p-inputicon styleClass="pi pi-flag" />
+                        <p-dropdown [options]="dropdownItems" optionLabel="name" formControlName="status" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': status?.invalid && (status?.dirty || status?.touched) }" />
+                        <small *ngIf="status?.errors?.['required'] && (status?.touched || status?.dirty)" class="p-error"> Status is required. </small>
+                    </p-iconfield>
+                </div>
+
+                <!-- Assign To -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>Assign To</label>
+                    <p-iconfield iconPosition="left">
+                        <p-dropdown [options]="dropdownItems" optionLabel="name" formControlName="assignTo" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': assignTo?.invalid && (assignTo?.dirty || assignTo?.touched) }" />
+                        <small *ngIf="assignTo?.errors?.['required'] && (assignTo?.touched || assignTo?.dirty)" class="p-error"> Assign To is required. </small>
+                    </p-iconfield>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <!-- Type -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>Type</label>
+                    <p-iconfield iconPosition="left">
+                        <p-inputicon styleClass="pi pi-tag" />
+                        <p-dropdown [options]="dropdownItems" optionLabel="name" formControlName="type" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': type?.invalid && (type?.dirty || type?.touched) }" />
+                        <small *ngIf="type?.errors?.['required'] && (type?.touched || type?.dirty)" class="p-error"> Type is required. </small>
+                    </p-iconfield>
+                </div>
+
+                <!-- Start Date -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>Start Date</label>
+                    <p-iconfield iconPosition="left">
+                        <p-inputicon styleClass="pi pi-calendar" />
+                        <input type="date" pInputText formControlName="startDate" [ngClass]="{ 'p-invalid': startDate?.invalid && (startDate?.dirty || startDate?.touched) }" />
+                        <small *ngIf="startDate?.errors?.['required'] && (startDate?.touched || startDate?.dirty)" class="p-error"> Start Date is required. </small>
+                    </p-iconfield>
+                </div>
+
+                <!-- End Date (not required) -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>End Date</label>
+                    <p-iconfield iconPosition="left">
+                        <p-inputicon styleClass="pi pi-calendar" />
+                        <input type="date" pInputText formControlName="endDate" />
+                    </p-iconfield>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row gap-6">
+                <div class="flex flex-wrap gap-2 w-full">
+                    <label>Description</label>
+                    <textarea pInputTextarea formControlName="description" rows="2"></textarea>
+                </div>
+                <div class="flex flex-wrap gap-2 w-full">
+                    <label>Remarks</label>
+                    <textarea pInputTextarea formControlName="remarks" rows="2"></textarea>
+                </div>
+            </div>
+            <div class="flex flex-col gap-2 w-full">
+                <label>Attachment</label>
+
+                <p-fileUpload
+                    name="files[]"
+                    customUpload="true"
+                    (uploadHandler)="onUpload($event)"
+                    [auto]="false"
+                    [showUploadButton]="false"
+                    [showCancelButton]="true"
+                    [multiple]="true"
+                    accept="image/*"
+                    maxFileSize="1000000"
+                    chooseLabel="Upload"
+                    cancelLabel="Clear"
+                >
+                
+                    <!-- Empty Drop Zone -->
+                    <ng-template pTemplate="empty">
+                        <div>Drag and drop files to here to upload.</div>
+                    </ng-template>
+
+                    <!-- File Preview -->
+                    <ng-template pTemplate="content">
+                        <ul *ngIf="uploadedFiles.length">
+                            <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                        </ul>
+                    </ng-template>
+                </p-fileUpload>
+            </div>
+
+            <div class="flex flex-wrap gap-2 justify-center">
+                <p-button label="Back" icon="pi pi-arrow-left" (onClick)="backToPerevious()" severity="info" type="button" />
+                <p-button label="Reset" (onClick)="issueForm.reset()" severity="danger" type="button" />
+                <p-button label="Submit" severity="success" (onClick)="onSubmit()" type="button" />
+            </div>
+        </div>
+    </div>
+</p-fluid>

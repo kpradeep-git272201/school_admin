@@ -14,8 +14,16 @@ import { TableDemo } from './tabledemo';
 import { OverlayDemo } from './overlaydemo';
 import { TreeDemo } from './treedemo';
 import { MenuDemo } from './menudemo';
+import { ManageBugComponent } from '../../tracker/manage-bug/manage-bug.component';
+import { CreatebugComponent } from '../../tracker/createbug/createbug.component';
+import { UserComponent } from '../../tracker/user/user.component';
+import { CreateUserComponent } from '../../tracker/create-user/create-user.component';
 
 export default [
+    { path: 'manage-bug', data: { breadcrumb: 'ManageBug' }, component: ManageBugComponent },
+    { path: 'create-bug', data: { breadcrumb: 'CreateBug' }, component: CreatebugComponent },
+    { path: 'manage-user', data: { breadcrumb: 'User' }, component: UserComponent },
+    { path: 'createUser', data: { breadcrumb: 'createUser' }, component: CreateUserComponent },
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     { path: 'file', data: { breadcrumb: 'File' }, component: FileDemo },

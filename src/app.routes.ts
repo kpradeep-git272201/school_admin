@@ -12,7 +12,11 @@ export const appRoutes: Routes = [
         loadChildren: () => import('./app/auth/auth.module').then((m) => m.AuthModule)
     },
     {
-        path: '',
+        path: 'tracker',
+        loadChildren: () => import('./app/tracker/tracker.module').then((m) => m.TrackerModule)
+    },
+    {
+        path: 'dashboard',
         component: AppLayout,
         children: [
             { path: '', component: Dashboard },

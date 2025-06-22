@@ -1,0 +1,87 @@
+<div class="card">
+    <div class="flex justify-between items-center flex-column sm:flex-row">
+        <div class="font-semibold text-xl mb-4">User List</div>
+
+        <div class="flex flex-wrap gap-2">
+            <p-iconfield>
+                <p-inputicon styleClass="pi pi-search" />
+                <input type="text" (input)="onGlobalFilter(userTable, $event)" pInputText placeholder="Search" />
+            </p-iconfield>
+
+            <p-button label="Add User" icon="pi pi-plus" (onClick)="createUser()" />
+            <p-button icon="pi pi-filter-slash" (click)="clear(userTable)" label="Clear" severity="warn" />
+        </div>
+    </div>
+
+    <p-table
+        #userTable
+        [value]="userList"
+        class="auto-width-table"
+        dataKey="id"
+        [rows]="10"
+        [paginator]="(userList.length>10)? true : false"
+        [rowHover]="true"
+        [loading]="loading"
+        [globalFilterFields]="['userName', 'email']"
+        [showGridlines]="true"
+        responsiveLayout="scroll"
+        scrollHeight="410px"
+        tableStyleClass="nowrap-cell"
+    >
+        <ng-template #header>
+            <tr>
+                <th style="width: 4rem; padding-top: 0; padding-bottom: 0; text-align: center;">
+                    Sr.No.
+                </th>
+                <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0;">
+                    <div class="flex justify-between items-center">
+                        User Name
+                        <p-columnFilter type="text" field="userName" display="menu" placeholder="Search Name" />
+                    </div>
+                </th>
+                <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0;">
+                    <div class="flex justify-between items-center">
+                        Designation
+                        <p-columnFilter type="text" field="designation" display="menu" placeholder="Search Designation" />
+                    </div>
+                </th>
+                <th style="min-width: 16rem; padding-top: 0; padding-bottom: 0;">
+                    <div class="flex justify-between items-center">
+                        Email
+                        <p-columnFilter type="text" field="email" display="menu" placeholder="Search Email" />
+                    </div>
+                </th>
+                <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0;" class="text-center">
+                    <div class="flex justify-between items-center">
+                        Active?
+                        <p-columnFilter type="text" field="isActive" display="menu" placeholder="Active?" />
+                    </div>
+                </th>
+                <th style="min-width: 8rem; padding-top: 0; padding-bottom: 0; text-align: center;">
+                    Action
+                </th>
+            </tr>
+        </ng-template>
+
+        <ng-template #body let-user let-rowIndex="rowIndex">
+            <tr>
+                <td style="text-align: center;">{{ rowIndex + 1 }}</td>
+                <td class="ellipsis-cell">{{ user.userName }}</td>
+                <td class="ellipsis-cell">{{ user.designation }}</td>
+                <td class="ellipsis-cell">{{ user.email }}</td>
+               <td class="ellipsis-cell text-center">
+                {{ user.isActive ? 'Y' : 'N' }}
+                </td>
+               <td class="text-center">
+                    <i class="pi pi-pencil cursor-pointer text-primary" (click)="editUser(user)"></i>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="7" class="text-center">No users found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

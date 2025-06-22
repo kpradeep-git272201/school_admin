@@ -1,16 +1,52 @@
 <div class="login-container">
-  <div class="left-pane">
-    <img src="icons/LoginPhone.svg" alt="Illustration" />
-  </div>
-
-  <div class="right-pane">
-    <div class="login-card">
-      <img src="icons/Govlogo 2.svg" alt="Emblem" class="emblem" />
-      <h3>Bug Tracker</h3>
-      <p class="subtitle">Capacity Building and Training of Panchayati Raj Institution</p>
-      <h4>Login</h4>
-
-      
+    <div class="left-pane">
+        <img src="icons/LoginPhone.svg" alt="Illustration" />
     </div>
-  </div>
+
+    <div class="right-pane">
+        <div class="login-card">
+            <div class="logo-wrapper">
+                <img src="icons/FixPoint.png" alt="Emblem" class="emblem" />
+                <p style="line-height: 2"><span class="Fix">Fix</span> <span class="Point">Point</span></p>
+            </div>
+
+            <p *ngIf="loginTemplate == 'Login'" class="account">Login into your account</p>
+
+            <form *ngIf="loginTemplate == 'Login'" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-fluid">
+                <div class="flex flex-col gap-2">
+                    <label for="email">Email</label>
+
+                    <p-iconfield iconPosition="left">
+                        <p-inputicon styleClass="pi pi-envelope email-icon" />
+                        <input pInputText id="email" formControlName="email" type="email" placeholder="Enter your email" class="full-width-input" [ngClass]="{ 'p-invalid': email?.invalid && (email?.dirty || email?.touched) }" />
+                    </p-iconfield>
+
+                    <small *ngIf="email?.errors?.['required'] && (email?.touched || email?.dirty)" class="p-error"> Email is required. </small>
+                    <small *ngIf="email?.errors?.['email'] && (email?.touched || email?.dirty)" class="p-error"> Please enter a valid email. </small>
+                </div>
+                <div class="card flex flex-col gap-4">
+                    <div class="flex flex-wrap gap-2 justify-center">
+                        <p-button styleClass="w-full" type="submit" label="Send Verification Code" />
+                    </div>
+                </div>
+            </form>
+            <div *ngIf="loginTemplate == 'Otp'">
+                <div class="flex gap-2 justify-center" style="margin-bottom: 20px;">
+                    <p-message severity="info" [style]="{ 'margin-bottom': '20px' }">A verification code has been sent to your email. Please enter the OTP to continue.</p-message>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <div class="flex gap-2 justify-center">
+                        <p-inputotp [(ngModel)]="otpInput" [integerOnly]="true" />
+                    </div>
+
+                    <div class="card flex flex-col gap-4">
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <p-button [disabled]="!(otpInput.length==4)" styleClass="w-full" (onClick)="verifyCode()" label="Verify Code"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

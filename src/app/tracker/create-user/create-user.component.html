@@ -1,0 +1,74 @@
+<p-fluid [formGroup]="userForm">
+  <div class="flex mt-8">
+    <div class="card flex flex-col gap-6 w-full">
+      <div class="font-semibold text-xl">Create / Edit User</div>
+
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- User Name -->
+        <div class="flex flex-col gap-2 w-full">
+          <label>User Name</label>
+          <p-iconfield iconPosition="left">
+            <p-inputicon styleClass="pi pi-user" />
+            <input
+              pInputText
+              formControlName="userName"
+              placeholder="Enter Name"
+              [ngClass]="{ 'p-invalid': userName?.invalid && (userName?.dirty || userName?.touched) }"
+            />
+          </p-iconfield>
+          <small *ngIf="userName?.errors?.['required']" class="p-error">User name is required.</small>
+        </div>
+
+        <!-- Designation -->
+        <div class="flex flex-col gap-2 w-full">
+          <label>Designation</label>
+          <p-iconfield iconPosition="left">
+            <p-inputicon styleClass="pi pi-briefcase" />
+            <input
+              pInputText
+              formControlName="designation"
+              placeholder="Enter Designation"
+              [ngClass]="{ 'p-invalid': designation?.invalid && (designation?.dirty || designation?.touched) }"
+            />
+          </p-iconfield>
+          <small *ngIf="designation?.errors?.['required']" class="p-error">Designation is required.</small>
+        </div>
+      </div>
+
+      <div class="flex flex-col md:flex-row gap-6">
+        <!-- Email -->
+        <div class="flex flex-col gap-2 w-full">
+          <label>Email</label>
+          <p-iconfield iconPosition="left">
+            <p-inputicon styleClass="pi pi-envelope" />
+            <input
+              pInputText
+              formControlName="email"
+              placeholder="Enter Email"
+              [ngClass]="{ 'p-invalid': email?.invalid && (email?.dirty || email?.touched) }"
+            />
+          </p-iconfield>
+          <small *ngIf="email?.errors?.['required']" class="p-error">Email is required.</small>
+          <small *ngIf="email?.errors?.['email']" class="p-error">Invalid email format.</small>
+        </div>
+
+        <!-- Is Active -->
+        <div class="flex flex-col gap-2 w-full">
+          <label>Active?</label>
+          <p-dropdown
+            [options]="[{ label: 'Yes', value: true }, { label: 'No', value: false }]"
+            placeholder="Select"
+            formControlName="isActive"
+          ></p-dropdown>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex flex-wrap gap-2 justify-center">
+        <p-button label="Back" icon="pi pi-arrow-left" (onClick)="goBack()" severity="info" type="button" />
+        <p-button label="Reset" (onClick)="userForm.reset()" severity="danger" type="button" />
+        <p-button label="Submit" (onClick)="onSubmit()" severity="success" type="button" [disabled]="userForm.invalid" />
+      </div>
+    </div>
+  </div>
+</p-fluid>

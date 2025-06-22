@@ -1,0 +1,15 @@
+.auto-width-table .p-datatable-table {
+  table-layout: auto !important;
+}
+
+.ellipsis-cell {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+::ng-deep .p-datatable-thead > tr > th {
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  line-height: 1.2 !important;
+  vertical-align: middle;
+}

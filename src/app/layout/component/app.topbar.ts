@@ -5,18 +5,20 @@ import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
+import { PrimengModule } from '../../primeng/primeng.module';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator],
+    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, PrimengModule],
     template: ` <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
                 <i class="pi pi-bars"></i>
             </button>
             <a class="layout-topbar-logo" routerLink="/">
-                <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <img src="icons/FixPoint.png" alt="Emblem" class="emblem" height="28" width="28" />
+                <!-- <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         fill-rule="evenodd"
                         clip-rule="evenodd"
@@ -32,8 +34,8 @@ import { LayoutService } from '../service/layout.service';
                             fill="var(--primary-color)"
                         />
                     </g>
-                </svg>
-                <span>SAKAI</span>
+                </svg> -->
+                <p style="line-height: 2"><span class="Fix">Fix</span> <span class="Point">Point</span></p>
             </a>
         </div>
 
@@ -64,26 +66,42 @@ import { LayoutService } from '../service/layout.service';
 
             <div class="layout-topbar-menu hidden lg:block">
                 <div class="layout-topbar-menu-content">
-                    <button type="button" class="layout-topbar-action">
+                    <!-- <button type="button" class="layout-topbar-action">
                         <i class="pi pi-calendar"></i>
                         <span>Calendar</span>
-                    </button>
-                    <button type="button" class="layout-topbar-action">
+                    </button> -->
+                    <!-- <button type="button" class="layout-topbar-action">
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
-                    </button>
+                    </button> -->
                     <button type="button" class="layout-topbar-action">
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
                     </button>
                 </div>
+                
             </div>
         </div>
     </div>`
 })
 export class AppTopbar {
     items!: MenuItem[];
-
+    nestedMenuItems=[
+        {
+            label: 'Profile',
+            icon: 'pi pi-fw pi-user',
+            items: [
+                {
+                    label: 'Settings',
+                    icon: 'pi pi-fw pi-cog'
+                },
+                {
+                    label: 'Billing',
+                    icon: 'pi pi-fw pi-file'
+                }
+            ]
+        }
+    ]
     constructor(public layoutService: LayoutService) {}
 
     toggleDarkMode() {
