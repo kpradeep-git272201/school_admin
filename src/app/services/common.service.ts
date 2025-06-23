@@ -346,4 +346,17 @@ export class CommonService {
             })
         );
     }
+    createUser(data: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}`;
+        console.log(url);
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.request('POST', url, { body: data, headers: headers, responseType: 'text' as 'json', reportProgress: false, observe: 'response' }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
 }

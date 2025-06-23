@@ -24,7 +24,6 @@ export class UserComponent {
     @ViewChild('dt') dt!: Table;
     constructor(
         private router: Router,
-        private customerService: CustomerService,
         private commonService: CommonService
     ) {}
 

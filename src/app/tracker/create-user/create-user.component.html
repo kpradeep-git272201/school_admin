@@ -24,12 +24,10 @@
           <label>Designation</label>
           <p-iconfield iconPosition="left">
             <p-inputicon styleClass="pi pi-briefcase" />
-            <input
-              pInputText
-              formControlName="designation"
-              placeholder="Enter Designation"
-              [ngClass]="{ 'p-invalid': designation?.invalid && (designation?.dirty || designation?.touched) }"
-            />
+            <p-dropdown [options]="designationList" optionLabel="name" 
+            formControlName="designation" placeholder="Enter Designation" 
+            class="w-full" [ngClass]="{ 'p-invalid': designation?.invalid && (designation?.dirty || designation?.touched) }" />
+          
           </p-iconfield>
           <small *ngIf="designation?.errors?.['required']" class="p-error">Designation is required.</small>
         </div>
@@ -56,7 +54,7 @@
         <div class="flex flex-col gap-2 w-full">
           <label>Active?</label>
           <p-dropdown
-            [options]="[{ label: 'Yes', value: true }, { label: 'No', value: false }]"
+            [options]="[{ label: 'Yes', value: 'Y' }, { label: 'No', value: 'N' }]"
             placeholder="Select"
             formControlName="isActive"
           ></p-dropdown>

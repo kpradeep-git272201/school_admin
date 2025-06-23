@@ -74,6 +74,6 @@ export class MessagesDemo {
     }
 
     showSuccessViaToast() {
-        this.service.add({ severity: 'success', summary: 'Success Message', detail: 'Message sent' });
+        this.service.add({ severity: 'success', summary: 'Success', detail: 'Message sent' });
     }
 }
