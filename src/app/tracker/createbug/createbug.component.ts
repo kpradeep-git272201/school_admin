@@ -17,7 +17,19 @@ export class CreatebugComponent {
         { name: 'Option 2', code: 'Option 2' },
         { name: 'Option 3', code: 'Option 3' }
     ];
-
+    typeCombo: any = [
+        { name: 'Bug', code: '1' },
+        { name: 'Issue', code: '2' },
+        { name: 'Feature', code: '3' },
+        { name: 'Enhancement', code: '4' }
+    ];
+    statusCombo: any = [
+        { name: 'Pending', code: '1' },
+        { name: 'In Progress', code: '2' },
+        { name: 'Completed', code: '3' },
+        { name: 'Rejected', code: '4' },
+        { name: 'Resolved', code: '5' }
+    ];
     dropdownItem = null;
     issueForm: any;
     uploadedFiles: any[] = [];
@@ -96,8 +108,7 @@ export class CreatebugComponent {
         return this.issueForm.get('startDate');
     }
 
-
-    backToPerevious(){
-      this.router.navigate(['/dashboard/uikit/manage-bug'])
+    backToPerevious() {
+        this.router.navigate(['/dashboard/uikit/manage-bug']);
     }
 }

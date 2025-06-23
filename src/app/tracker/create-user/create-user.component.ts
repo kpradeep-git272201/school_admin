@@ -64,8 +64,8 @@ export class CreateUserComponent {
     }
 
     goBack() {
-        // this.router.navigate(['/dashboard/uikit/manage-user']);
-         this.sucessMessage('User created successfully!');
+        this.router.navigate(['/dashboard/uikit/manage-user']);
+        //  this.sucessMessage('User created successfully!');
     }
 
     onSubmit() {
