@@ -1,6 +1,6 @@
-<div class="card">
-    <div class="flex justify-between items-center flex-column sm:flex-row">
-        <div class="font-semibold text-xl mb-4">User List</div>
+<div class="card" style="padding-top: 24px;">
+    <div class="flex justify-between items-center flex-column sm:flex-row mb-6">
+        <div class="font-semibold text-xl">User List</div>
 
         <div class="flex flex-wrap gap-2">
             <p-iconfield>
@@ -51,6 +51,12 @@
                         <p-columnFilter type="text" field="email" display="menu" placeholder="Search Email" />
                     </div>
                 </th>
+                 <th style="min-width: 16rem; padding-top: 0; padding-bottom: 0;">
+                    <div class="flex justify-between items-center">
+                        Role
+                        <p-columnFilter type="text" field="roleIds" display="menu" placeholder="Search Role" />
+                    </div>
+                </th>
                 <th style="min-width: 8rem; padding-top: 0; padding-bottom: 0;" class="text-center">
                     <div class="flex justify-between items-center">
                         Active?
@@ -69,6 +75,7 @@
                 <td class="ellipsis-cell">{{ user.userName }}</td>
                 <td class="ellipsis-cell">{{ user.designation }}</td>
                 <td class="ellipsis-cell">{{ user.email }}</td>
+                <td class="ellipsis-cell">{{user.roleIds.join(', ')}}</td>
                <td class="ellipsis-cell text-center">
                 {{ user.isActive ? 'Y' : 'N' }}
                 </td>

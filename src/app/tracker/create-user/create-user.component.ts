@@ -21,7 +21,13 @@ export class CreateUserComponent {
         { name: 'Software Developer', code: '3' },
         { name: 'Tester', code: '3' }
     ];
-  loading: boolean | undefined;
+
+    roleOptions = [
+        { code: 1, name: 'ADMIN' },
+        { code: 2, name: 'USER' },
+        { code: 3, name: 'MANAGER' }
+    ];
+    loading: boolean | undefined;
     constructor(
         private fb: FormBuilder,
         private router: Router,
@@ -30,12 +36,8 @@ export class CreateUserComponent {
     ) {}
 
     ngOnInit(): void {
-        this.userForm = this.fb.group({
-            userName: ['', Validators.required],
-            designation: ['', Validators.required],
-            email: ['', [Validators.required, Validators.email]],
-            isActive: ['Y']
-        });
+        this.createUserControle();
+
     }
 
     createUser(user: any) {
@@ -45,9 +47,9 @@ export class CreateUserComponent {
                 this.loading = false;
                 this.sucessMessage('User created successfully!');
                 this.userForm.reset();
-            }else{
-              this.loading = false;
-              this.errorMessage('User creation failed!');
+            } else {
+                this.loading = false;
+                this.errorMessage('User creation failed!');
             }
         });
     }
@@ -71,24 +73,41 @@ export class CreateUserComponent {
     onSubmit() {
         if (this.userForm.valid) {
             const userForm = this.userForm.getRawValue();
+            const roleIds:any=[];
+            userForm.roles.forEach((role:any)=>{
+                roleIds.push(role.code);
+            })
             const user = {
                 userName: userForm.userName,
                 designation: userForm.designation.code,
                 email: userForm.email,
-                isActive: userForm.isActive
+                isActive: userForm.isActive,
+                roleIds: roleIds
             };
-            console.log('User Data:', user);
+            
+            console.log('User Data:', JSON.stringify(user));
             this.createUser(user);
         } else {
             this.userForm.markAllAsTouched();
         }
     }
+  createUserControle(){
+        const defaultUserRole = this.roleOptions.find(role => role.name === 'USER');
+        this.userForm = this.fb.group({
+            userName: ['', Validators.required],
+            designation: ['', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            isActive: ['Y'],
+            roles: [[defaultUserRole], Validators.required]
+        });
+    }
 
-    sucessMessage(message:string){
+  
+    sucessMessage(message: string) {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
     }
 
-    errorMessage(message:string){
-      this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+    errorMessage(message: string) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
     }
 }

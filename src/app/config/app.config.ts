@@ -7,6 +7,7 @@ export const AppConfig = {
   endpointPath: {
     login: 'auth/login',
     user: 'user',
+    issues: 'issues',
     bankList: "master/branch/bankList",
     districtListOfBankBranch: "master/branch/districtListOfBankBranch",
     unMappedBranch: "master/branch/unMappedBranch",

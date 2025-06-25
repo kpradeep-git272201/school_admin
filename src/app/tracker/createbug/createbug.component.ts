@@ -3,6 +3,8 @@ import { PrimengModule } from '../../primeng/primeng.module';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { Router } from '@angular/router';
+import { CommonService } from '../../services/common.service';
+import moment from 'moment';
 
 @Component({
     selector: 'app-createbug',
@@ -12,10 +14,12 @@ import { Router } from '@angular/router';
     providers: [MessageService]
 })
 export class CreatebugComponent {
-    dropdownItems: any = [
-        { name: 'Option 1', code: 'Option 1' },
-        { name: 'Option 2', code: 'Option 2' },
-        { name: 'Option 3', code: 'Option 3' }
+    selectedFile: File | null = null;
+    assignToOpt: any = [
+        { name: 'Pradeep', code: '1' },
+        { name: 'Suraj', code: '2' },
+        { name: 'Shreya', code: '3' },
+        { name: 'Ajay', code: '4' }
     ];
     typeCombo: any = [
         { name: 'Bug', code: '1' },
@@ -36,7 +40,8 @@ export class CreatebugComponent {
     constructor(
         private fb: FormBuilder,
         private messageService: MessageService,
-        private router: Router
+        private router: Router,
+        private commonService: CommonService
     ) {}
 
     ngOnInit(): void {
@@ -44,15 +49,16 @@ export class CreatebugComponent {
     }
 
     createFormControle() {
+        const defaultStatus = this.statusCombo.find((status: { code: string }) => status.code === '2');
         this.issueForm = this.fb.group({
             projectCode: ['', Validators.required],
             title: ['', Validators.required],
             requester: ['', Validators.required],
-            status: [null, Validators.required],
+            status: [defaultStatus, Validators.required],
             assignTo: [null, Validators.required],
             attachment: [null],
             type: [null, Validators.required],
-            startDate: ['', Validators.required],
+            startDate: [new Date(), Validators.required],
             endDate: [''],
             description: [''],
             remarks: ['']
@@ -61,7 +67,38 @@ export class CreatebugComponent {
 
     onSubmit() {
         if (this.issueForm.valid) {
-            console.log(this.issueForm.value);
+            this.addIssue();
+        } else {
+            this.issueForm.markAllAsTouched();
+        }
+    }
+
+    addIssue() {
+        if (this.issueForm.valid) {
+            let formValue: any = this.issueForm.getRawValue();
+
+            formValue.status=formValue.status.code;
+            formValue.assignTo=formValue.assignTo.code;
+            formValue.type=formValue.type.code;
+            formValue.createdBy = 'admin@example.com';
+            formValue.updatedBy = 'admin@example.com';
+            formValue.createdDate = moment().format('YYYY-MM-DD');
+            formValue.updatedDate = moment().format('YYYY-MM-DD');
+            const jsonBlob = new Blob([JSON.stringify(formValue)], {
+                type: 'application/json'
+            });
+
+            const formData = new FormData();
+            formData.append('issue', jsonBlob);
+
+            if (this.selectedFile) {
+                formData.append('attachment', this.selectedFile);
+            }
+            console.log(JSON.stringify(formValue));
+            this.commonService.addIssue(formData).subscribe({
+                next: (res) => console.log('Issue created:', res),
+                error: (err) => console.error('Error creating issue:', err)
+            });
         } else {
             this.issueForm.markAllAsTouched();
         }
@@ -70,19 +107,28 @@ export class CreatebugComponent {
     onFileChange(event: any) {
         const file = event.target.files?.[0];
         if (file) {
-            this.issueForm.patchValue({ attachment: file });
+            this.selectedFile = file;
         }
     }
-
     onUpload(event: any) {
         const files: File[] = event.files;
         this.uploadedFiles = files;
+        if (files && files.length > 0) {
+            this.selectedFile = files[0];
+            console.log('Selected file:', this.selectedFile);
+        }
         this.issueForm.patchValue({
             attachment: files
         });
         this.issueForm.get('attachment')?.markAsTouched();
     }
 
+    onFileSelected(event: any) {
+        const file = event.files;
+        if (file) {
+            this.selectedFile = file[0];
+        }
+    }
     get projectCode() {
         return this.issueForm.get('projectCode');
     }

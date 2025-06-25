@@ -359,4 +359,34 @@ export class CommonService {
             })
         );
     }
+    // addIssue(formData: FormData) {
+    //     const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issues}/addIssue`;
+    //     const headers = new HttpHeaders();
+
+    //     return this.request('POST', url, {
+    //         body: formData,
+    //         headers: headers,
+    //         reportProgress: true,
+    //         observe: 'response'
+    //     }).pipe(
+    //         map((resp) => resp),
+    //         catchError((error) => of(error))
+    //     );
+    // }
+    addIssue(formData: FormData): Observable<any> {
+        const url = 'http://localhost:8081/fixpoint/api/v1/issues/addIssue';
+
+        return this.http
+            .post(url, formData, {
+                reportProgress: true,
+                observe: 'response'
+            })
+            .pipe(
+                map((res) => res),
+                catchError((err) => {
+                    console.error('Backend error:', err);
+                    return of(err);
+                })
+            );
+    }
 }
