@@ -103,6 +103,9 @@
                         <p-columnFilter type="text" field="remarks" display="menu" placeholder="Search by name"></p-columnFilter>
                     </div>
                 </th>
+                <th style="min-width: 8rem; padding-top: 0; padding-bottom: 0; text-align: center;">
+                    Action
+                </th>
             </tr>
         </ng-template>
         <ng-template #body let-report let-rowIndex="rowIndex">
@@ -112,16 +115,27 @@
                 <td class="ellipsis-cell">{{ report.projectCode }}</td>
                 <td class="ellipsis-cell">{{ report.title }}</td>
                 <td class="ellipsis-cell">{{ report.description }}</td>
-                <td class="ellipsis-cell">{{  displayUser[report.requester] }}</td>
-                <td class="ellipsis-cell">{{ displayUser[report.assignTo] }}</td>
+                <td class="ellipsis-cell">{{ displayUser[report.requester] || report.requester }}</td>
+                <td class="ellipsis-cell">{{ displayUser[report.assignTo] || report.assignTo }}</td>
                 <td class="ellipsis-cell">{{ report.startDate }}</td>
                 <td class="ellipsis-cell">{{ report.endDate }}</td>
-                <td class="ellipsis-cell">{{ report.type }}</td>
-                <td class="ellipsis-cell">{{ report.status }}</td>
+                <td class="ellipsis-cell">
+                    <span [ngStyle]="{ color: typeColors[report.type], 'font-weight': 'bold' }">
+                        {{ typeCombo[report.type] || report.type }}
+                    </span>
+                </td>
+                <td class="ellipsis-cell"><span>
+                     <span [ngStyle]="{ color: statusColors[report.status], 'font-weight': 'bold' }">
+                         {{ statusCombo[report.status] || report.status }}
+                    </span>
+                </span></td>
                 <td class="ellipsis-cell" style="text-align: center">
                     <i *ngIf="report.attachmentBase64" class="pi pi-image" style="cursor: pointer; font-size: 1.2rem" (click)="openAttachmentViewer(report)"> </i>
                 </td>
                 <td class="ellipsis-cell">{{ report.remarks }}</td>
+                <td class="text-center">
+                    <i class="pi pi-pencil cursor-pointer text-primary" (click)="editIssue(report)"></i>
+                </td>
             </tr>
         </ng-template>
     </p-table>

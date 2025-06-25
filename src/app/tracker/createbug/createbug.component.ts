@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PrimengModule } from '../../primeng/primeng.module';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import moment from 'moment';
 
@@ -35,33 +35,40 @@ export class CreatebugComponent {
         { name: 'Resolved', code: '5' }
     ];
 
-    requesterCombo: any=[];
+    requesterCombo: any = [];
     dropdownItem = null;
     issueForm: any;
     uploadedFiles: any[] = [];
-    displayUser:any={};
+    displayUser: any = {};
     constructor(
         private fb: FormBuilder,
         private messageService: MessageService,
         private router: Router,
-        private commonService: CommonService
+        private commonService: CommonService,
+        private route: ActivatedRoute
     ) {}
 
     ngOnInit(): void {
         this.getUser();
         this.createFormControle();
+        this.route.queryParams.subscribe((params) => {
+            if (params['issue']) {
+                const issueObj = JSON.parse(params['issue']);
+                console.log('Received issue:', issueObj);
+                this.issueForm.patchValue(issueObj); 
+            }
+        });
     }
 
-
-    getUser(){
+    getUser() {
         this.commonService.getUserList().subscribe((user) => {
-          if(user.status==200){
-            const userList = user.body;
-            userList.forEach((user:any)=>{
-                this.requesterCombo.push({ name: user.userName, code: user.id });
-                this.displayUser[user.id]=user.userName;
-            })
-          }
+            if (user.status == 200) {
+                const userList = user.body;
+                userList.forEach((user: any) => {
+                    this.requesterCombo.push({ name: user.userName, code: user.id });
+                    this.displayUser[user.id] = user.userName;
+                });
+            }
         });
     }
     createFormControle() {
@@ -92,10 +99,10 @@ export class CreatebugComponent {
     addIssue() {
         if (this.issueForm.valid) {
             let formValue: any = this.issueForm.getRawValue();
-            formValue.status=formValue.status.code;
-            formValue.assignTo=formValue.assignTo.code;
-            formValue.type=formValue.type.code;
-            formValue.requester=formValue.requester.code;
+            formValue.status = formValue.status.code;
+            formValue.assignTo = formValue.assignTo.code;
+            formValue.type = formValue.type.code;
+            formValue.requester = formValue.requester.code;
             formValue.createdBy = 'admin@example.com';
             formValue.updatedBy = 'admin@example.com';
             formValue.createdDate = moment().format('YYYY-MM-DD');
