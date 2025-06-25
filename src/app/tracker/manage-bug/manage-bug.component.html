@@ -1,4 +1,4 @@
-<div class="card" style="padding-top: 24px;">
+<div class="card" style="padding-top: 24px">
     <div class="flex justify-between items-center flex-column sm:flex-row mb-6">
         <div class="font-semibold text-xl">Report Bug</div>
 
@@ -7,10 +7,9 @@
                 <p-inputicon styleClass="pi pi-search" />
                 <input type="text" (input)="onGlobalFilter(dt, $event)" pInputText placeholder="Search" />
             </p-iconfield>
-            
 
             <p-button label="Add" icon="pi pi-plus" (onClick)="createBug()" />
-            <p-button icon="pi pi-filter-slash"  (click)="clear(dt)" label="Clear" severity="warn" />
+            <p-button icon="pi pi-filter-slash" (click)="clear(dt)" label="Clear" severity="warn" />
         </div>
     </div>
 
@@ -23,7 +22,7 @@
         [loading]="loading"
         [rowHover]="true"
         [showGridlines]="true"
-        [paginator]="(reportList.length>10)? true : false"
+        [paginator]="reportList.length > 10 ? true : false"
         [globalFilterFields]="['issueId']"
         responsiveLayout="scroll"
         scrollHeight="410px"
@@ -31,28 +30,26 @@
     >
         <ng-template #header>
             <tr>
-                <th style="width: 4rem; padding-bottom: 0px; padding-top: 0px; text-align: center;">
-                Sr.No.
-                </th>
-                <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;" pFrozenColumn>
+                <th style="width: 4rem; padding-bottom: 0px; padding-top: 0px; text-align: center">Sr.No.</th>
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px" pFrozenColumn>
                     <div class="flex justify-between items-center">
                         Issue Id
                         <p-columnFilter type="text" field="issueId" display="menu" placeholder="Search by name"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         Project Code
                         <p-columnFilter type="text" field="projectCode" display="menu" placeholder="Search by name"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         Title
                         <p-columnFilter type="text" field="title" display="menu" placeholder="Search by country"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         Description
                         <p-columnFilter type="text" field="description" display="menu" placeholder="Search by date"></p-columnFilter>
@@ -64,71 +61,78 @@
                         <p-columnFilter type="text" field="requester" display="menu" placeholder="Search by company"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         Assign To
                         <p-columnFilter type="text" field="assignTo" display="menu" placeholder="Search by status"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         Start Date
                         <p-columnFilter type="text" field="startDate" display="menu" placeholder="Search by activity"></p-columnFilter>
                     </div>
                 </th>
-                <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         End Date
                         <p-columnFilter type="text" field="endDate" display="menu" placeholder="Search by name"></p-columnFilter>
                     </div>
                 </th>
-                 <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         Type
                         <p-columnFilter type="text" field="type" display="menu" placeholder="Search by name"></p-columnFilter>
                     </div>
                 </th>
-                 <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         Status
                         <p-columnFilter type="text" field="status" display="menu" placeholder="Search by name"></p-columnFilter>
                     </div>
                 </th>
-                 <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         Attachment
                         <p-columnFilter type="text" field="attachment" display="menu" placeholder="Search by name"></p-columnFilter>
                     </div>
                 </th>
-                 <th style="min-width: 12rem; padding-bottom: 0px;padding-top: 0px;">
+                <th style="min-width: 12rem; padding-bottom: 0px; padding-top: 0px">
                     <div class="flex justify-between items-center">
                         Remarks
                         <p-columnFilter type="text" field="remarks" display="menu" placeholder="Search by name"></p-columnFilter>
                     </div>
                 </th>
-                
             </tr>
         </ng-template>
         <ng-template #body let-report let-rowIndex="rowIndex">
             <tr>
-                <td pFrozenColumn style="text-align: center;">{{ rowIndex + 1 }}</td>
-                <td pFrozenColumn>{{ report.issueId }}</td>
+                <td pFrozenColumn style="text-align: center">{{ rowIndex + 1 }}</td>
+                <td pFrozenColumn>{{ report.id }}</td>
                 <td class="ellipsis-cell">{{ report.projectCode }}</td>
                 <td class="ellipsis-cell">{{ report.title }}</td>
                 <td class="ellipsis-cell">{{ report.description }}</td>
-                <td class="ellipsis-cell">{{ report.requester	 }}</td>
-                <td class="ellipsis-cell">{{ report.assignTo }}</td>
+                <td class="ellipsis-cell">{{  displayUser[report.requester] }}</td>
+                <td class="ellipsis-cell">{{ displayUser[report.assignTo] }}</td>
                 <td class="ellipsis-cell">{{ report.startDate }}</td>
                 <td class="ellipsis-cell">{{ report.endDate }}</td>
                 <td class="ellipsis-cell">{{ report.type }}</td>
                 <td class="ellipsis-cell">{{ report.status }}</td>
-                <td class="ellipsis-cell">{{ report.attachment }}</td>
+                <td class="ellipsis-cell" style="text-align: center">
+                    <i *ngIf="report.attachmentBase64" class="pi pi-image" style="cursor: pointer; font-size: 1.2rem" (click)="openAttachmentViewer(report)"> </i>
+                </td>
                 <td class="ellipsis-cell">{{ report.remarks }}</td>
             </tr>
         </ng-template>
     </p-table>
+    <p-dialog header="Attachment Preview" [(visible)]="showPreview" [modal]="true" [style]="{ width: '600px' }">
+        <img *ngIf="previewAttachment" [src]="'data:image/png;base64,' + previewAttachment" alt="attachment" style="width: 100%; height: auto; border-radius: 6px" />
 
-     <ng-template #emptymessage>
+        <div class="p-mt-3" style="text-align: right">
+            <button pButton type="button" label="Download" icon="pi pi-download" (click)="downloadAttachment()"></button>
+        </div>
+    </p-dialog>
+    <ng-template #emptymessage>
         <tr>
             <td colspan="8">No customers found.</td>
         </tr>

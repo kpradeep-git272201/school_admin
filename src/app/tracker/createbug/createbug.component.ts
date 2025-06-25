@@ -34,9 +34,12 @@ export class CreatebugComponent {
         { name: 'Rejected', code: '4' },
         { name: 'Resolved', code: '5' }
     ];
+
+    requesterCombo: any=[];
     dropdownItem = null;
     issueForm: any;
     uploadedFiles: any[] = [];
+    displayUser:any={};
     constructor(
         private fb: FormBuilder,
         private messageService: MessageService,
@@ -45,20 +48,33 @@ export class CreatebugComponent {
     ) {}
 
     ngOnInit(): void {
+        this.getUser();
         this.createFormControle();
     }
 
+
+    getUser(){
+        this.commonService.getUserList().subscribe((user) => {
+          if(user.status==200){
+            const userList = user.body;
+            userList.forEach((user:any)=>{
+                this.requesterCombo.push({ name: user.userName, code: user.id });
+                this.displayUser[user.id]=user.userName;
+            })
+          }
+        });
+    }
     createFormControle() {
-        const defaultStatus = this.statusCombo.find((status: { code: string }) => status.code === '2');
+        const defaultStatus = this.statusCombo.find((status: { code: string }) => status.code === '1');
         this.issueForm = this.fb.group({
-            projectCode: ['', Validators.required],
+            projectCode: ['eGS 2.0', Validators.required],
             title: ['', Validators.required],
             requester: ['', Validators.required],
             status: [defaultStatus, Validators.required],
             assignTo: [null, Validators.required],
             attachment: [null],
             type: [null, Validators.required],
-            startDate: [new Date(), Validators.required],
+            startDate: [moment().format('YYYY-MM-DD'), Validators.required],
             endDate: [''],
             description: [''],
             remarks: ['']
@@ -76,10 +92,10 @@ export class CreatebugComponent {
     addIssue() {
         if (this.issueForm.valid) {
             let formValue: any = this.issueForm.getRawValue();
-
             formValue.status=formValue.status.code;
             formValue.assignTo=formValue.assignTo.code;
             formValue.type=formValue.type.code;
+            formValue.requester=formValue.requester.code;
             formValue.createdBy = 'admin@example.com';
             formValue.updatedBy = 'admin@example.com';
             formValue.createdDate = moment().format('YYYY-MM-DD');

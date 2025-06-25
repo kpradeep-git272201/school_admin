@@ -33,7 +33,6 @@ export class UserComponent {
             this.userList = user.body;
           }
           this.loading = false;
-          
         });
     }
 

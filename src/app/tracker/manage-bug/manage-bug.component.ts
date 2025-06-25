@@ -6,6 +6,7 @@ import { Table } from 'primeng/table';
 import { Customer, CustomerService, Representative } from '../../pages/service/customer.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonService } from '../../services/common.service';
+import { OverlayPanel } from 'primeng/overlaypanel';
 
 interface Column {
     field: string;
@@ -33,8 +34,11 @@ export class ManageBugComponent implements OnInit {
     balanceFrozen: boolean = false;
     reportList: Customer[] = [];
     @ViewChild('filter') filter!: ElementRef;
-
     @ViewChild('dt') dt!: Table;
+    showPreview = false;
+    previewAttachment: string | null = null;
+    displayUser: any={};
+
     constructor(
         private router: Router,
         private customerService: CustomerService,
@@ -42,46 +46,44 @@ export class ManageBugComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.customerService.getCustomersLarge().then((customers) => {
-            this.loading = false;
-            // @ts-ignore
-            this.customers1.forEach((customer) => (customer.date = new Date(customer.date)));
+        // this.commonService.getReportBugs().then((report) => (this.reportList = report));
+        this.getUser();
+        this.getIssueList();
+    }
+
+    getUser() {
+        this.commonService.getUserList().subscribe((user) => {
+            if (user.status == 200) {
+                const userList = user.body;
+                userList.forEach((user: any) => {
+                    this.displayUser[user.id] = user.userName;
+                });
+            }
         });
-        this.commonService.getReportBugs().then((report) => (this.reportList = report));
     }
-
+    getIssueList() {
+        this.commonService.getIssueList().subscribe((issues) => {
+            this.reportList = issues.body;
+            this.loading = false;
+        });
+    }
     createBug() {
-      this.router.navigate(['/dashboard/uikit/create-bug']);
+        this.router.navigate(['/dashboard/uikit/create-bug']);
     }
 
-    getSeverity(status: string) {
-        switch (status) {
-            case 'qualified':
-            case 'instock':
-            case 'INSTOCK':
-            case 'DELIVERED':
-            case 'delivered':
-                return 'success';
+    openAttachmentViewer(report: any) {
+        this.previewAttachment = report.attachmentBase64;
+        this.showPreview = true;
+    }
 
-            case 'negotiation':
-            case 'lowstock':
-            case 'LOWSTOCK':
-            case 'PENDING':
-            case 'pending':
-                return 'warn';
-
-            case 'unqualified':
-            case 'outofstock':
-            case 'OUTOFSTOCK':
-            case 'CANCELLED':
-            case 'cancelled':
-                return 'danger';
-
-            default:
-                return 'info';
+    downloadAttachment() {
+        if (this.previewAttachment) {
+            const link = document.createElement('a');
+            link.href = 'data:image/png;base64,' + this.previewAttachment;
+            link.download = 'attachment.png'; // or use .jpg/.jpeg/.pdf etc.
+            link.click();
         }
     }
-
     formatCurrency(value: number) {
         return value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
     }
@@ -89,6 +91,7 @@ export class ManageBugComponent implements OnInit {
     onGlobalFilter(table: Table, event: Event) {
         table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
     }
+
     clear(table: Table) {
         table.clear();
         this.filter.nativeElement.value = '';

@@ -1,4 +1,4 @@
-<p-fluid [formGroup]="issueForm">
+<p-fluid *ngIf="requesterCombo" [formGroup]="issueForm">
     <div class="flex mt-8">
         <div class="card flex flex-col gap-6 w-full">
             <div class="font-semibold text-xl">Create Issue</div>
@@ -30,7 +30,6 @@
 
                         <input pInputText formControlName="title" placeholder="Enter Title" [ngClass]="{ 'p-invalid': title?.invalid && (title?.dirty || title?.touched) }" />
                     </p-iconfield>
-
                     <small *ngIf="title?.errors?.['required'] && (title?.touched || title?.dirty)" class="p-error"> Title is required. </small>
                 </div>
 
@@ -39,9 +38,9 @@
                     <label>Requester</label>
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-user" />
-                        <input pInputText formControlName="requester" placeholder="Enter Requester Name" [ngClass]="{ 'p-invalid': requester?.invalid && (requester?.dirty || requester?.touched) }" />
-                        <small *ngIf="requester?.errors?.['required'] && (requester?.touched || requester?.dirty)" class="p-error"> Requester is required. </small>
+                        <p-dropdown [options]="requesterCombo" optionLabel="name" formControlName="requester" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': requester?.invalid && (requester?.dirty || requester?.touched) }" />
                     </p-iconfield>
+                     <small *ngIf="requester?.errors?.['required'] && (requester?.touched || requester?.dirty)" class="p-error"> Requester is required. </small>
                 </div>
             </div>
 
@@ -61,8 +60,8 @@
                     <label>Assign To</label>
                     <p-iconfield iconPosition="left">
                         <p-dropdown [options]="assignToOpt" optionLabel="name" formControlName="assignTo" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': assignTo?.invalid && (assignTo?.dirty || assignTo?.touched) }" />
-                        <small *ngIf="assignTo?.errors?.['required'] && (assignTo?.touched || assignTo?.dirty)" class="p-error"> Assign To is required. </small>
                     </p-iconfield>
+                    <small *ngIf="assignTo?.errors?.['required'] && (assignTo?.touched || assignTo?.dirty)" class="p-error"> Assign To is required. </small>
                 </div>
             </div>
 
@@ -73,8 +72,8 @@
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-tag" />
                         <p-dropdown [options]="typeCombo" optionLabel="name" formControlName="type" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': type?.invalid && (type?.dirty || type?.touched) }" />
-                        <small *ngIf="type?.errors?.['required'] && (type?.touched || type?.dirty)" class="p-error"> Type is required. </small>
                     </p-iconfield>
+                     <small *ngIf="type?.errors?.['required'] && (type?.touched || type?.dirty)" class="p-error"> Type is required. </small>
                 </div>
 
                 <!-- Start Date -->
@@ -83,8 +82,8 @@
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-calendar" />
                         <input type="date" pInputText formControlName="startDate" [ngClass]="{ 'p-invalid': startDate?.invalid && (startDate?.dirty || startDate?.touched) }" />
-                        <small *ngIf="startDate?.errors?.['required'] && (startDate?.touched || startDate?.dirty)" class="p-error"> Start Date is required. </small>
                     </p-iconfield>
+                    <small *ngIf="startDate?.errors?.['required'] && (startDate?.touched || startDate?.dirty)" class="p-error"> Start Date is required. </small>
                 </div>
 
                 <!-- End Date (not required) -->
