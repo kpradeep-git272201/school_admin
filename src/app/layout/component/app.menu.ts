@@ -32,6 +32,8 @@ export class AppMenu {
                 label: 'Admin',
                 items: [
                     { label: 'User', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/uikit/manage-user'] },
+                    { label: 'Roles', icon: 'pi pi-fw pi-key', routerLink: ['/dashboard/uikit/roles'] },
+                    
                     { label: 'Setting', icon: 'pi pi-fw pi-cog', routerLink: ['/dashboard/uikit/setting'] },
                     // { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/dashboard/uikit/formlayout'] },
                     // { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/dashboard/uikit/input'] },

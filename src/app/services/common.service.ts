@@ -348,6 +348,22 @@ export class CommonService {
             })
         );
     }
+      getRoles() {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.roles}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
     createUser(data: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}`;
         console.log(url);

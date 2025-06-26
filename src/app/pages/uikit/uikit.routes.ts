@@ -18,12 +18,14 @@ import { ManageBugComponent } from '../../tracker/manage-bug/manage-bug.componen
 import { CreatebugComponent } from '../../tracker/createbug/createbug.component';
 import { UserComponent } from '../../tracker/user/user.component';
 import { CreateUserComponent } from '../../tracker/create-user/create-user.component';
+import { RolesComponent } from '../../tracker/roles/roles.component';
 
 export default [
     { path: 'manage-bug', data: { breadcrumb: 'ManageBug' }, component: ManageBugComponent },
     { path: 'create-bug', data: { breadcrumb: 'CreateBug' }, component: CreatebugComponent },
     { path: 'manage-user', data: { breadcrumb: 'User' }, component: UserComponent },
     { path: 'createUser', data: { breadcrumb: 'createUser' }, component: CreateUserComponent },
+    { path: 'roles', data: { breadcrumb: 'Roles' }, component: RolesComponent },
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },
     { path: 'file', data: { breadcrumb: 'File' }, component: FileDemo },
