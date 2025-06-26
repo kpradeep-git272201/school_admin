@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
+import { CommonService } from '../../services/common.service';
 
 @Component({
     selector: 'app-menu',
@@ -17,24 +18,24 @@ import { AppMenuitem } from './app.menuitem';
 })
 export class AppMenu {
     model: MenuItem[] = [];
-
+    constructor(private commonService: CommonService) {}
     ngOnInit() {
+        this.getMasterData();
         this.model = [
             {
                 label: 'Home',
                 items: [
                     { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/dashboard'] },
-                    { label: 'Report Bug', icon: 'pi pi-plus-circle', routerLink: '/dashboard/uikit/manage-bug' },
+                    { label: 'Report Bug', icon: 'pi pi-plus-circle', routerLink: '/dashboard/uikit/manage-bug' }
                 ]
-            
             },
             {
                 label: 'Admin',
                 items: [
                     { label: 'User', icon: 'pi pi-fw pi-user', routerLink: ['/dashboard/uikit/manage-user'] },
                     { label: 'Roles', icon: 'pi pi-fw pi-key', routerLink: ['/dashboard/uikit/roles'] },
-                    
-                    { label: 'Setting', icon: 'pi pi-fw pi-cog', routerLink: ['/dashboard/uikit/setting'] },
+
+                    { label: 'Setting', icon: 'pi pi-fw pi-cog', routerLink: ['/dashboard/uikit/setting'] }
                     // { label: 'Form Layout', icon: 'pi pi-fw pi-id-card', routerLink: ['/dashboard/uikit/formlayout'] },
                     // { label: 'Input', icon: 'pi pi-fw pi-check-square', routerLink: ['/dashboard/uikit/input'] },
                     // { label: 'Button', icon: 'pi pi-fw pi-mobile', class: 'rotated-icon', routerLink: ['/dashboard/uikit/button'] },
@@ -51,7 +52,7 @@ export class AppMenu {
                     // { label: 'Timeline', icon: 'pi pi-fw pi-calendar', routerLink: ['/dashboard/uikit/timeline'] },
                     // { label: 'Misc', icon: 'pi pi-fw pi-circle', routerLink: ['/dashboard/uikit/misc'] }
                 ]
-            },
+            }
             // {
             //     label: 'Pages',
             //     icon: 'pi pi-fw pi-briefcase',
@@ -161,5 +162,44 @@ export class AppMenu {
             //     ]
             // }
         ];
+    }
+    getMasterData() {
+        const typeCombo = localStorage.getItem('typeCombo');
+        const statusCombo = localStorage.getItem('statusCombo');
+        const rolesList = localStorage.getItem('rolesList');
+        if (!typeCombo) {
+            this.getIssueType();
+        }
+        if (!statusCombo) {
+            this.getIssueStatus();
+        }
+        if (!rolesList) {
+            this.getRoles();
+        }
+    }
+    getIssueType() {
+        this.commonService.getIssueType().subscribe((type) => {
+            if (type.status == 200) {
+                const typeCombo = type.body;
+                localStorage.setItem('typeCombo', JSON.stringify(typeCombo));
+            }
+        });
+    }
+    getIssueStatus() {
+        this.commonService.getIssueStatus().subscribe((status) => {
+            if (status.status == 200) {
+                const statusCombo = status.body;
+                localStorage.setItem('statusCombo', JSON.stringify(statusCombo));
+            }
+        });
+    }
+
+    getRoles() {
+        this.commonService.getRoles().subscribe((user) => {
+            if (user.status == 200) {
+                const rolesList = user.body;
+                localStorage.setItem('rolesList', JSON.stringify(rolesList));
+            }
+        });
     }
 }

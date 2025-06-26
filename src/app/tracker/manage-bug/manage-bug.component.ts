@@ -38,27 +38,17 @@ export class ManageBugComponent implements OnInit {
     showPreview = false;
     previewAttachment: string | null = null;
     displayUser: any = {};
-    typeCombo: any = { '1': 'Bug', '2': 'Issue', '3': 'Feature', '4': 'Enhancement' };
-    statusCombo: any = {
+    typeComboObj: any = { '1': 'Bug', '2': 'Issue', '3': 'Feature', '4': 'Enhancement' };
+    statusComboObj: any = {
         '1': 'Pending',
         '2': 'In Progress',
         '3': 'Completed',
         '4': 'Rejected',
         '5': 'Resolved'
     };
-    typeColors: any = {
-        '1': '#e74c3c', // Bug
-        '2': '#e67e22', // Issue
-        '3': '#27ae60', // Feature
-        '4': '#3498db' // Enhancement
-    };
-    statusColors: any = {
-        '1': '#f1c40f', // Pending
-        '2': '#2980b9', // In Progress
-        '3': '#2ecc71', // Completed
-        '4': '#c0392b', // Rejected
-        '5': '#8e44ad' // Resolved
-    };
+
+    typeColors: any;
+    statusColors: any;
     constructor(
         private router: Router,
         private customerService: CustomerService,
@@ -66,10 +56,12 @@ export class ManageBugComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        // this.commonService.getReportBugs().then((report) => (this.reportList = report));
+        this.typeColors = this.commonService.typeColors;
+        this.statusColors = this.commonService.statusColors;
         this.getUser();
         this.getIssueList();
     }
+
 
     getUser() {
         this.commonService.getUserList().subscribe((user) => {

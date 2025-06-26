@@ -19,11 +19,11 @@
     >
         <ng-template #header>
             <tr>
-                <th style="width: 4rem; padding-top: 0; padding-bottom: 0; text-align: center">Sr.No.</th>
+                <th style="width: 4rem; padding-top: 0; padding-bottom: 0; text-align: center" class="font-bold">Sr.No.</th>
                 <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0">
-                    <div class="flex justify-between items-center">
+                    <div class="flex justify-between items-center font-bold">
                         Role Name
-                        <p-columnFilter type="text" field="roleName" display="menu" placeholder="Search Name" />
+                        <p-columnFilter type="text" field="name" display="menu" placeholder="Search Name" />
                     </div>
                 </th>
                 <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0;">
@@ -48,8 +48,8 @@
             <tr>
                 <td style="text-align: center">{{ rowIndex + 1 }}</td>
 
-                <td class="ellipsis-cell">{{ user.roleName }}</td>
-                <td class="ellipsis-cell">{{ user.roleCode }}</td>
+                <td class="ellipsis-cell">{{ user.name }}</td>
+                <td class="ellipsis-cell">{{ user.code }}</td>
                 <td class="ellipsis-cell">{{ user.description }}</td>
                 <td class="ellipsis-cell">{{ user.isActive }}</td>
             </tr>

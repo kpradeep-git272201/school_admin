@@ -123,12 +123,12 @@
                 <td class="ellipsis-cell">{{ report.endDate }}</td>
                 <td class="ellipsis-cell">
                     <span [ngStyle]="{ color: typeColors[report.type], 'font-weight': 'bold' }">
-                        {{ typeCombo[report.type] || report.type }}
+                        {{ typeComboObj[report.type] || report.type }}
                     </span>
                 </td>
                 <td class="ellipsis-cell"><span>
                      <span [ngStyle]="{ color: statusColors[report.status], 'font-weight': 'bold' }">
-                         {{ statusCombo[report.status] || report.status }}
+                         {{ statusComboObj[report.status] || report.status }}
                     </span>
                 </span></td>
                 <td class="ellipsis-cell" style="text-align: center">

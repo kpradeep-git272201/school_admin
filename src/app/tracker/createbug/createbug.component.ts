@@ -15,25 +15,9 @@ import moment from 'moment';
 })
 export class CreatebugComponent {
     selectedFile: File | null = null;
-    assignToOpt: any = [
-        { name: 'Pradeep', code: '1' },
-        { name: 'Suraj', code: '2' },
-        { name: 'Shreya', code: '3' },
-        { name: 'Ajay', code: '4' }
-    ];
-    typeCombo: any = [
-        { name: 'Bug', code: '1' },
-        { name: 'Issue', code: '2' },
-        { name: 'Feature', code: '3' },
-        { name: 'Enhancement', code: '4' }
-    ];
-    statusCombo: any = [
-        { name: 'Pending', code: '1' },
-        { name: 'In Progress', code: '2' },
-        { name: 'Completed', code: '3' },
-        { name: 'Rejected', code: '4' },
-        { name: 'Resolved', code: '5' }
-    ];
+    assignToOpt: any = [];
+    typeCombo: any = [];
+    statusCombo: any = [];
 
     requesterCombo: any = [];
     dropdownItem = null;
@@ -50,21 +34,31 @@ export class CreatebugComponent {
 
     ngOnInit(): void {
         this.getUser();
+    
         this.createFormControle();
         this.route.queryParams.subscribe((params) => {
             if (params['issue']) {
                 const issueObj = JSON.parse(params['issue']);
                 console.log('Received issue:', issueObj);
-                this.issueForm.patchValue(issueObj); 
+                this.issueForm.patchValue(issueObj);
             }
         });
     }
-
+    
     getUser() {
+        const typeCombo = localStorage.getItem('typeCombo');
+        const statusCombo = localStorage.getItem('statusCombo');
+        if(statusCombo){
+            this.statusCombo=JSON.parse(statusCombo);
+        }
+          if(typeCombo){
+            this.typeCombo=JSON.parse(typeCombo);
+        }
         this.commonService.getUserList().subscribe((user) => {
             if (user.status == 200) {
                 const userList = user.body;
                 userList.forEach((user: any) => {
+                    this.assignToOpt.push({ name: user.userName, code: user.id })
                     this.requesterCombo.push({ name: user.userName, code: user.id });
                     this.displayUser[user.id] = user.userName;
                 });

@@ -8,7 +8,19 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 })
 export class CommonService {
     handleError!: (err: any, caught: Observable<any>) => ObservableInput<any>;
-
+   typeColors: any = {
+        '1': '#e74c3c', // Bug
+        '2': '#e67e22', // Issue
+        '3': '#27ae60', // Feature
+        '4': '#3498db' // Enhancement
+    };
+    statusColors: any = {
+        '1': '#f1c40f', // Pending
+        '2': '#2980b9', // In Progress
+        '3': '#2ecc71', // Completed
+        '4': '#c0392b', // Rejected
+        '5': '#8e44ad' // Resolved
+    };
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
         private http: HttpClient
@@ -17,7 +29,6 @@ export class CommonService {
     getReportBugs() {
         return Promise.resolve(this.getData());
     }
-
 
     getData() {
         return [
@@ -348,8 +359,40 @@ export class CommonService {
             })
         );
     }
-      getRoles() {
+    getRoles() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.roles}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
+    getIssueType() {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueType}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
+    getIssueStatus() {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueStatus}`;
         const headers = new HttpHeaders().set('content-type', 'application/json');
         return this.request('GET', url, {
             headers: headers,
@@ -391,7 +434,7 @@ export class CommonService {
             catchError((error) => of(error))
         );
     }
-    getIssueList(){
+    getIssueList() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issues}`;
         console.log(url);
         const headers = new HttpHeaders().set('content-type', 'application/json');

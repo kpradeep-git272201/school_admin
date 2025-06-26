@@ -22,10 +22,10 @@ export class CreateUserComponent {
         { name: 'Tester', code: '3' }
     ];
 
-    roleOptions = [
-        { code: 1, name: 'ADMIN' },
-        { code: 2, name: 'USER' },
-        { code: 3, name: 'MANAGER' }
+    roleOptions:any = [
+        // { code: 1, name: 'ADMIN' },
+        // { code: 2, name: 'USER' },
+        // { code: 3, name: 'MANAGER' }
     ];
     loading: boolean | undefined;
     constructor(
@@ -36,6 +36,10 @@ export class CreateUserComponent {
     ) {}
 
     ngOnInit(): void {
+         const rolesList = localStorage.getItem('rolesList');
+        if(rolesList){
+            this.roleOptions=JSON.parse(rolesList);
+        }
         this.createUserControle();
 
     }
@@ -92,7 +96,7 @@ export class CreateUserComponent {
         }
     }
   createUserControle(){
-        const defaultUserRole = this.roleOptions.find(role => role.name === 'USER');
+        const defaultUserRole = this.roleOptions.find((role: { code: string; }) => role.code === 'ROLE_USER');
         this.userForm = this.fb.group({
             userName: ['', Validators.required],
             designation: ['', Validators.required],
