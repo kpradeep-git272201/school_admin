@@ -42,6 +42,7 @@ export class UserComponent {
           if (userList) {
             this.userList = JSON.parse(userList);
         }
+        this.loading=false;
     }
 
     createUser() {

@@ -116,8 +116,8 @@ export class CreatebugComponent {
             }
             console.log(JSON.stringify(formValue));
             this.commonService.addIssue(formData).subscribe({
-                next: (res) => console.log('Issue created:', res),
-                error: (err) => console.error('Error creating issue:', err)
+                next: (res) => this.sucessMessage('Issue created successfully!'),
+                error: (err) =>this.errorMessage(err)
             });
         } else {
             this.issueForm.markAllAsTouched();
@@ -176,5 +176,13 @@ export class CreatebugComponent {
 
     backToPerevious() {
         this.router.navigate(['/dashboard/uikit/manage-bug']);
+    }
+
+     sucessMessage(message: string) {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
+    }
+
+    errorMessage(message: string) {
+        this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
     }
 }
