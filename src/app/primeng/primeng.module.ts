@@ -44,6 +44,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { TabsModule } from 'primeng/tabs';
 import { StepperModule } from 'primeng/stepper';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { MessageService } from 'primeng/api';
 
 
 @NgModule({
@@ -95,7 +96,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     TabsModule,
     StepperModule,
     TabsModule,
-    OverlayPanelModule 
+    OverlayPanelModule
   ],
   exports:[
     CommonModule,
@@ -144,7 +145,8 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
     TabsModule,
     StepperModule,
     TabsModule,
-    OverlayPanelModule 
-  ]
+    OverlayPanelModule
+  ],
+  providers:[MessageService]
 })
 export class PrimengModule { }

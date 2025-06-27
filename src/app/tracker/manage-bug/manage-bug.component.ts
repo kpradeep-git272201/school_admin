@@ -5,7 +5,7 @@ import { Product, ProductService } from '../../pages/service/product.service';
 import { Table } from 'primeng/table';
 import { Customer, CustomerService, Representative } from '../../pages/service/customer.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { CommonService } from '../../services/common.service';
+import { CommonService } from '../../services/api/common.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
 
 interface Column {
@@ -27,25 +27,19 @@ interface ExportColumn {
     providers: [ConfirmationService, MessageService, CustomerService, ProductService]
 })
 export class ManageBugComponent implements OnInit {
-    customers1: Customer[] = [];
+
     loading: boolean = true;
     representatives: Representative[] = [];
     activityValues: number[] = [0, 100];
     balanceFrozen: boolean = false;
-    reportList: Customer[] = [];
+    reportList: any[] = [];
     @ViewChild('filter') filter!: ElementRef;
     @ViewChild('dt') dt!: Table;
     showPreview = false;
     previewAttachment: string | null = null;
     displayUser: any = {};
-    typeComboObj: any = { '1': 'Bug', '2': 'Issue', '3': 'Feature', '4': 'Enhancement' };
-    statusComboObj: any = {
-        '1': 'Pending',
-        '2': 'In Progress',
-        '3': 'Completed',
-        '4': 'Rejected',
-        '5': 'Resolved'
-    };
+    typeComboObj: any = {};
+    statusComboObj: any = {};
 
     typeColors: any;
     statusColors: any;
@@ -64,6 +58,14 @@ export class ManageBugComponent implements OnInit {
 
 
     getUser() {
+          const typeCombo = localStorage.getItem('typeCombo');
+        const statusCombo = localStorage.getItem('statusCombo');
+        if(statusCombo){
+            this.statusComboObj=JSON.parse(statusCombo);
+        }
+          if(typeCombo){
+            this.typeComboObj=JSON.parse(typeCombo);
+        }
         this.commonService.getUserList().subscribe((user) => {
             if (user.status == 200) {
                 const userList = user.body;

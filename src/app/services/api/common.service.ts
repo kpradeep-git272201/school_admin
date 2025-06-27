@@ -1,14 +1,14 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { catchError, map, Observable, ObservableInput, of } from 'rxjs';
-import { AppConfig } from '../config/app.config';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map, Observable, ObservableInput, of, throwError } from 'rxjs';
+import { AppConfig } from '../../config/app.config';
+import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CommonService {
     handleError!: (err: any, caught: Observable<any>) => ObservableInput<any>;
-   typeColors: any = {
+    typeColors: any = {
         '1': '#e74c3c', // Bug
         '2': '#e67e22', // Issue
         '3': '#27ae60', // Feature
@@ -328,6 +328,21 @@ export class CommonService {
     }
 
     /** ********************************* */
+
+    getClearLocalStorage() {
+
+        localStorage.removeItem('roleDisplay');
+        localStorage.removeItem('rolesList');
+        localStorage.removeItem('typeCombo');
+        localStorage.removeItem('statusCombo');
+        localStorage.removeItem('designationDisplay');
+        localStorage.removeItem('userList');
+        localStorage.removeItem('assignToOpt');
+        localStorage.removeItem('requesterCombo');
+        localStorage.removeItem('displayUser');
+
+    }
+
     public request(
         method: string,
         url: string,
@@ -407,16 +422,28 @@ export class CommonService {
             })
         );
     }
-    createUser(data: any) {
-        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}`;
-        console.log(url);
+   getDesignation() {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.designation}`;
         const headers = new HttpHeaders().set('content-type', 'application/json');
-        return this.request('POST', url, { body: data, headers: headers, responseType: 'text' as 'json', reportProgress: false, observe: 'response' }).pipe(
+        return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
             map((resp) => {
                 return resp;
             }),
             catchError((error) => {
                 return of(error);
+            })
+        );
+    }
+    
+    createUser(data: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}`;
+        return this.http.post(url, data).pipe(
+            catchError((error: HttpErrorResponse) => {
+                return throwError(() => error);
             })
         );
     }

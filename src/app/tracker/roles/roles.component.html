@@ -44,14 +44,13 @@
             </tr>
         </ng-template>
 
-        <ng-template #body let-user let-rowIndex="rowIndex">
+        <ng-template #body let-role let-rowIndex="rowIndex">
             <tr>
                 <td style="text-align: center">{{ rowIndex + 1 }}</td>
-
-                <td class="ellipsis-cell">{{ user.name }}</td>
-                <td class="ellipsis-cell">{{ user.code }}</td>
-                <td class="ellipsis-cell">{{ user.description }}</td>
-                <td class="ellipsis-cell">{{ user.isActive }}</td>
+                <td class="ellipsis-cell">{{ role.name }}</td>
+                <td class="ellipsis-cell">{{ roleDisplay[role.code] || role.code }}</td>
+                <td class="ellipsis-cell">{{ role.description }}</td>
+                <td class="ellipsis-cell">{{ role.isActive }}</td>
             </tr>
         </ng-template>
 

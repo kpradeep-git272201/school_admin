@@ -69,9 +69,13 @@
             <tr>
                 <td style="text-align: center">{{ rowIndex + 1 }}</td>
                 <td class="ellipsis-cell">{{ user.userName }}</td>
-                <td class="ellipsis-cell">{{ user.designation }}</td>
+                <td class="ellipsis-cell">{{ designationDisplay[user.designation] || user.designation }}</td>
                 <td class="ellipsis-cell">{{ user.email }}</td>
-                <td class="ellipsis-cell">{{ user.roleIds.join(', ') }}</td>
+                <td class="ellipsis-cell">
+                    <span *ngFor="let roleCode of user.roleIds; let i=index">
+                        <span *ngIf="i>=1">, </span>{{ roleDisplay[roleCode] }} 
+                    </span>
+                </td>
                 <td class="ellipsis-cell text-center">
                     {{ user.isActive ? 'Y' : 'N' }}
                 </td>

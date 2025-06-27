@@ -3,7 +3,7 @@ import { PrimengModule } from '../../primeng/primeng.module';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommonService } from '../../services/common.service';
+import { CommonService } from '../../services/api/common.service';
 import moment from 'moment';
 
 @Component({
@@ -34,7 +34,7 @@ export class CreatebugComponent {
 
     ngOnInit(): void {
         this.getUser();
-    
+
         this.createFormControle();
         this.route.queryParams.subscribe((params) => {
             if (params['issue']) {
@@ -44,33 +44,36 @@ export class CreatebugComponent {
             }
         });
     }
-    
+
     getUser() {
         const typeCombo = localStorage.getItem('typeCombo');
         const statusCombo = localStorage.getItem('statusCombo');
-        if(statusCombo){
-            this.statusCombo=JSON.parse(statusCombo);
+        const requesterCombo = localStorage.getItem('requesterCombo');
+        const assignToOpt = localStorage.getItem('assignToOpt');
+        const displayUser = localStorage.getItem('displayUser');
+
+        if (statusCombo) {
+            this.statusCombo = JSON.parse(statusCombo);
         }
-          if(typeCombo){
-            this.typeCombo=JSON.parse(typeCombo);
+        if (typeCombo) {
+            this.typeCombo = JSON.parse(typeCombo);
         }
-        this.commonService.getUserList().subscribe((user) => {
-            if (user.status == 200) {
-                const userList = user.body;
-                userList.forEach((user: any) => {
-                    this.assignToOpt.push({ name: user.userName, code: user.id })
-                    this.requesterCombo.push({ name: user.userName, code: user.id });
-                    this.displayUser[user.id] = user.userName;
-                });
-            }
-        });
+        if (requesterCombo) {
+            this.requesterCombo = JSON.parse(requesterCombo);
+        }
+        if (assignToOpt) {
+            this.assignToOpt = JSON.parse(assignToOpt);
+        }
+        if (displayUser) {
+            this.displayUser = JSON.parse(displayUser);
+        }
     }
     createFormControle() {
         const defaultStatus = this.statusCombo.find((status: { code: string }) => status.code === '1');
         this.issueForm = this.fb.group({
             projectCode: ['eGS 2.0', Validators.required],
             title: ['', Validators.required],
-            requester: ['', Validators.required],
+            requester: [null, Validators.required],
             status: [defaultStatus, Validators.required],
             assignTo: [null, Validators.required],
             attachment: [null],
@@ -96,7 +99,7 @@ export class CreatebugComponent {
             formValue.status = formValue.status.code;
             formValue.assignTo = formValue.assignTo.code;
             formValue.type = formValue.type.code;
-            formValue.requester = formValue.requester.code;
+            formValue.requester = formValue.requester;
             formValue.createdBy = 'admin@example.com';
             formValue.updatedBy = 'admin@example.com';
             formValue.createdDate = moment().format('YYYY-MM-DD');

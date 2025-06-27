@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { PrimengModule } from '../../primeng/primeng.module';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { CommonService } from '../../services/common.service';
+import { CommonService } from '../../services/api/common.service';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -10,23 +10,13 @@ import { MessageService } from 'primeng/api';
     imports: [PrimengModule],
     templateUrl: './create-user.component.html',
     styleUrl: './create-user.component.scss',
-    providers: [MessageService]
+
 })
 export class CreateUserComponent {
     userForm!: FormGroup;
-    designationList = [
-        { name: 'Manager', code: '1' },
-        { name: 'Business Analyst', code: '2' },
-        { name: 'Sr. Software Developer', code: '3' },
-        { name: 'Software Developer', code: '3' },
-        { name: 'Tester', code: '3' }
-    ];
+    designationList = [];
 
-    roleOptions:any = [
-        // { code: 1, name: 'ADMIN' },
-        // { code: 2, name: 'USER' },
-        // { code: 3, name: 'MANAGER' }
-    ];
+    roleOptions:any = [];
     loading: boolean | undefined;
     constructor(
         private fb: FormBuilder,
@@ -36,24 +26,34 @@ export class CreateUserComponent {
     ) {}
 
     ngOnInit(): void {
+        const designation = localStorage.getItem('designation');
+        if(designation){
+            this.designationList=JSON.parse(designation);
+        }
          const rolesList = localStorage.getItem('rolesList');
         if(rolesList){
             this.roleOptions=JSON.parse(rolesList);
         }
+
         this.createUserControle();
 
     }
 
+
     createUser(user: any) {
         this.loading = true;
-        this.commonService.createUser(user).subscribe((user) => {
-            if (user.status == 201) {
-                this.loading = false;
+        this.commonService.createUser(user).subscribe( {
+            next: (res) => {
                 this.sucessMessage('User created successfully!');
-                this.userForm.reset();
+                this.createUserControle();
+            },
+            error: (err) => {
+            if (err.status === 409) {
+                const msg = err.error?.message || 'Email already exists';
+                this.errorMessage(msg);
             } else {
-                this.loading = false;
-                this.errorMessage('User creation failed!');
+                this.errorMessage('Something went wrong');
+            }
             }
         });
     }

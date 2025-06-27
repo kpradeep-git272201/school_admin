@@ -5,7 +5,7 @@ import { Product, ProductService } from '../../pages/service/product.service';
 import { Table } from 'primeng/table';
 import { Customer, CustomerService, Representative } from '../../pages/service/customer.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { CommonService } from '../../services/common.service';
+import { CommonService } from '../../services/api/common.service';
 
 @Component({
     selector: 'app-user',
@@ -22,18 +22,26 @@ export class UserComponent {
     userList: any = [];
     @ViewChild('filter') filter!: ElementRef;
     @ViewChild('dt') dt!: Table;
+    roleDisplay: any={};
+    designationDisplay: any={};
     constructor(
         private router: Router,
         private commonService: CommonService
     ) {}
 
     ngOnInit() {
-        this.commonService.getUserList().subscribe((user) => {
-          if(user.status==200){
-            this.userList = user.body;
-          }
-          this.loading = false;
-        });
+        const designationDisplay = localStorage.getItem('designationDisplay');
+        if(designationDisplay){
+            this.designationDisplay=JSON.parse(designationDisplay);
+        }
+        const roleDisplay = localStorage.getItem('roleDisplay');
+        if(roleDisplay){
+            this.roleDisplay=JSON.parse(roleDisplay);
+        }
+        const userList = localStorage.getItem('userList');
+          if (userList) {
+            this.userList = JSON.parse(userList);
+        }
     }
 
     createUser() {

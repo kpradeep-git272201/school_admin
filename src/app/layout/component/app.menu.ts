@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { AppMenuitem } from './app.menuitem';
-import { CommonService } from '../../services/common.service';
+import { CommonService } from '../../services/api/common.service';
 
 @Component({
     selector: 'app-menu',
@@ -167,6 +167,8 @@ export class AppMenu {
         const typeCombo = localStorage.getItem('typeCombo');
         const statusCombo = localStorage.getItem('statusCombo');
         const rolesList = localStorage.getItem('rolesList');
+        const designation = localStorage.getItem('designation');
+        const userList = localStorage.getItem('designation');
         if (!typeCombo) {
             this.getIssueType();
         }
@@ -175,6 +177,12 @@ export class AppMenu {
         }
         if (!rolesList) {
             this.getRoles();
+        }
+        if (!designation) {
+            this.getDesigantion();
+        }
+        if(!userList){
+            this.getUserList();
         }
     }
     getIssueType() {
@@ -199,6 +207,45 @@ export class AppMenu {
             if (user.status == 200) {
                 const rolesList = user.body;
                 localStorage.setItem('rolesList', JSON.stringify(rolesList));
+                const roleDisplay: any = {};
+                rolesList.forEach((role: any) => {
+                    roleDisplay[role.code] = role.name;
+                });
+                localStorage.setItem('roleDisplay', JSON.stringify(roleDisplay));
+            }
+        });
+    }
+
+    getDesigantion() {
+        this.commonService.getDesignation().subscribe((user) => {
+            if (user.status == 200) {
+                const designation = user.body;
+                localStorage.setItem('designation', JSON.stringify(designation));
+                const designationDisplay: any = {};
+                designation.forEach((designation: any) => {
+                    designationDisplay[designation.code] = designation.name;
+                });
+                localStorage.setItem('designationDisplay', JSON.stringify(designationDisplay));
+            }
+        });
+    }
+
+    getUserList() {
+        this.commonService.getUserList().subscribe((user) => {
+            if (user.status == 200) {
+                const userList = user.body;
+                localStorage.setItem('userList', JSON.stringify(userList));
+                const assignToOpt:any=[];
+                const requesterCombo:any=[];
+                const displayUser:any={};
+                userList.forEach((user: any) => {
+                    assignToOpt.push({ name: user.userName, code: user.id + '' });
+                    requesterCombo.push({ name: user.userName, code: user.id + '' });
+                    displayUser[user.id] = user.userName;
+                });
+                localStorage.setItem('assignToOpt', JSON.stringify(assignToOpt));
+                localStorage.setItem('requesterCombo', JSON.stringify(requesterCombo));
+                localStorage.setItem('displayUser', JSON.stringify(displayUser));
             }
         });
     }

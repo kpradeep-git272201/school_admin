@@ -1,4 +1,4 @@
-<p-fluid *ngIf="requesterCombo" [formGroup]="issueForm">
+<p-fluid [formGroup]="issueForm">
     <div class="flex mt-8">
         <div class="card flex flex-col gap-6 w-full">
             <div class="font-semibold text-xl">Create Issue</div>
@@ -38,7 +38,7 @@
                     <label>Requester</label>
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-user" />
-                        <p-dropdown [options]="requesterCombo" optionLabel="name" formControlName="requester" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': requester?.invalid && (requester?.dirty || requester?.touched) }" />
+                        <p-dropdown [options]="requesterCombo" optionLabel="name" optionValue="code" formControlName="requester" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': requester?.invalid && (requester?.dirty || requester?.touched) }" />
                     </p-iconfield>
                      <small *ngIf="requester?.errors?.['required'] && (requester?.touched || requester?.dirty)" class="p-error"> Requester is required. </small>
                 </div>
@@ -145,3 +145,4 @@
         </div>
     </div>
 </p-fluid>
+<p-toast position="top-right"></p-toast>
