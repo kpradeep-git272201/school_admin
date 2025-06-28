@@ -168,7 +168,7 @@ export class AppMenu {
         const statusCombo = localStorage.getItem('statusCombo');
         const rolesList = localStorage.getItem('rolesList');
         const designation = localStorage.getItem('designation');
-        const userList = localStorage.getItem('designation');
+        const userList = localStorage.getItem('userList');
         if (!typeCombo) {
             this.getIssueType();
         }

@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { MenuItem } from 'primeng/api';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { StyleClassModule } from 'primeng/styleclass';
 import { AppConfigurator } from './app.configurator';
 import { LayoutService } from '../service/layout.service';
 import { PrimengModule } from '../../primeng/primeng.module';
+import { MenuModule } from 'primeng/menu';
+import { CommonService } from '../../services/api/common.service';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, PrimengModule],
+    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, PrimengModule, MenuModule],
     template: ` <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
@@ -74,7 +76,8 @@ import { PrimengModule } from '../../primeng/primeng.module';
                         <i class="pi pi-inbox"></i>
                         <span>Messages</span>
                     </button> -->
-                    <button type="button" class="layout-topbar-action">
+                    <p-menu #profileMenu [popup]="true" [model]="profileItems"></p-menu>
+                    <button type="button" class="layout-topbar-action" (click)="profileMenu.toggle($event)">
                         <i class="pi pi-user"></i>
                         <span>Profile</span>
                     </button>
@@ -85,6 +88,8 @@ import { PrimengModule } from '../../primeng/primeng.module';
     </div>`
 })
 export class AppTopbar {
+    profileItems: MenuItem[] = [];
+
     items!: MenuItem[];
     nestedMenuItems=[
         {
@@ -102,9 +107,26 @@ export class AppTopbar {
             ]
         }
     ]
-    constructor(public layoutService: LayoutService) {}
-
+    constructor(public layoutService: LayoutService,
+        private commonService: CommonService,
+        private router: Router
+    ) {}
+    ngOnInit() {
+    this.profileItems = [
+        {
+        label: 'Logout',
+        icon: 'pi pi-sign-out',
+        command: () => this.logout()
+        }
+    ];
+    }
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
+    }
+
+    logout(){
+        this.commonService.getClearLocalStorage();
+        this.router.navigate(['/'])
+        console.log('clear localStorage');
     }
 }

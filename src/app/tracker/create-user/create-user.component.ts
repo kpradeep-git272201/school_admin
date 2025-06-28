@@ -46,6 +46,7 @@ export class CreateUserComponent {
             next: (res) => {
                 this.sucessMessage('User created successfully!');
                 this.createUserControle();
+                this.getUserList();
             },
             error: (err) => {
             if (err.status === 409) {
@@ -106,7 +107,30 @@ export class CreateUserComponent {
         });
     }
 
-  
+  getUserList() {
+        this.commonService.getUserList().subscribe((user) => {
+            if (user.status == 200) {
+                localStorage.removeItem('userList');
+                localStorage.removeItem('assignToOpt');
+                localStorage.removeItem('requesterCombo');
+                localStorage.removeItem('displayUser');
+                const userList = user.body;
+                localStorage.setItem('userList', JSON.stringify(userList));
+              const assignToOpt:any=[];
+                const requesterCombo:any=[];
+                const displayUser:any={};
+                userList.forEach((user: any) => {
+                    assignToOpt.push({ name: user.userName, code: user.id + '' });
+                    requesterCombo.push({ name: user.userName, code: user.id + '' });
+                    displayUser[user.id] = user.userName;
+                });
+                localStorage.setItem('assignToOpt', JSON.stringify(assignToOpt));
+                localStorage.setItem('requesterCombo', JSON.stringify(requesterCombo));
+                localStorage.setItem('displayUser', JSON.stringify(displayUser)); 
+            }
+        });
+    }
+
     sucessMessage(message: string) {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
     }

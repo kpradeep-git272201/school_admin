@@ -1,5 +1,5 @@
 {
-    "name": "sakai-ng",
+    "name": "fixpoint",
     "version": "19.0.1",
     "scripts": {
         "ng": "ng",

@@ -57,3 +57,15 @@ INSERT INTO tracker.issue_status (status_name, status_code, description) VALUES
     ('Completed',    'COMPLETED',    'Work finished successfully'),
     ('Rejected',     'REJECTED',     'Issue was rejected'),
     ('Resolved',     'RESOLVED',     'Issue has been resolved');
+
+    INSERT INTO tracker.designation (name, code, description, is_active, created_by, created_date, updated_by, updated_date)
+VALUES 
+  ('Software Engineer', 'SE', 'Handles development tasks', true, 1, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP),
+  ('Senior Software Developer', 'SSD', 'Handles complex development tasks and mentorship', true, 1, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP),
+  ('Tester', 'QA', 'Performs software testing and QA', true, 1, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP),
+  ('UI/UX Designer', 'UIUX', 'Designs user interfaces and user experiences', true, 1, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP);
+
+  INSERT INTO tracker.designation (name, code, description, is_active, created_by, created_date, updated_by, updated_date)
+VALUES 
+  ('Business Analyst', 'BA', 'Analyzes business requirements and bridges the gap between business and tech teams', true, 1, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP),
+  ('Manager', 'MGR', 'Manages team operations and delivery', true, 1, CURRENT_TIMESTAMP, 1, CURRENT_TIMESTAMP);

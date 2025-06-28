@@ -116,7 +116,10 @@ export class CreatebugComponent {
             }
             console.log(JSON.stringify(formValue));
             this.commonService.addIssue(formData).subscribe({
-                next: (res) => this.sucessMessage('Issue created successfully!'),
+                next: (res) => {
+                    this.sucessMessage('Issue created successfully!');
+                    this.createFormControle();
+                },
                 error: (err) =>this.errorMessage(err)
             });
         } else {
