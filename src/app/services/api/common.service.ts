@@ -2,6 +2,7 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { catchError, map, Observable, ObservableInput, of, throwError } from 'rxjs';
 import { AppConfig } from '../../config/app.config';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { isPlatformBrowser } from '@angular/common';
 
 @Injectable({
     providedIn: 'root'
@@ -9,23 +10,30 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 export class CommonService {
     handleError!: (err: any, caught: Observable<any>) => ObservableInput<any>;
     typeColors: any = {
-        '1': '#e74c3c', // Bug
-        '2': '#e67e22', // Issue
-        '3': '#27ae60', // Feature
-        '4': '#3498db' // Enhancement
+        'BUG': '#e74c3c', // Bug
+        'ISSUE': '#e67e22', // Issue
+        'FEATURE': '#27ae60', // Feature
+        'ENHANCEMENT': '#3498db' // Enhancement
     };
     statusColors: any = {
-        '1': '#f1c40f', // Pending
-        '2': '#2980b9', // In Progress
-        '3': '#2ecc71', // Completed
-        '4': '#c0392b', // Rejected
-        '5': '#8e44ad' // Resolved
+        'PENDING': '#f1c40f', // Pending
+        'IN_PROGRESS': '#2980b9', // In Progress
+        'COMPLETED': '#2ecc71', // Completed
+        'REJECTED': '#c0392b', // Rejected
+        'RESOLVED': '#8e44ad' // Resolved
     };
+    token: string | null | undefined;
     constructor(
         @Inject(PLATFORM_ID) private platformId: Object,
         private http: HttpClient
-    ) {}
-
+    ) {
+        if (this.isBrowser()) {
+            this.token = localStorage.getItem('token');
+        }
+    }
+    isBrowser(): boolean {
+        return isPlatformBrowser(this.platformId);
+    }
     getReportBugs() {
         return Promise.resolve(this.getData());
     }
@@ -319,7 +327,7 @@ export class CommonService {
         return Promise.resolve([
             {
                 id: 1,
-                userName: 'John Doe',
+                username: 'John Doe',
                 designation: 'Developer',
                 email: 'john@example.com',
                 isActive: true
@@ -330,17 +338,19 @@ export class CommonService {
     /** ********************************* */
 
     getClearLocalStorage() {
-
-        localStorage.removeItem('roleDisplay');
-        localStorage.removeItem('rolesList');
-        localStorage.removeItem('typeCombo');
-        localStorage.removeItem('statusCombo');
-        localStorage.removeItem('designationDisplay');
-        localStorage.removeItem('userList');
-        localStorage.removeItem('assignToOpt');
-        localStorage.removeItem('requesterCombo');
-        localStorage.removeItem('displayUser');
-
+        if (this.isBrowser()) {
+            localStorage.removeItem('roleDisplay');
+            localStorage.removeItem('rolesList');
+            localStorage.removeItem('typeCombo');
+            localStorage.removeItem('statusCombo');
+            localStorage.removeItem('designationDisplay');
+            localStorage.removeItem('userList');
+            localStorage.removeItem('assignToOpt');
+            localStorage.removeItem('requesterCombo');
+            localStorage.removeItem('displayUser');
+            localStorage.getItem('user');
+            localStorage.getItem('token');
+        }
     }
 
     public request(
@@ -360,7 +370,7 @@ export class CommonService {
     getUserList() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}`;
         console.log(url);
-        const headers = new HttpHeaders().set('content-type', 'application/json');
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
         return this.request('GET', url, {
             headers: headers,
             reportProgress: false,
@@ -376,7 +386,7 @@ export class CommonService {
     }
     getRoles() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.roles}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json');
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
         return this.request('GET', url, {
             headers: headers,
             reportProgress: false,
@@ -392,7 +402,7 @@ export class CommonService {
     }
     getIssueType() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueType}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json');
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
         return this.request('GET', url, {
             headers: headers,
             reportProgress: false,
@@ -408,7 +418,7 @@ export class CommonService {
     }
     getIssueStatus() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueStatus}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json');
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
         return this.request('GET', url, {
             headers: headers,
             reportProgress: false,
@@ -422,9 +432,9 @@ export class CommonService {
             })
         );
     }
-   getDesignation() {
+    getDesignation() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.designation}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json');
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
         return this.request('GET', url, {
             headers: headers,
             reportProgress: false,
@@ -438,10 +448,20 @@ export class CommonService {
             })
         );
     }
-    
+
     createUser(data: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}`;
-        return this.http.post(url, data).pipe(
+        const headers = new HttpHeaders().set('Authorization', `${this.token}`);
+        return this.http.post(url, data, { headers }).pipe(
+            catchError((error: HttpErrorResponse) => {
+                return throwError(() => error);
+            })
+        );
+    }
+    updateUser(userId:any, data: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}/${userId}`;
+        const headers = new HttpHeaders().set('Authorization', `${this.token}`);
+        return this.http.patch(url, data, { headers }).pipe(
             catchError((error: HttpErrorResponse) => {
                 return throwError(() => error);
             })
@@ -449,7 +469,7 @@ export class CommonService {
     }
     addIssue(formData: FormData) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issues}/addIssue`;
-        const headers = new HttpHeaders();
+        const headers = new HttpHeaders().set('Authorization', `${this.token}`);
 
         return this.request('POST', url, {
             body: formData,
@@ -461,10 +481,40 @@ export class CommonService {
             catchError((error) => of(error))
         );
     }
+    updatedIssue(formData: FormData, issueId:any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issues}/${issueId}`;
+        const headers = new HttpHeaders().set('Authorization', `${this.token}`);
+
+        return this.request('PUT', url, {
+            body: formData,
+            headers: headers,
+            reportProgress: true,
+            observe: 'response'
+        }).pipe(
+            map((resp) => resp),
+            catchError((error) => of(error))
+        );
+    }
     getIssueList() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issues}`;
-        console.log(url);
-        const headers = new HttpHeaders().set('content-type', 'application/json');
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
+        return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
+
+    getStatusCount() {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.statusCount}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
         return this.request('GET', url, {
             headers: headers,
             reportProgress: false,

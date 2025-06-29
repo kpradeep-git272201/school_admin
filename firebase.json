@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "dist/fixpoint",
+    "public": "dist/FixPoint/browser",
     "ignore": [
       "firebase.json",
       "**/.*",

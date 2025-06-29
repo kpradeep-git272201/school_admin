@@ -22,8 +22,8 @@ export class UserComponent {
     userList: any = [];
     @ViewChild('filter') filter!: ElementRef;
     @ViewChild('dt') dt!: Table;
-    roleDisplay: any={};
-    designationDisplay: any={};
+    roleDisplay: any = {};
+    designationDisplay: any = {};
     constructor(
         private router: Router,
         private commonService: CommonService
@@ -31,18 +31,29 @@ export class UserComponent {
 
     ngOnInit() {
         const designationDisplay = localStorage.getItem('designationDisplay');
-        if(designationDisplay){
-            this.designationDisplay=JSON.parse(designationDisplay);
+        if (designationDisplay) {
+            this.designationDisplay = JSON.parse(designationDisplay);
+        } else {
+            const designation = localStorage.getItem('designation');
+            if (designation) {
+                const designationList = JSON.parse(designation);
+                const designationDisplay: any = {};
+                designationList.forEach((designation: any) => {
+                    designationDisplay[designation.code] = designation.name;
+                });
+                localStorage.setItem('designationDisplay', JSON.stringify(designationDisplay));
+                this.designationDisplay = designationDisplay;
+            }
         }
         const roleDisplay = localStorage.getItem('roleDisplay');
-        if(roleDisplay){
-            this.roleDisplay=JSON.parse(roleDisplay);
+        if (roleDisplay) {
+            this.roleDisplay = JSON.parse(roleDisplay);
         }
         const userList = localStorage.getItem('userList');
-          if (userList) {
+        if (userList) {
             this.userList = JSON.parse(userList);
         }
-        this.loading=false;
+        this.loading = false;
     }
 
     createUser() {
@@ -57,6 +68,11 @@ export class UserComponent {
     }
 
     editUser(user: any) {
-        this.router.navigate(['/dashboard/uikit/createUser']);
+        localStorage.setItem('editUser', JSON.stringify(user));
+        this.router.navigate(['/dashboard/uikit/createUser'], {
+            queryParams: {
+                action: 'Edit'
+            }
+        });
     }
 }

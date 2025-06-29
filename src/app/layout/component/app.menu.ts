@@ -190,6 +190,13 @@ export class AppMenu {
             if (type.status == 200) {
                 const typeCombo = type.body;
                 localStorage.setItem('typeCombo', JSON.stringify(typeCombo));
+                 if(type.body){
+                    const typeComboObj:any={};
+                    type.body.forEach((type:any)=>{
+                        typeComboObj[type.code]=type.name;
+                    });
+                    localStorage.setItem('typeComboObj', JSON.stringify(typeComboObj));
+                }
             }
         });
     }
@@ -198,6 +205,13 @@ export class AppMenu {
             if (status.status == 200) {
                 const statusCombo = status.body;
                 localStorage.setItem('statusCombo', JSON.stringify(statusCombo));
+                if(status.body){
+                    const statusDisplay:any={};
+                    status.body.forEach((status:any)=>{
+                        statusDisplay[status.code]=status.name;
+                    });
+                    localStorage.setItem('statusDisplay', JSON.stringify(statusDisplay));
+                }
             }
         });
     }
@@ -239,9 +253,9 @@ export class AppMenu {
                 const requesterCombo:any=[];
                 const displayUser:any={};
                 userList.forEach((user: any) => {
-                    assignToOpt.push({ name: user.userName, code: user.id + '' });
-                    requesterCombo.push({ name: user.userName, code: user.id + '' });
-                    displayUser[user.id] = user.userName;
+                    assignToOpt.push({ name: user.username, code: user.id + '' });
+                    requesterCombo.push({ name: user.username, code: user.id + '' });
+                    displayUser[user.id] = user.username;
                 });
                 localStorage.setItem('assignToOpt', JSON.stringify(assignToOpt));
                 localStorage.setItem('requesterCombo', JSON.stringify(requesterCombo));

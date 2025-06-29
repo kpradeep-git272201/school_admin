@@ -24,6 +24,8 @@ export class CreatebugComponent {
     issueForm: any;
     uploadedFiles: any[] = [];
     displayUser: any = {};
+    action: any;
+    issueId: any;
     constructor(
         private fb: FormBuilder,
         private messageService: MessageService,
@@ -36,15 +38,15 @@ export class CreatebugComponent {
         this.getUser();
 
         this.createFormControle();
-        this.route.queryParams.subscribe((params) => {
-            if (params['issue']) {
-                const issueObj = JSON.parse(params['issue']);
-                console.log('Received issue:', issueObj);
-                this.issueForm.patchValue(issueObj);
-            }
-        });
+        this.patchValue();
     }
 
+    ngOnDestroy(): void {
+        const userData = localStorage.getItem('editIssue');
+        if (userData) {
+            localStorage.removeItem('editIssue');
+        }
+    }
     getUser() {
         const typeCombo = localStorage.getItem('typeCombo');
         const statusCombo = localStorage.getItem('statusCombo');
@@ -85,9 +87,36 @@ export class CreatebugComponent {
         });
     }
 
+    patchValue() {
+        this.route.queryParams.subscribe((params) => {
+            const action = params['action'];
+            this.action = action;
+            if (action === 'Edit') {
+                const data = localStorage.getItem('editIssue');
+                if (data) {
+                    const editIssue = JSON.parse(data);
+                    this.issueId = editIssue.id;
+                    this.issueForm.patchValue(editIssue);
+                    if (editIssue.attachmentBase64) {
+                        const file = this.base64ToFile(
+                            editIssue.attachmentBase64,
+                            'attachment.png', // or 'file.pdf', etc.
+                            'image/png' // or 'application/pdf', etc.
+                        );
+
+                        this.uploadedFiles = [file];
+                    }
+                }
+            }
+        });
+    }
     onSubmit() {
         if (this.issueForm.valid) {
-            this.addIssue();
+            if(this.action==='Edit'){
+                this.updateIssue()
+            }else{
+                this.addIssue();
+            }
         } else {
             this.issueForm.markAllAsTouched();
         }
@@ -96,14 +125,14 @@ export class CreatebugComponent {
     addIssue() {
         if (this.issueForm.valid) {
             let formValue: any = this.issueForm.getRawValue();
-            formValue.status = formValue.status.code;
-            formValue.assignTo = formValue.assignTo.code;
-            formValue.type = formValue.type.code;
+            formValue.status = formValue.status;
+            formValue.assignTo = formValue.assignTo;
+            formValue.type = formValue.type;
             formValue.requester = formValue.requester;
             formValue.createdBy = 'admin@example.com';
             formValue.updatedBy = 'admin@example.com';
-            formValue.createdDate = moment().format('YYYY-MM-DD');
-            formValue.updatedDate = moment().format('YYYY-MM-DD');
+            formValue.createdDate = moment().format('YYYY-MM-DD HH:mm:ss.SSS');
+            formValue.updatedDate = moment().format('YYYY-MM-DD HH:mm:ss.SSS');
             const jsonBlob = new Blob([JSON.stringify(formValue)], {
                 type: 'application/json'
             });
@@ -120,13 +149,45 @@ export class CreatebugComponent {
                     this.sucessMessage('Issue created successfully!');
                     this.createFormControle();
                 },
-                error: (err) =>this.errorMessage(err)
+                error: (err) => this.errorMessage(err)
             });
         } else {
             this.issueForm.markAllAsTouched();
         }
     }
 
+    updateIssue() {
+        if (this.issueForm.valid) {
+            let formValue: any = this.issueForm.getRawValue();
+            formValue.status = formValue.status;
+            formValue.assignTo = formValue.assignTo;
+            formValue.type = formValue.type;
+            formValue.requester = formValue.requester;
+            formValue.createdBy = 'admin@example.com';
+            formValue.updatedBy = 'admin@example.com';
+            formValue.createdDate = formValue.createdDate||moment().format('YYYY-MM-DD');
+            formValue.updatedDate = moment().format('YYYY-MM-DD');
+            const jsonBlob = new Blob([JSON.stringify(formValue)], {
+                type: 'application/json'
+            });
+
+            const formData = new FormData();
+            formData.append('issue', jsonBlob);
+
+            if (this.selectedFile) {
+                formData.append('attachment', this.selectedFile);
+            }
+            console.log(JSON.stringify(formValue));
+            this.commonService.updatedIssue(formData, this.issueId).subscribe({
+                next: (res) => {
+                    this.sucessMessage('Issue updated successfully!');
+                },
+                error: (err) => this.errorMessage(err)
+            });
+        } else {
+            this.issueForm.markAllAsTouched();
+        }
+    }
     onFileChange(event: any) {
         const file = event.target.files?.[0];
         if (file) {
@@ -181,11 +242,21 @@ export class CreatebugComponent {
         this.router.navigate(['/dashboard/uikit/manage-bug']);
     }
 
-     sucessMessage(message: string) {
+    sucessMessage(message: string) {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
     }
 
     errorMessage(message: string) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+    }
+
+    base64ToFile(base64: string, fileName: string, mimeType: string): File {
+        const byteString = atob(base64);
+        const arrayBuffer = new ArrayBuffer(byteString.length);
+        const intArray = new Uint8Array(arrayBuffer);
+        for (let i = 0; i < byteString.length; i++) {
+            intArray[i] = byteString.charCodeAt(i);
+        }
+        return new File([intArray], fileName, { type: mimeType });
     }
 }

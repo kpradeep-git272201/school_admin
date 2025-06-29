@@ -1,3 +1,4 @@
+import { generate } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 export const AppConfig = {
@@ -6,12 +7,16 @@ export const AppConfig = {
   BASE_API: environment.apiBaseUrl + environment.contextPath+'/api/v1/',
   endpointPath: {
     login: 'auth/login',
+    generateOtp: 'auth/otp',
+    verifyOtp: 'auth/verify',
+    
     user: 'user',
     roles: 'master/userRoles',
     issueType: 'master/issueType',
     issueStatus: 'master/issueStatus',
     designation: 'master/designation',
     issues: 'issues',
+    statusCount: 'issues/statusCount',
     bankList: "master/branch/bankList",
     districtListOfBankBranch: "master/branch/districtListOfBankBranch",
     unMappedBranch: "master/branch/unMappedBranch",

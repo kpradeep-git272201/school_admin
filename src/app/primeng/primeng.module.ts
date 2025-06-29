@@ -13,14 +13,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
 import { InputOtpModule } from 'primeng/inputotp';
 import { InputOtp } from 'primeng/inputotp';
-
+import { ProgressSpinner } from 'primeng/progressspinner';
 import { TableModule } from 'primeng/table';
-
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
-
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
@@ -45,7 +43,7 @@ import { TabsModule } from 'primeng/tabs';
 import { StepperModule } from 'primeng/stepper';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MessageService } from 'primeng/api';
-
+import { Knob } from 'primeng/knob';
 
 @NgModule({
   declarations: [],
@@ -96,7 +94,9 @@ import { MessageService } from 'primeng/api';
     TabsModule,
     StepperModule,
     TabsModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    Knob,
+    ProgressSpinner 
   ],
   exports:[
     CommonModule,
@@ -145,7 +145,9 @@ import { MessageService } from 'primeng/api';
     TabsModule,
     StepperModule,
     TabsModule,
-    OverlayPanelModule
+    OverlayPanelModule,
+    Knob,
+    ProgressSpinner 
   ],
   providers:[MessageService]
 })

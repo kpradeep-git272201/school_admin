@@ -11,12 +11,12 @@
             <p-inputicon styleClass="pi pi-user" />
             <input
               pInputText
-              formControlName="userName"
+              formControlName="username"
               placeholder="Enter Name"
-              [ngClass]="{ 'p-invalid': userName?.invalid && (userName?.dirty || userName?.touched) }"
+              [ngClass]="{ 'p-invalid': username?.invalid && (username?.dirty || username?.touched) }"
             />
           </p-iconfield>
-          <small *ngIf="userName?.errors?.['required']" class="p-error">User name is required.</small>
+          <small *ngIf="username?.errors?.['required']" class="p-error">User name is required.</small>
         </div>
 
         <!-- Designation -->
@@ -24,7 +24,7 @@
           <label>Designation</label>
           <p-iconfield iconPosition="left">
             <p-inputicon styleClass="pi pi-briefcase" />
-            <p-dropdown [options]="designationList" optionLabel="name" 
+            <p-dropdown [options]="designationList" optionLabel="name" optionValue="code" 
             formControlName="designation" placeholder="Enter Designation" 
             class="w-full" [ngClass]="{ 'p-invalid': designation?.invalid && (designation?.dirty || designation?.touched) }" />
           
@@ -62,9 +62,10 @@
       </div>
       <div class="flex flex-col md:flex-row gap-6">
         <div class="flex flex-col gap-2 w-full">
+          <label>Role</label>
           <p-multiSelect 
             [options]="roleOptions" 
-            optionLabel="name" 
+            optionLabel="name"
             formControlName="roles"
             placeholder="Select Roles">
           </p-multiSelect>

@@ -50,7 +50,7 @@
                     <label>Status</label>
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-flag" />
-                        <p-dropdown [options]="statusCombo" optionLabel="name" formControlName="status" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': status?.invalid && (status?.dirty || status?.touched) }" />
+                        <p-dropdown [options]="statusCombo" optionLabel="name" optionValue="code"  formControlName="status" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': status?.invalid && (status?.dirty || status?.touched) }" />
                         <small *ngIf="status?.errors?.['required'] && (status?.touched || status?.dirty)" class="p-error"> Status is required. </small>
                     </p-iconfield>
                 </div>
@@ -59,7 +59,7 @@
                 <div class="flex flex-col gap-2 w-full">
                     <label>Assign To</label>
                     <p-iconfield iconPosition="left">
-                        <p-dropdown [options]="assignToOpt" optionLabel="name" formControlName="assignTo" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': assignTo?.invalid && (assignTo?.dirty || assignTo?.touched) }" />
+                        <p-dropdown [options]="assignToOpt" optionLabel="name" optionValue="code"  formControlName="assignTo" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': assignTo?.invalid && (assignTo?.dirty || assignTo?.touched) }" />
                     </p-iconfield>
                     <small *ngIf="assignTo?.errors?.['required'] && (assignTo?.touched || assignTo?.dirty)" class="p-error"> Assign To is required. </small>
                 </div>
@@ -71,7 +71,7 @@
                     <label>Type</label>
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-tag" />
-                        <p-dropdown [options]="typeCombo" optionLabel="name" formControlName="type" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': type?.invalid && (type?.dirty || type?.touched) }" />
+                        <p-dropdown [options]="typeCombo" optionLabel="name" optionValue="code" formControlName="type" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': type?.invalid && (type?.dirty || type?.touched) }" />
                     </p-iconfield>
                      <small *ngIf="type?.errors?.['required'] && (type?.touched || type?.dirty)" class="p-error"> Type is required. </small>
                 </div>

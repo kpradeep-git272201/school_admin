@@ -19,10 +19,10 @@
         class="auto-width-table"
         dataKey="id"
         [rows]="10"
-        [paginator]="userList.length > 10 ? true : false"
+        [paginator]="userList?.length > 10 ? true : false"
         [rowHover]="true"
         [loading]="loading"
-        [globalFilterFields]="['userName', 'email']"
+        [globalFilterFields]="['username', 'email']"
         [showGridlines]="true"
         responsiveLayout="scroll"
         scrollHeight="410px"
@@ -34,7 +34,7 @@
                 <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0">
                     <div class="flex justify-between items-center font-bold">
                         User Name
-                        <p-columnFilter type="text" field="userName" display="menu" placeholder="Search Name" />
+                        <p-columnFilter type="text" field="username" display="menu" placeholder="Search Name" />
                     </div>
                 </th>
                 <th style="min-width: 15rem; padding-top: 0; padding-bottom: 0">
@@ -66,9 +66,9 @@
         </ng-template>
 
         <ng-template #body let-user let-rowIndex="rowIndex">
-            <tr>
+            <tr  (dblclick)="editUser(user)" style="cursor: pointer;">
                 <td style="text-align: center">{{ rowIndex + 1 }}</td>
-                <td class="ellipsis-cell">{{ user.userName }}</td>
+                <td class="ellipsis-cell">{{ user.username }}</td>
                 <td class="ellipsis-cell">{{ designationDisplay[user.designation] || user.designation }}</td>
                 <td class="ellipsis-cell">{{ user.email }}</td>
                 <td class="ellipsis-cell">

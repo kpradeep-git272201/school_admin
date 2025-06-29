@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "fixpoint-2k26"
-  }
+    "default": "fixpoint-cda86",
+    "fixpoint": "fixpoint-cda86"
+  },
+  "targets": {},
+  "etags": {}
 }

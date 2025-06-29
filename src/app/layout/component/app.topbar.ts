@@ -8,11 +8,12 @@ import { LayoutService } from '../service/layout.service';
 import { PrimengModule } from '../../primeng/primeng.module';
 import { MenuModule } from 'primeng/menu';
 import { CommonService } from '../../services/api/common.service';
+import { AuthService } from '../../services/authentication/auth.service';
 
 @Component({
     selector: 'app-topbar',
     standalone: true,
-    imports: [RouterModule, CommonModule, StyleClassModule, AppConfigurator, PrimengModule, MenuModule],
+    imports: [RouterModule, CommonModule, StyleClassModule, PrimengModule, MenuModule],
     template: ` <div class="layout-topbar">
         <div class="layout-topbar-logo-container">
             <button class="layout-menu-button layout-topbar-action" (click)="layoutService.onMenuToggle()">
@@ -43,10 +44,10 @@ import { CommonService } from '../../services/api/common.service';
 
         <div class="layout-topbar-actions">
             <div class="layout-config-menu">
-                <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
+                <!-- <button type="button" class="layout-topbar-action" (click)="toggleDarkMode()">
                     <i [ngClass]="{ 'pi ': true, 'pi-moon': layoutService.isDarkTheme(), 'pi-sun': !layoutService.isDarkTheme() }"></i>
-                </button>
-                <div class="relative">
+                </button> -->
+                <!-- <div class="relative">
                     <button
                         class="layout-topbar-action layout-topbar-action-highlight"
                         pStyleClass="@next"
@@ -59,7 +60,7 @@ import { CommonService } from '../../services/api/common.service';
                         <i class="pi pi-palette"></i>
                     </button>
                     <app-configurator />
-                </div>
+                </div> -->
             </div>
 
             <button class="layout-topbar-menu-button layout-topbar-action" pStyleClass="@next" enterFromClass="hidden" enterActiveClass="animate-scalein" leaveToClass="hidden" leaveActiveClass="animate-fadeout" [hideOnOutsideClick]="true">
@@ -82,7 +83,6 @@ import { CommonService } from '../../services/api/common.service';
                         <span>Profile</span>
                     </button>
                 </div>
-                
             </div>
         </div>
     </div>`
@@ -91,7 +91,7 @@ export class AppTopbar {
     profileItems: MenuItem[] = [];
 
     items!: MenuItem[];
-    nestedMenuItems=[
+    nestedMenuItems = [
         {
             label: 'Profile',
             icon: 'pi pi-fw pi-user',
@@ -106,27 +106,32 @@ export class AppTopbar {
                 }
             ]
         }
-    ]
-    constructor(public layoutService: LayoutService,
+    ];
+    constructor(
+        public layoutService: LayoutService,
         private commonService: CommonService,
+        private authService: AuthService,
         private router: Router
     ) {}
     ngOnInit() {
-    this.profileItems = [
-        {
-        label: 'Logout',
-        icon: 'pi pi-sign-out',
-        command: () => this.logout()
-        }
-    ];
+        this.profileItems = [
+            {
+                label: 'Logout',
+                icon: 'pi pi-sign-out',
+                command: () => this.logout()
+            }
+        ];
     }
     toggleDarkMode() {
         this.layoutService.layoutConfig.update((state) => ({ ...state, darkTheme: !state.darkTheme }));
     }
 
-    logout(){
+    logout() {
         this.commonService.getClearLocalStorage();
-        this.router.navigate(['/'])
-        console.log('clear localStorage');
+        this.authService.logout();
+        const isLoggedIn = this.authService.isAuthenticated();
+        if (!isLoggedIn) {
+            this.router.navigate(['/']);
+        }
     }
 }
