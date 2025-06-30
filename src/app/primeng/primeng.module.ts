@@ -13,7 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MessageModule } from 'primeng/message';
 import { InputOtpModule } from 'primeng/inputotp';
 import { InputOtp } from 'primeng/inputotp';
-import { ProgressSpinner } from 'primeng/progressspinner';
+import { ProgressSpinner, ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TableModule } from 'primeng/table';
 import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
@@ -96,7 +96,8 @@ import { Knob } from 'primeng/knob';
     TabsModule,
     OverlayPanelModule,
     Knob,
-    ProgressSpinner 
+    ProgressSpinner,
+    ProgressSpinnerModule
   ],
   exports:[
     CommonModule,
@@ -147,7 +148,8 @@ import { Knob } from 'primeng/knob';
     TabsModule,
     OverlayPanelModule,
     Knob,
-    ProgressSpinner 
+    ProgressSpinner,
+    ProgressSpinnerModule
   ],
   providers:[MessageService]
 })

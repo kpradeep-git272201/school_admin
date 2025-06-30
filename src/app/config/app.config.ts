@@ -9,7 +9,7 @@ export const AppConfig = {
     login: 'auth/login',
     generateOtp: 'auth/otp',
     verifyOtp: 'auth/verify',
-    
+    sendMail: 'email/send-mail',
     user: 'user',
     roles: 'master/userRoles',
     issueType: 'master/issueType',
@@ -17,6 +17,7 @@ export const AppConfig = {
     designation: 'master/designation',
     issues: 'issues',
     statusCount: 'issues/statusCount',
+    downloadDoc: 'issues/download-doc',
     bankList: "master/branch/bankList",
     districtListOfBankBranch: "master/branch/districtListOfBankBranch",
     unMappedBranch: "master/branch/unMappedBranch",

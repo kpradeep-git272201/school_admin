@@ -10,17 +10,17 @@ import { isPlatformBrowser } from '@angular/common';
 export class CommonService {
     handleError!: (err: any, caught: Observable<any>) => ObservableInput<any>;
     typeColors: any = {
-        'BUG': '#e74c3c', // Bug
-        'ISSUE': '#e67e22', // Issue
-        'FEATURE': '#27ae60', // Feature
-        'ENHANCEMENT': '#3498db' // Enhancement
+        BUG: '#e74c3c', // Bug
+        ISSUE: '#e67e22', // Issue
+        FEATURE: '#27ae60', // Feature
+        ENHANCEMENT: '#3498db' // Enhancement
     };
     statusColors: any = {
-        'PENDING': '#f1c40f', // Pending
-        'IN_PROGRESS': '#2980b9', // In Progress
-        'COMPLETED': '#2ecc71', // Completed
-        'REJECTED': '#c0392b', // Rejected
-        'RESOLVED': '#8e44ad' // Resolved
+        PENDING: '#f1c40f', // Pending
+        IN_PROGRESS: '#2980b9', // In Progress
+        COMPLETED: '#2ecc71', // Completed
+        REJECTED: '#c0392b', // Rejected
+        RESOLVED: '#8e44ad' // Resolved
     };
     token: string | null | undefined;
     constructor(
@@ -458,7 +458,7 @@ export class CommonService {
             })
         );
     }
-    updateUser(userId:any, data: any) {
+    updateUser(userId: any, data: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}/${userId}`;
         const headers = new HttpHeaders().set('Authorization', `${this.token}`);
         return this.http.patch(url, data, { headers }).pipe(
@@ -481,7 +481,7 @@ export class CommonService {
             catchError((error) => of(error))
         );
     }
-    updatedIssue(formData: FormData, issueId:any) {
+    updatedIssue(formData: FormData, issueId: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issues}/${issueId}`;
         const headers = new HttpHeaders().set('Authorization', `${this.token}`);
 
@@ -525,6 +525,28 @@ export class CommonService {
             }),
             catchError((error) => {
                 return of(error);
+            })
+        );
+    }
+
+    downloadDocx(): Observable<Blob> {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.downloadDoc}`;
+        const headers = new HttpHeaders().set('Authorization', `${this.token}`);
+        return this.http.get(url, {
+            headers: headers,
+            responseType: 'blob'
+        });
+    }
+
+    sendEmail(mailBody: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.sendMail}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json').set('Authorization', `${this.token}`);
+        return this.request('POST', url, { body: mailBody, headers: headers, reportProgress: false, observe: 'response' }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(false);
             })
         );
     }

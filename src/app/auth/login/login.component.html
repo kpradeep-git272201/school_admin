@@ -11,8 +11,8 @@
             </div>
 
             <p *ngIf="loginTemplate == 'Login'" class="account">Login into your account</p>
-            <div *ngIf="loading" class="card flex justify-center" style="height: 100px;">
-                <p-progress-spinner strokeWidth="8" fill="transparent" animationDuration=".5s" [style]="{ width: '50px', height: '50px' }" />
+            <div *ngIf="loading" class="custom-loading-container">
+                <div class="spinner"></div>
             </div>
             <form *ngIf="loginTemplate == 'Login'" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-fluid">
                 <div class="flex flex-col gap-2">
@@ -20,7 +20,7 @@
 
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-envelope email-icon" />
-                        <input pInputText id="email" formControlName="email" type="email" placeholder="Enter your email" class="full-width-input" [ngClass]="{ 'p-invalid': email?.invalid && (email?.dirty || email?.touched) }" />
+                        <input [readOnly]="loading" pInputText id="email" formControlName="email" type="email" placeholder="Enter your email" class="full-width-input" [ngClass]="{ 'p-invalid': email?.invalid && (email?.dirty || email?.touched) }" />
                     </p-iconfield>
 
                     <small *ngIf="email?.errors?.['required'] && (email?.touched || email?.dirty)" class="p-error"> Email is required. </small>
@@ -29,26 +29,28 @@
                 </div>
                 <div class="card flex flex-col gap-4">
                     <div class="flex flex-wrap gap-2 justify-center">
-                        <p-button styleClass="w-full" type="submit" label="Send Verification Code" />
+                        <p-button [disabled]="loading" styleClass="w-full" type="submit" label="Send Verification Code" />
                     </div>
                 </div>
             </form>
             <div *ngIf="loginTemplate == 'Otp'">
-                <div class="flex gap-2 justify-center" style="margin-bottom: 20px;">
+                <div class="flex gap-2 justify-center" style="margin-bottom: 20px">
                     <p-message severity="info" [style]="{ 'margin-bottom': '20px' }">A verification code has been sent to your email. Please enter the OTP to continue.</p-message>
                 </div>
-
+                <div *ngIf="loading" class="custom-loading-container">
+                    <div class="spinner"></div>
+                </div>
                 <div class="flex flex-col gap-2">
                     <div class="flex gap-2 justify-center">
-                        <p-inputotp [(ngModel)]="otpInput" [integerOnly]="true" [length]="6" />
+                        <p-inputotp [readonly]="loading" [(ngModel)]="otpInput" [integerOnly]="true" [length]="6" />
                     </div>
-                   <div class="flex justify-center">
-                        <p style="margin-top: 20px;">{{ timerDisplay }}</p>
+                    <div class="flex justify-center">
+                        <p style="margin-top: 20px">{{ timerDisplay }}</p>
                     </div>
                     <div class="card flex flex-col gap-4">
                         <div class="flex flex-wrap gap-2 justify-center">
-                            <p-button *ngIf="!resendAvailable" [disabled]="!(otpInput.length==6)" styleClass="w-full" (onClick)="verifyCode()" label="Verify Code"/>
-                            <p-button *ngIf="resendAvailable" styleClass="w-full" (onClick)="resendCode()" label="Resend Code"/>
+                            <p-button *ngIf="!resendAvailable" [disabled]="!(otpInput.length == 6)" styleClass="w-full" (onClick)="verifyCode()" label="Verify Code" />
+                            <p-button *ngIf="resendAvailable" styleClass="w-full" (onClick)="resendCode()" label="Resend Code" />
                         </div>
                     </div>
                 </div>

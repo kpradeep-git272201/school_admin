@@ -8,6 +8,7 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonService } from '../../services/api/common.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { AuthService } from '../../services/authentication/auth.service';
+import moment from 'moment';
 
 interface Column {
     field: string;
@@ -103,7 +104,7 @@ export class ManageBugComponent implements OnInit {
             this.issueList = issues.body;
             this.issueListClone = JSON.parse(JSON.stringify(issues.body));
             this.loading = false;
-            this.onQueryChange({ value: (this.isAdmin)? 1 : 2 });
+            this.onQueryChange({ value: this.isAdmin ? 1 : 2 });
         });
     }
     createBug() {
@@ -186,6 +187,19 @@ export class ManageBugComponent implements OnInit {
             } else {
                 return issue.assignTo == this.userId;
             }
+        });
+    }
+
+    downloadMpr() {
+        this.commonService.downloadDocx().subscribe((blob: Blob) => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `Monthly_Progress_Report(MPR)-${moment().format('MMM-YYYY')}.docx`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
         });
     }
 }

@@ -5,6 +5,7 @@ import { MessageService } from 'primeng/api';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../services/api/common.service';
 import moment from 'moment';
+import { EmailService } from '../../services/mail/email.service';
 
 @Component({
     selector: 'app-createbug',
@@ -31,7 +32,8 @@ export class CreatebugComponent {
         private messageService: MessageService,
         private router: Router,
         private commonService: CommonService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        private emailTemplate: EmailService
     ) {}
 
     ngOnInit(): void {
@@ -147,7 +149,18 @@ export class CreatebugComponent {
             this.commonService.addIssue(formData).subscribe({
                 next: (res) => {
                     this.sucessMessage('Issue created successfully!');
-                    this.createFormControle();
+                    const emailBody={
+                        "toEmail": "kpradeep.dev@gmail.com",
+                        "subject": "Test Subject",
+                        "body": this.emailTemplate.assignToTemp(formValue)
+                    }
+                      this.commonService.sendEmail(emailBody).subscribe({
+                        next: (emailRes) => {
+                           
+                            console.log('Email sent:', emailRes);
+                        },
+                        error: (err) => this.errorMessage(err)
+                        });
                 },
                 error: (err) => this.errorMessage(err)
             });

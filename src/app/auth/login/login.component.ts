@@ -34,6 +34,9 @@ export class LoginComponent {
         });
     }
 
+    ngOnInit(){
+ 
+    }
     onSubmit() {
         if (this.loginForm.valid) {
             this.loading = true;
@@ -104,8 +107,10 @@ export class LoginComponent {
                 this.router.navigate(['/dashboard']);
             } else {
                 this.loading = false;
-                if (resp.status === 401) {
+                if (resp?.status === 401) {
                     this.errorMessage(resp.body);
+                } else if(resp==false){
+                  this.errorMessage('Verification code not matched');
                 } else {
                     this.errorMessage('Something went wrong!');
                 }
