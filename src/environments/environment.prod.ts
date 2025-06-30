@@ -1,4 +1,5 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://api.example.com'
+  apiBaseUrl: 'https://fixpoint-backend.onrender.com/',
+  contextPath: 'fixpoint'
 };
