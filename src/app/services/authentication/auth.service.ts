@@ -80,6 +80,20 @@ export class AuthService {
             })
         );
     }
+    verifyTpin(userData: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.verifyTpin}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
+        return this.request('POST', url, { body: userData, headers: headers, reportProgress: false, observe: 'response' }).pipe(
+            map((resp) => {
+                this.loggedIn = true;
+                return resp;
+            }),
+            catchError((error) => {
+                this.loggedIn = false;
+                return of(false);
+            })
+        );
+    }
     logout(): void {
         if (this.isBrowser()) {
             localStorage.removeItem('loggedUser');

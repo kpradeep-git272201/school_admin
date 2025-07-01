@@ -17,7 +17,6 @@
             <form *ngIf="loginTemplate == 'Login'" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-fluid">
                 <div class="flex flex-col gap-2">
                     <label for="email">Email</label>
-
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-envelope email-icon" />
                         <input [readOnly]="loading" pInputText id="email" formControlName="email" type="email" placeholder="Enter your email" class="full-width-input" [ngClass]="{ 'p-invalid': email?.invalid && (email?.dirty || email?.touched) }" />
@@ -25,14 +24,28 @@
 
                     <small *ngIf="email?.errors?.['required'] && (email?.touched || email?.dirty)" class="p-error"> Email is required. </small>
                     <small *ngIf="email?.errors?.['email'] && (email?.touched || email?.dirty)" class="p-error"> Please enter a valid email. </small>
-                    <small *ngIf="isExistEmail" class="p-error"> Email Id not found!</small>
+                    <small *ngIf="isExistEmail" class="p-error">Email Id not found!</small>
                 </div>
-                <div class="card flex flex-col gap-4">
+
+                <div class="flex flex-row items-center gap-x-6 mt-3">
+                    <div class="flex items-center">
+                        <p-radiobutton name="loginMethod" inputId="viaTpin" value="tpin" formControlName="loginMethod" (onClick)="onChecked($event, 'tpin')"> </p-radiobutton>
+                        <label for="viaTpin" class="ml-2">Login By T-Pin</label>
+                    </div>
+
+                    <div class="flex items-center">
+                        <p-radiobutton name="loginMethod" inputId="viaOtp" value="otp" formControlName="loginMethod" (onClick)="onChecked($event, 'otp')"> </p-radiobutton>
+                        <label for="viaOtp" class="ml-2">Login By OTP</label>
+                    </div>
+                </div>
+
+                <div class="card flex flex-col gap-4 mt-4">
                     <div class="flex flex-wrap gap-2 justify-center">
-                        <p-button [disabled]="loading" styleClass="w-full" type="submit" label="Send Verification Code" />
+                        <p-button [disabled]="loading" styleClass="w-full" type="submit" [label]="buttonName"></p-button>
                     </div>
                 </div>
             </form>
+
             <div *ngIf="loginTemplate == 'Otp'">
                 <div class="flex gap-2 justify-center" style="margin-bottom: 20px">
                     <p-message severity="info" [style]="{ 'margin-bottom': '20px' }">A verification code has been sent to your email. Please enter the OTP to continue.</p-message>
@@ -42,7 +55,7 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <div class="flex gap-2 justify-center">
-                        <p-inputotp [readonly]="loading" [(ngModel)]="otpInput" [integerOnly]="true" [length]="6" />
+                        <p-inputotp [readonly]="loading" [(ngModel)]="otpInput" [integerOnly]="true" [length]="6" [mask]="true"/>
                     </div>
                     <div class="flex justify-center">
                         <p style="margin-top: 20px">{{ timerDisplay }}</p>
@@ -51,6 +64,23 @@
                         <div class="flex flex-wrap gap-2 justify-center">
                             <p-button *ngIf="!resendAvailable" [disabled]="!(otpInput.length == 6)" styleClass="w-full" (onClick)="verifyCode()" label="Verify Code" />
                             <p-button *ngIf="resendAvailable" styleClass="w-full" (onClick)="resendCode()" label="Resend Code" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="loginTemplate == 't-pin'">
+                <div class="flex gap-2 justify-center" style="margin-bottom: 20px">
+                    <p-message severity="info" [style]="{ 'margin-bottom': '20px' }">Please enter the t-Pin to continue.</p-message>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <div class="flex gap-2 justify-center">
+                        <p-inputotp [readonly]="loading" [(ngModel)]="otpInput" [integerOnly]="true" [length]="6" [mask]="true" />
+                    </div>
+
+                    <div class="card flex flex-col gap-4">
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <p-button [disabled]="!(otpInput.length == 6)" styleClass="w-full" (onClick)="verifyCode()" label="Verify Code" />
                         </div>
                     </div>
                 </div>

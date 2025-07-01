@@ -19,7 +19,7 @@ import { RippleModule } from 'primeng/ripple';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
-import { RadioButtonModule } from 'primeng/radiobutton';
+import { RadioButton, RadioButtonModule } from 'primeng/radiobutton';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
@@ -44,6 +44,7 @@ import { StepperModule } from 'primeng/stepper';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MessageService } from 'primeng/api';
 import { Knob } from 'primeng/knob';
+import { Checkbox } from 'primeng/checkbox';
 
 @NgModule({
   declarations: [],
@@ -97,7 +98,9 @@ import { Knob } from 'primeng/knob';
     OverlayPanelModule,
     Knob,
     ProgressSpinner,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    Checkbox,
+    RadioButton 
   ],
   exports:[
     CommonModule,
@@ -149,7 +152,9 @@ import { Knob } from 'primeng/knob';
     OverlayPanelModule,
     Knob,
     ProgressSpinner,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    Checkbox,
+    RadioButton 
   ],
   providers:[MessageService]
 })

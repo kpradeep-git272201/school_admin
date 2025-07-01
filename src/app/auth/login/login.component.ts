@@ -23,6 +23,7 @@ export class LoginComponent {
     loginTemplate: string = 'Login';
     otpInput: string = '';
     isExistEmail: boolean | undefined;
+    buttonName: string = 'Submit';
     constructor(
         private fb: FormBuilder,
         private router: Router,
@@ -30,34 +31,42 @@ export class LoginComponent {
         private messageService: MessageService
     ) {
         this.loginForm = this.fb.group({
-            email: ['', [Validators.required, Validators.email]]
+            email: ['', [Validators.required, Validators.email]],
+            loginMethod: ['tpin']
         });
     }
 
-    ngOnInit(){
- 
+    ngOnInit() {}
+    onChecked(event: any, method: any) {
+        this.buttonName = method == 'tpin' ? 'Submit' : 'Send Verification Code';
+        this.loginForm.controls['loginMethod'].setValue(method); 
     }
     onSubmit() {
         if (this.loginForm.valid) {
             this.loading = true;
-            const email = this.loginForm.getRawValue();
-            this.authService.getLogin(email).subscribe({
-                next: (res) => {
-                    this.loading = false;
-                    this.isExistEmail = false;
-                    this.startCountdown();
-                    this.loginTemplate = 'Otp';
-                },
-                error: (err) => {
-                    this.loading = false;
-                    if (err.status === 400) {
-                        const msg = err.error?.message || 'Email already exists';
-                        this.isExistEmail = true;
-                    } else {
-                        this.errorMessage('Something went wrong!');
+            const data = this.loginForm.getRawValue();
+            if (this.loginForm.getRawValue().loginMethod=='tpin') {
+                this.loginTemplate = 't-pin';
+                this.loading = false;
+            } else {
+                this.authService.getLogin(data).subscribe({
+                    next: (res) => {
+                        this.loading = false;
+                        this.isExistEmail = false;
+                        this.startCountdown();
+                        this.loginTemplate = 'Otp';
+                    },
+                    error: (err) => {
+                        this.loading = false;
+                        if (err.status === 400) {
+                            const msg = err.error?.message || 'Email already exists';
+                            this.isExistEmail = true;
+                        } else {
+                            this.errorMessage('Something went wrong!');
+                        }
                     }
-                }
-            });
+                });
+            }
         } else {
             this.loginForm.markAllAsTouched();
         }
@@ -94,28 +103,53 @@ export class LoginComponent {
     verifyCode() {
         this.loading = true;
         const formData = this.loginForm.getRawValue();
-        const data = {
-            email: formData.email,
-            otp: this.otpInput
-        };
-        this.authService.veryfyOtp(data).subscribe((resp: any) => {
-            if (resp?.status == 200) {
-                this.loading = false;
-                localStorage.setItem('user', JSON.stringify(resp.body));
-                const token = resp.headers.get('Authorization');
-                localStorage.setItem('token', token);
-                this.router.navigate(['/dashboard']);
-            } else {
-                this.loading = false;
-                if (resp?.status === 401) {
-                    this.errorMessage(resp.body);
-                } else if(resp==false){
-                  this.errorMessage('Verification code not matched');
+        if (formData.loginMethod=='tpin') {
+            const data = {
+                email: formData.email,
+                tPin: this.otpInput
+            };
+            this.authService.verifyTpin(data).subscribe((resp: any) => {
+                if (resp?.status == 200) {
+                    this.loading = false;
+                    localStorage.setItem('user', JSON.stringify(resp.body));
+                    const token = resp.headers.get('Authorization');
+                    localStorage.setItem('token', token);
+                    this.router.navigate(['/dashboard']);
                 } else {
-                    this.errorMessage('Something went wrong!');
+                    this.loading = false;
+                    if (resp?.status === 401) {
+                        this.errorMessage(resp.body);
+                    } else if (resp == false) {
+                        this.errorMessage('Verification code not matched');
+                    } else {
+                        this.errorMessage('Something went wrong!');
+                    }
                 }
-            }
-        });
+            });
+        } else {
+            const data = {
+                email: formData.email,
+                otp: this.otpInput
+            };
+            this.authService.veryfyOtp(data).subscribe((resp: any) => {
+                if (resp?.status == 200) {
+                    this.loading = false;
+                    localStorage.setItem('user', JSON.stringify(resp.body));
+                    const token = resp.headers.get('Authorization');
+                    localStorage.setItem('token', token);
+                    this.router.navigate(['/dashboard']);
+                } else {
+                    this.loading = false;
+                    if (resp?.status === 401) {
+                        this.errorMessage(resp.body);
+                    } else if (resp == false) {
+                        this.errorMessage('Verification code not matched');
+                    } else {
+                        this.errorMessage('Something went wrong!');
+                    }
+                }
+            });
+        }
     }
 
     resendCode() {

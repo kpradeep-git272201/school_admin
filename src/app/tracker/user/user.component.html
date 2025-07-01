@@ -8,8 +8,8 @@
                 <input type="text" (input)="onGlobalFilter(userTable, $event)" pInputText placeholder="Search" />
             </p-iconfield>
 
-            <p-button label="Add User" icon="pi pi-plus" (onClick)="createUser()" />
-            <p-button icon="pi pi-filter-slash" (click)="clear(userTable)" label="Clear" severity="warn" />
+            <p-button label="Add User" icon="pi pi-plus" (onClick)="createUser()" outlined/>
+            <p-button icon="pi pi-filter-slash" (click)="clear(userTable)" label="Clear" severity="warn" outlined/>
         </div>
     </div>
 

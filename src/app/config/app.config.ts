@@ -9,6 +9,7 @@ export const AppConfig = {
     login: 'auth/login',
     generateOtp: 'auth/otp',
     verifyOtp: 'auth/verify',
+    verifyTpin: 'auth/verifyTpin',
     sendMail: 'email/send-mail',
     user: 'user',
     roles: 'master/userRoles',
