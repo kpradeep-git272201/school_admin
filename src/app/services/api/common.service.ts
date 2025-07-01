@@ -512,6 +512,22 @@ export class CommonService {
         );
     }
 
+    getIssueById(issueId:any){
+    const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issues}/${issueId}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
+        return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
     getStatusCount() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.statusCount}`;
         const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);

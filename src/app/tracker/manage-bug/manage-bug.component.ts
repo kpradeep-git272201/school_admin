@@ -9,6 +9,7 @@ import { CommonService } from '../../services/api/common.service';
 import { OverlayPanel } from 'primeng/overlaypanel';
 import { AuthService } from '../../services/authentication/auth.service';
 import moment from 'moment';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 interface Column {
     field: string;
@@ -29,6 +30,7 @@ interface ExportColumn {
     providers: [ConfirmationService, MessageService, CustomerService, ProductService]
 })
 export class ManageBugComponent implements OnInit {
+    visible: boolean = false;
     loading: boolean = true;
     representatives: Representative[] = [];
     activityValues: number[] = [0, 100];
@@ -58,10 +60,12 @@ export class ManageBugComponent implements OnInit {
     issueListClone: any = [];
     userId: any;
     isAdmin: boolean = false;
+    vendorForm: FormGroup | any;
     constructor(
         private router: Router,
         private commonService: CommonService,
-        private authService: AuthService
+        private authService: AuthService,
+        private fb: FormBuilder
     ) {}
 
     ngOnInit() {
@@ -73,6 +77,7 @@ export class ManageBugComponent implements OnInit {
         this.isAdmin = this.user.roleIds.includes('ROLE_ADMIN') || this.user.roleIds.includes('ROLE_MANAGER');
         this.getUser();
         this.getIssueList();
+        this.createVendorForm();
     }
 
     getUser() {
@@ -201,5 +206,37 @@ export class ManageBugComponent implements OnInit {
             document.body.removeChild(a);
             window.URL.revokeObjectURL(url);
         });
+    }
+
+    showDialog() {
+        this.visible = true;
+    }
+
+    createVendorForm() {
+        const today = new Date();
+
+        const startDate = new Date(today.getFullYear(), today.getMonth() - 1, 25);
+        const endDate = today;
+        this.vendorForm = this.fb.group({
+            basId: ['', Validators.required],
+            vendorName: [''],
+            startDate: [startDate, Validators.required],
+            endDate: [endDate]
+        });
+    }
+
+    onSubmit() {
+        if (this.vendorForm.valid) {
+            console.log('Form Submitted:', this.vendorForm.getRawValue());
+        }else{
+            this.vendorForm.markAllAsTouched();
+        }
+    }
+
+     get basId() {
+        return this.vendorForm.get('basId');
+    }
+    get startDate() {
+        return this.vendorForm.get('startDate');
     }
 }

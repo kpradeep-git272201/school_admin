@@ -1,11 +1,9 @@
 <div class="card" style="padding-top: 24px">
     <div class="flex justify-between items-center flex-column sm:flex-row mb-6">
-       
         <div class="flex flex-wrap gap-2">
-             <div class="font-semibold text-xl" style="line-height: 2.1;"><span>Report Bug</span></div>
+            <div class="font-semibold text-xl" style="line-height: 2.1"><span>Report Bug</span></div>
             <p-iconfield iconPosition="left">
-                <p-dropdown [options]="queryList" (onChange)="onQueryChange($event)"
-                optionLabel="name" optionValue="code" [(ngModel)]="selectedQuery" class="w-full" />
+                <p-dropdown [options]="queryList" (onChange)="onQueryChange($event)" optionLabel="name" optionValue="code" [(ngModel)]="selectedQuery" class="w-full" />
             </p-iconfield>
         </div>
         <div class="flex flex-wrap gap-2">
@@ -15,8 +13,8 @@
             </p-iconfield>
 
             <p-button label="Add" icon="pi pi-plus" (onClick)="createBug()" outlined />
-            <p-button icon="pi pi-filter-slash" (click)="clear(dt)" label="Clear" severity="warn" outlined/>
-            <p-button icon="pi pi-download" (click)="downloadMpr()" label="MPR" severity="success" outlined/>
+            <p-button icon="pi pi-filter-slash" (click)="clear(dt)" label="Clear" severity="warn" outlined />
+            <p-button icon="pi pi-download" (click)="showDialog()" label="MPR" severity="success" outlined />
         </div>
     </div>
 
@@ -116,7 +114,7 @@
             </tr>
         </ng-template>
         <ng-template #body let-issue let-rowIndex="rowIndex">
-            <tr (dblclick)="editIssue(issue)" style="cursor: pointer;">
+            <tr (dblclick)="editIssue(issue)" style="cursor: pointer">
                 <td pFrozenColumn style="text-align: center">{{ rowIndex + 1 }}</td>
                 <td pFrozenColumn>{{ issue.id }}</td>
                 <td class="ellipsis-cell">{{ issue.projectCode }}</td>
@@ -127,7 +125,7 @@
                 <td class="ellipsis-cell">{{ issue.startDate }}</td>
                 <td class="ellipsis-cell">{{ issue.endDate }}</td>
                 <td class="ellipsis-cell">
-                    <span [ngStyle]="{ color: typeColors[issue.type],  }">
+                    <span [ngStyle]="{ color: typeColors[issue.type] }">
                         {{ typeComboObj[issue.type] || issue.type }}
                     </span>
                 </td>
@@ -161,3 +159,51 @@
         </tr>
     </ng-template>
 </div>
+
+<!-- MPR Input dialog -->
+<p-dialog header="MPR Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }" [closable]="true">
+    <span class="p-text-secondary block mb-3">Update your information.</span>
+
+    <form [formGroup]="vendorForm" (ngSubmit)="onSubmit()" class="p-fluid">
+        <div class="flex flex-col md:flex-row gap-6">
+            <div class="flex flex-col gap-2 w-full">
+                <label>BAS ID</label>
+                <p-iconfield iconPosition="right">
+                    <p-inputicon styleClass="pi pi-folder-open" />
+                     <p-inputnumber formControlName="basId" mode="decimal" placeholder="Enter BAS ID" inputId="withoutgrouping" [useGrouping]="false" />
+                </p-iconfield>
+                <small *ngIf="basId?.errors?.['required'] && (basId?.touched || basId?.dirty)" class="p-error"> BAS ID is required. </small>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full">
+                <label>Vendor Name</label>
+                <p-iconfield iconPosition="right">
+                    <p-inputicon styleClass="pi pi-pencil" />
+                    <input id="vendorName" type="text" pInputText formControlName="vendorName" placeholder="Enter Vendor Name" />
+                </p-iconfield>
+            </div>
+        </div>
+        <div class="flex flex-col md:flex-row gap-6 mt-5">
+            <div class="flex flex-col gap-2 w-full">
+                <label>Start Date <span style="font-size: 10px;">(yyyy-mm-dd)</span></label>
+                <p-iconfield iconPosition="right">
+                    <!-- <i class="pi pi-calendar"></i> -->
+                    <p-calendar inputId="startDate" formControlName="startDate" dateFormat="yy-mm-dd" showIcon="true"></p-calendar>
+                </p-iconfield>
+                <small *ngIf="startDate?.errors?.['required'] && (startDate?.touched || startDate?.dirty)" class="p-error"> Start Date is required. </small>
+            </div>
+
+            <div class="flex flex-col gap-2 w-full">
+                <label>End Date <span style="font-size: 10px;">(yyyy-mm-dd)</span></label>
+                <p-iconfield iconPosition="right">
+                    <!-- <i class="pi pi-calendar-times"></i> -->
+                    <p-calendar inputId="endDate" formControlName="endDate" dateFormat="yy-mm-dd" showIcon="true"></p-calendar>
+                </p-iconfield>
+            </div>
+        </div>
+
+        <div class="flex flex-wrap gap-2 justify-center mt-5">
+            <p-button label="Submit" severity="success" (onClick)="onSubmit()" type="button" />
+        </div>
+    </form>
+</p-dialog>

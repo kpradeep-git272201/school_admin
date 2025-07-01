@@ -193,6 +193,7 @@ export class CreatebugComponent {
             this.commonService.updatedIssue(formData, this.issueId).subscribe({
                 next: (res) => {
                     this.sucessMessage('Issue updated successfully!');
+                    this.reloadIssue();
                 },
                 error: (err) => this.errorMessage(err)
             });
@@ -270,5 +271,16 @@ export class CreatebugComponent {
             intArray[i] = byteString.charCodeAt(i);
         }
         return new File([intArray], fileName, { type: mimeType });
+    }
+
+    reloadIssue() {
+        this.commonService.getIssueById(this.issueId).subscribe((issues: any) => {
+            console.log(issues);
+            this.issueForm.patchValue(issues.body);
+            if (issues.body?.attachmentBase64) {
+                const file = this.base64ToFile(issues.body.attachmentBase64, 'attachment.png', 'image/png');
+                this.uploadedFiles = [file];
+            }
+        });
     }
 }

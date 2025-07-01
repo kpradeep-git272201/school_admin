@@ -20,7 +20,7 @@ import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
 import { RatingModule } from 'primeng/rating';
 import { RadioButton, RadioButtonModule } from 'primeng/radiobutton';
-import { InputNumberModule } from 'primeng/inputnumber';
+import { InputNumber, InputNumberModule } from 'primeng/inputnumber';
 import { DialogModule } from 'primeng/dialog';
 import { TagModule } from 'primeng/tag';
 import { InputIconModule } from 'primeng/inputicon';
@@ -45,10 +45,11 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { MessageService } from 'primeng/api';
 import { Knob } from 'primeng/knob';
 import { Checkbox } from 'primeng/checkbox';
-
+import { CalendarModule } from 'primeng/calendar';
 @NgModule({
   declarations: [],
   imports: [
+    InputNumber,
     CommonModule,
     InputTextModule, 
     FluidModule, 
@@ -100,9 +101,11 @@ import { Checkbox } from 'primeng/checkbox';
     ProgressSpinner,
     ProgressSpinnerModule,
     Checkbox,
-    RadioButton 
+    RadioButton,
+    CalendarModule 
   ],
   exports:[
+    InputNumber,
     CommonModule,
     InputTextModule, 
     FluidModule, 
@@ -154,7 +157,8 @@ import { Checkbox } from 'primeng/checkbox';
     ProgressSpinner,
     ProgressSpinnerModule,
     Checkbox,
-    RadioButton 
+    RadioButton,
+    CalendarModule 
   ],
   providers:[MessageService]
 })
