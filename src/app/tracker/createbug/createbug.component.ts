@@ -114,9 +114,9 @@ export class CreatebugComponent {
     }
     onSubmit() {
         if (this.issueForm.valid) {
-            if(this.action==='Edit'){
-                this.updateIssue()
-            }else{
+            if (this.action === 'Edit') {
+                this.updateIssue();
+            } else {
                 this.addIssue();
             }
         } else {
@@ -149,18 +149,17 @@ export class CreatebugComponent {
             this.commonService.addIssue(formData).subscribe({
                 next: (res) => {
                     this.sucessMessage('Issue created successfully!');
-                    const emailBody={
-                        "toEmail": "kpradeep.dev@gmail.com",
-                        "subject": "Test Subject",
-                        "body": this.emailTemplate.assignToTemp(formValue)
-                    }
-                      this.commonService.sendEmail(emailBody).subscribe({
-                        next: (emailRes) => {
-                           
-                            console.log('Email sent:', emailRes);
-                        },
-                        error: (err) => this.errorMessage(err)
-                        });
+                    // const emailBody = {
+                    //     toEmail: 'kpradeep.dev@gmail.com',
+                    //     subject: 'Test Subject',
+                    //     body: this.emailTemplate.assignToTemp(formValue)
+                    // };
+                    // this.commonService.sendEmail(emailBody).subscribe({
+                    //     next: (emailRes) => {
+                    //         console.log('Email sent:', emailRes);
+                    //     },
+                    //     error: (err) => this.errorMessage(err)
+                    // });
                 },
                 error: (err) => this.errorMessage(err)
             });
@@ -178,7 +177,7 @@ export class CreatebugComponent {
             formValue.requester = formValue.requester;
             formValue.createdBy = 'admin@example.com';
             formValue.updatedBy = 'admin@example.com';
-            formValue.createdDate = formValue.createdDate||moment().format('YYYY-MM-DD');
+            formValue.createdDate = formValue.createdDate || moment().format('YYYY-MM-DD');
             formValue.updatedDate = moment().format('YYYY-MM-DD');
             const jsonBlob = new Blob([JSON.stringify(formValue)], {
                 type: 'application/json'
