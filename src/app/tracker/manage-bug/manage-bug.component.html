@@ -169,7 +169,6 @@
             <div class="flex flex-col gap-2 w-full">
                 <label>BAS ID</label>
                 <p-iconfield iconPosition="right">
-                    <p-inputicon styleClass="pi pi-folder-open" />
                      <p-inputnumber formControlName="basId" mode="decimal" placeholder="Enter BAS ID" inputId="withoutgrouping" [useGrouping]="false" />
                 </p-iconfield>
                 <small *ngIf="basId?.errors?.['required'] && (basId?.touched || basId?.dirty)" class="p-error"> BAS ID is required. </small>
@@ -178,7 +177,6 @@
             <div class="flex flex-col gap-2 w-full">
                 <label>Vendor Name</label>
                 <p-iconfield iconPosition="right">
-                    <p-inputicon styleClass="pi pi-pencil" />
                     <input id="vendorName" type="text" pInputText formControlName="vendorName" placeholder="Enter Vendor Name" />
                 </p-iconfield>
             </div>
@@ -187,19 +185,17 @@
             <div class="flex flex-col gap-2 w-full">
                 <label>Start Date <span style="font-size: 10px;">(yyyy-mm-dd)</span></label>
                 <p-iconfield iconPosition="right">
-                    <!-- <i class="pi pi-calendar"></i> -->
-                    <p-calendar inputId="startDate" formControlName="startDate" dateFormat="yy-mm-dd" showIcon="true"></p-calendar>
+                   <p-calendar inputId="startDate" formControlName="startDate" dateFormat="yy-mm-dd" appendTo="body"></p-calendar>
                 </p-iconfield>
                 <small *ngIf="startDate?.errors?.['required'] && (startDate?.touched || startDate?.dirty)" class="p-error"> Start Date is required. </small>
             </div>
 
-            <div class="flex flex-col gap-2 w-full">
+            <!-- <div class="flex flex-col gap-2 w-full">
                 <label>End Date <span style="font-size: 10px;">(yyyy-mm-dd)</span></label>
                 <p-iconfield iconPosition="right">
-                    <!-- <i class="pi pi-calendar-times"></i> -->
-                    <p-calendar inputId="endDate" formControlName="endDate" dateFormat="yy-mm-dd" showIcon="true"></p-calendar>
+                   <p-calendar inputId="endDate" formControlName="endDate" dateFormat="yy-mm-dd" appendTo="body"></p-calendar>
                 </p-iconfield>
-            </div>
+            </div> -->
         </div>
 
         <div class="flex flex-wrap gap-2 justify-center mt-5">

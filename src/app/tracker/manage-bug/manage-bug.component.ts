@@ -195,18 +195,28 @@ export class ManageBugComponent implements OnInit {
         });
     }
 
-    downloadMpr() {
-        this.commonService.downloadDocx().subscribe((blob: Blob) => {
-            const url = window.URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `Monthly_Progress_Report(MPR)-${moment().format('MMM-YYYY')}.docx`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            window.URL.revokeObjectURL(url);
-        });
-    }
+   downloadMpr(data: any) {
+    this.commonService.downloadDocx(data).subscribe({
+        next: (blob: Blob) => {
+            if (blob && blob.size > 0) {
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `Monthly_Progress_Report(MPR)-${moment().format('MMM-YYYY')}.docx`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
+            } else {
+                console.error('Empty file received');
+            }
+        },
+        error: (err) => {
+            console.error('Error while downloading MPR:', err);
+        }
+    });
+}
+
 
     showDialog() {
         this.visible = true;
@@ -218,7 +228,7 @@ export class ManageBugComponent implements OnInit {
         const startDate = new Date(today.getFullYear(), today.getMonth() - 1, 25);
         const endDate = today;
         this.vendorForm = this.fb.group({
-            basId: ['', Validators.required],
+            basId: [null, Validators.required],
             vendorName: [''],
             startDate: [startDate, Validators.required],
             endDate: [endDate]
@@ -227,7 +237,12 @@ export class ManageBugComponent implements OnInit {
 
     onSubmit() {
         if (this.vendorForm.valid) {
+            this.visible=false;
             console.log('Form Submitted:', this.vendorForm.getRawValue());
+            const data = this.vendorForm.getRawValue();
+            // data.startDate = data.startDate.toISOString().slice(0, 10);
+            // data.endDate = data.endDate.toISOString().slice(0, 10);
+            this.downloadMpr(this.vendorForm.getRawValue());
         }else{
             this.vendorForm.markAllAsTouched();
         }

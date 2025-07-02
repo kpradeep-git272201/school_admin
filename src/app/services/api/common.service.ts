@@ -545,14 +545,15 @@ export class CommonService {
         );
     }
 
-    downloadDocx(): Observable<Blob> {
+    downloadDocx(data: any): Observable<Blob> {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.downloadDoc}`;
         const headers = new HttpHeaders().set('Authorization', `${this.token}`);
-        return this.http.get(url, {
+        return this.http.post<Blob>(url, data, {
             headers: headers,
-            responseType: 'blob'
+            responseType: 'blob' as 'json' 
         });
     }
+
 
     sendEmail(mailBody: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.sendMail}`;
