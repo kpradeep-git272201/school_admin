@@ -38,7 +38,6 @@ export class CreatebugComponent {
 
     ngOnInit(): void {
         this.getUser();
-
         this.createFormControle();
         this.patchValue();
     }
