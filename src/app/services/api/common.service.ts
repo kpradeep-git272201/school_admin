@@ -458,6 +458,8 @@ export class CommonService {
             })
         );
     }
+
+    
     updateUser(userId: any, data: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}/${userId}`;
         const headers = new HttpHeaders().set('Authorization', `${this.token}`);

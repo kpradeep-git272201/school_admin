@@ -24,6 +24,7 @@ export class LoginComponent {
     otpInput: string = '';
     isExistEmail: boolean | undefined;
     buttonName: string = 'Submit';
+    signupForm: FormGroup | any;
     constructor(
         private fb: FormBuilder,
         private router: Router,
@@ -39,13 +40,13 @@ export class LoginComponent {
     ngOnInit() {}
     onChecked(event: any, method: any) {
         this.buttonName = method == 'tpin' ? 'Submit' : 'Send Verification Code';
-        this.loginForm.controls['loginMethod'].setValue(method); 
+        this.loginForm.controls['loginMethod'].setValue(method);
     }
     onSubmit() {
         if (this.loginForm.valid) {
             this.loading = true;
             const data = this.loginForm.getRawValue();
-            if (this.loginForm.getRawValue().loginMethod=='tpin') {
+            if (this.loginForm.getRawValue().loginMethod == 'tpin') {
                 this.loginTemplate = 't-pin';
                 this.loading = false;
             } else {
@@ -96,14 +97,12 @@ export class LoginComponent {
             clearInterval(this.countdownInterval);
         }
     }
-    get email() {
-        return this.loginForm.get('email');
-    }
+   
 
     verifyCode() {
         this.loading = true;
         const formData = this.loginForm.getRawValue();
-        if (formData.loginMethod=='tpin') {
+        if (formData.loginMethod == 'tpin') {
             const data = {
                 email: formData.email,
                 tPin: this.otpInput
@@ -159,5 +158,66 @@ export class LoginComponent {
 
     errorMessage(message: string) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+    }
+    sucessMessage(message: string) {
+        this.messageService.add({ severity: 'success', summary: 'Success', detail: message });
+    }
+    getSignUp() {
+        this.loginTemplate = 'signUp';
+        this.createSignUpForm();
+    }
+
+    createSignUpForm() {
+        this.signupForm = this.fb.group({
+            username: ['', Validators.required],
+            designation: ['SSD', Validators.required],
+            email: ['', [Validators.required, Validators.email]],
+            isActive: ['Y'],
+            roleIds: [['ROLE_ADMIN'], Validators.required],
+            tPin: [null, [Validators.required, Validators.min(10000)]]
+        });
+    }
+
+    signUp() {
+        if (this.signupForm.valid) {
+            this.loading = true;
+            const user = this.signupForm.getRawValue();
+            this.authService.signUp(user).subscribe({
+                next: (res) => {
+                    this.loading = false;
+                    this.sucessMessage('User created! Now you can login email and t-pin');
+                    this.loginTemplate = 'Login';
+                },
+                error: (err) => {
+                    this.loading = false;
+                    if (err.status === 409) {
+                        const msg = err.error?.message || 'Email already exists';
+                        this.errorMessage(msg);
+                    } else {
+                        this.errorMessage('Something went wrong');
+                    }
+                }
+            });
+        } else {
+            this.signupForm.markAllAsTouched();
+        }
+    }
+    get username() {
+        return this.signupForm.get('username');
+    }
+
+    get designation() {
+        return this.signupForm.get('designation');
+    }
+
+    get email() {
+        if(this.loginTemplate=='signUp'){
+            return this.signupForm.get('email');
+        }
+        return this.loginForm.get('email');
+    }
+   
+    get tPin() {
+        return this.signupForm.get('tPin');
     }
 }

@@ -46,6 +46,7 @@ import { MessageService } from 'primeng/api';
 import { Knob } from 'primeng/knob';
 import { Checkbox } from 'primeng/checkbox';
 import { CalendarModule } from 'primeng/calendar';
+import { AutoFocus } from 'primeng/autofocus';
 @NgModule({
   declarations: [],
   imports: [
@@ -102,7 +103,8 @@ import { CalendarModule } from 'primeng/calendar';
     ProgressSpinnerModule,
     Checkbox,
     RadioButton,
-    CalendarModule 
+    CalendarModule,
+    AutoFocus 
   ],
   exports:[
     InputNumber,
@@ -158,7 +160,8 @@ import { CalendarModule } from 'primeng/calendar';
     ProgressSpinnerModule,
     Checkbox,
     RadioButton,
-    CalendarModule 
+    CalendarModule ,
+    AutoFocus 
   ],
   providers:[MessageService]
 })

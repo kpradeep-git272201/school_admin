@@ -11,6 +11,7 @@ export const AppConfig = {
     verifyOtp: 'auth/verify',
     verifyTpin: 'auth/verifyTpin',
     sendMail: 'email/send-mail',
+    signUp: 'auth/signup',
     user: 'user',
     roles: 'master/userRoles',
     issueType: 'master/issueType',

@@ -128,10 +128,11 @@ export class CreateUserComponent {
             });
             const user = {
                 username: userForm.username,
-                designation: userForm.designation.code,
+                designation: userForm.designation,
                 email: userForm.email,
                 isActive: userForm.isActive,
-                roleIds: roleIds
+                roleIds: roleIds,
+                tPin: userForm.tPin
             };
 
             console.log('User Data:', JSON.stringify(user));
@@ -152,7 +153,8 @@ export class CreateUserComponent {
             designation: ['', Validators.required],
             email: ['', [Validators.required, Validators.email]],
             isActive: ['Y'],
-            roles: [[defaultUserRole], Validators.required]
+            roles: [[defaultUserRole], Validators.required],
+            tPin: [null, [Validators.required, Validators.min(10000)]]
         });
     }
 
@@ -186,5 +188,9 @@ export class CreateUserComponent {
 
     errorMessage(message: string) {
         this.messageService.add({ severity: 'error', summary: 'Error', detail: message });
+    }
+
+    get tPin() {
+        return this.userForm.get('tPin');
     }
 }

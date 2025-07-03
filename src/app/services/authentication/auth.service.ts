@@ -101,5 +101,13 @@ export class AuthService {
             this.isLoggedInSubject.next(false);
         }
     }
-
+    signUp(data: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.signUp}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.http.post(url, data, { headers }).pipe(
+            catchError((error: HttpErrorResponse) => {
+                return throwError(() => error);
+            })
+        );
+    }
 }

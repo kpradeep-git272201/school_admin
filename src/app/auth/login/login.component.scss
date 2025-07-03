@@ -5,7 +5,7 @@
 
     .left-pane {
         flex: 1;
-        background-color: #f0f4ff;
+        background: linear-gradient(135deg, #00373E, #045F60);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -18,7 +18,7 @@
 
     .right-pane {
         flex: 1;
-        background-color: #002f6c;
+        // background-color: #002f6c;
         color: white;
         display: flex;
         align-items: center;
@@ -110,13 +110,13 @@
     font-weight: 500;
     font-size: 20px;
     letter-spacing: 0%;
-    text-align: center;
+    // text-align: center;
 }
 
 .logo-wrapper {
   display: flex;
 //   align-items: center;   /* Vertically center image + text */
-  justify-content: center; /* Horizontally center the whole group */
+//   justify-content: center; /* Horizontally center the whole group */
   gap: 10px; /* Space between icon and text */
   margin-bottom: 1rem;
 }
@@ -134,3 +134,8 @@
     color: rgb(184, 39, 39);
 }
 
+
+a:hover{
+    text-decoration: underline;
+    color: linear-gradient(135deg, #00373E, #045F60);
+}

@@ -1,51 +1,101 @@
 <div class="login-container">
-    <div class="left-pane">
-        <img src="icons/LoginPhone.svg" alt="Illustration" />
-    </div>
-
     <div class="right-pane">
         <div class="login-card">
             <div class="logo-wrapper">
                 <img src="icons/FixPoint.png" alt="Emblem" class="emblem" />
                 <p style="line-height: 2"><span class="Fix">Fix</span> <span class="Point">Point</span></p>
             </div>
+            <div *ngIf="loginTemplate == 'Login'">
+                <h2 class="text-2xl font-bold mb-2">Welcome Back!</h2>
+                <p class="text-sm text-gray-600 mb-4">Sign in to access your dashboard and continue optimizing Issue.</p>
+                <div *ngIf="loading" class="custom-loading-container">
+                    <div class="spinner"></div>
+                </div>
+                <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-fluid">
+                    <div class="flex flex-col gap-2">
+                        <label for="email">Email</label>
+                        <p-iconfield iconPosition="left">
+                            <p-inputicon styleClass="pi pi-envelope email-icon" />
+                            <input
+                                [readOnly]="loading"
+                                [pAutoFocus]="true"
+                                pInputText
+                                id="email"
+                                formControlName="email"
+                                type="email"
+                                placeholder="Enter your email"
+                                class="full-width-input"
+                                [ngClass]="{ 'p-invalid': email?.invalid && (email?.dirty || email?.touched) }"
+                            />
+                        </p-iconfield>
 
-            <p *ngIf="loginTemplate == 'Login'" class="account">Login into your account</p>
-            <div *ngIf="loading" class="custom-loading-container">
-                <div class="spinner"></div>
+                        <small *ngIf="email?.errors?.['required'] && (email?.touched || email?.dirty)" class="p-error"> Email is required. </small>
+                        <small *ngIf="email?.errors?.['email'] && (email?.touched || email?.dirty)" class="p-error"> Please enter a valid email. </small>
+                        <small *ngIf="isExistEmail" class="p-error">Email Id not found!</small>
+                    </div>
+
+                    <div class="flex flex-row items-center gap-x-6 mt-3">
+                        <div class="flex items-center">
+                            <p-radiobutton name="loginMethod" inputId="viaTpin" value="tpin" formControlName="loginMethod" (onClick)="onChecked($event, 'tpin')"> </p-radiobutton>
+                            <label for="viaTpin" class="ml-2">Login by T-Pin</label>
+                        </div>
+
+                        <div class="flex items-center">
+                            <p-radiobutton name="loginMethod" inputId="viaOtp" value="otp" formControlName="loginMethod" (onClick)="onChecked($event, 'otp')"> </p-radiobutton>
+                            <label for="viaOtp" class="ml-2">Login by OTP</label>
+                        </div>
+                    </div>
+
+                    <div class="card flex flex-col gap-4 mt-4">
+                        <div class="flex flex-wrap gap-2 justify-center">
+                            <p-button [disabled]="loading" styleClass="w-full" type="submit" [label]="buttonName"></p-button>
+                        </div>
+                    </div>
+                </form>
+                <p>Don't have an account? <span style="cursor: pointer" (click)="getSignUp()">Sign Up</span></p>
             </div>
-            <form *ngIf="loginTemplate == 'Login'" [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="p-fluid">
-                <div class="flex flex-col gap-2">
-                    <label for="email">Email</label>
-                    <p-iconfield iconPosition="left">
-                        <p-inputicon styleClass="pi pi-envelope email-icon" />
-                        <input [readOnly]="loading" pInputText id="email" formControlName="email" type="email" placeholder="Enter your email" class="full-width-input" [ngClass]="{ 'p-invalid': email?.invalid && (email?.dirty || email?.touched) }" />
-                    </p-iconfield>
-
-                    <small *ngIf="email?.errors?.['required'] && (email?.touched || email?.dirty)" class="p-error"> Email is required. </small>
-                    <small *ngIf="email?.errors?.['email'] && (email?.touched || email?.dirty)" class="p-error"> Please enter a valid email. </small>
-                    <small *ngIf="isExistEmail" class="p-error">Email Id not found!</small>
-                </div>
-
-                <div class="flex flex-row items-center gap-x-6 mt-3">
-                    <div class="flex items-center">
-                        <p-radiobutton name="loginMethod" inputId="viaTpin" value="tpin" formControlName="loginMethod" (onClick)="onChecked($event, 'tpin')"> </p-radiobutton>
-                        <label for="viaTpin" class="ml-2">Login By T-Pin</label>
+            <div *ngIf="loginTemplate == 'signUp'">
+                <div class="card mx-auto" style="max-width: 500px">
+                    <h2 class="text-center mb-4">Sign Up</h2>
+                    <div *ngIf="loading" class="custom-loading-container">
+                        <div class="spinner"></div>
                     </div>
+                    <form [formGroup]="signupForm" (ngSubmit)="signUp()">
+                        <!-- Username -->
+                        <div class="field mb-3">
+                            <div class="flex flex-col gap-2 w-full">
+                                <label>User Name</label>
+                                <p-iconfield iconPosition="left">
+                                    <p-inputicon styleClass="pi pi-user" />
+                                    <input pInputText formControlName="username" placeholder="Enter Name" [ngClass]="{ 'p-invalid': username?.invalid && (username?.dirty || username?.touched) }" />
+                                </p-iconfield>
+                                <small *ngIf="username?.errors?.['required']" class="p-error">User name is required.</small>
+                            </div>
+                        </div>
 
-                    <div class="flex items-center">
-                        <p-radiobutton name="loginMethod" inputId="viaOtp" value="otp" formControlName="loginMethod" (onClick)="onChecked($event, 'otp')"> </p-radiobutton>
-                        <label for="viaOtp" class="ml-2">Login By OTP</label>
-                    </div>
+                        <!-- Email -->
+                        <div class="field mb-3">
+                            <div class="flex flex-col gap-2 w-full">
+                                <label>Email</label>
+                                <p-iconfield iconPosition="left">
+                                    <p-inputicon styleClass="pi pi-envelope" />
+                                    <input pInputText formControlName="email" placeholder="abc@xyz.com" [ngClass]="{ 'p-invalid': email?.invalid && (email?.dirty || email?.touched) }" />
+                                </p-iconfield>
+                                <small *ngIf="email?.errors?.['required']" class="p-error">Email is required.</small>
+                                <small *ngIf="email?.errors?.['email']" class="p-error">Invalid email format.</small>
+                            </div>
+                        </div>
+
+                        <div class="field mb-4">
+                            <label for="tPin">T-PIN</label>
+                            <input id="tPin" type="number" pInputText formControlName="tPin" placeholder="e.g. 123456" maxlength="6" class="w-full" />
+                            <small *ngIf="tPin?.errors?.['tPin']" class="p-error">T-Pin is required.</small>
+                        </div>
+
+                        <button pButton type="submit" label="Register" class="w-full p-button-primary" [disabled]="signupForm.invalid"></button>
+                    </form>
                 </div>
-
-                <div class="card flex flex-col gap-4 mt-4">
-                    <div class="flex flex-wrap gap-2 justify-center">
-                        <p-button [disabled]="loading" styleClass="w-full" type="submit" [label]="buttonName"></p-button>
-                    </div>
-                </div>
-            </form>
-
+            </div>
             <div *ngIf="loginTemplate == 'Otp'">
                 <div class="flex gap-2 justify-center" style="margin-bottom: 20px">
                     <p-message severity="info" [style]="{ 'margin-bottom': '20px' }">A verification code has been sent to your email. Please enter the OTP to continue.</p-message>
@@ -55,7 +105,7 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <div class="flex gap-2 justify-center">
-                        <p-inputotp [readonly]="loading" [(ngModel)]="otpInput" [integerOnly]="true" [length]="6" [mask]="true"/>
+                        <p-inputotp [readonly]="loading" [(ngModel)]="otpInput" [integerOnly]="true" [length]="6" [mask]="true" />
                     </div>
                     <div class="flex justify-center">
                         <p style="margin-top: 20px">{{ timerDisplay }}</p>
@@ -86,6 +136,9 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="left-pane">
+        <!-- <img src="icons/LoginPhone.svg" alt="Illustration" /> -->
     </div>
 </div>
 

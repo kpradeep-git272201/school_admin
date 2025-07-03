@@ -60,8 +60,9 @@
           ></p-dropdown>
         </div>
       </div>
+   
       <div class="flex flex-col md:flex-row gap-6">
-        <div class="flex flex-col gap-2 w-full">
+       <div class="flex flex-col gap-2 w-full">
           <label>Role</label>
           <p-multiSelect 
             [options]="roleOptions" 
@@ -70,8 +71,14 @@
             placeholder="Select Roles">
           </p-multiSelect>
         </div>
-      </div>
 
+        <!-- Is Active -->
+        <div class="flex flex-col gap-2 w-full">
+          <label for="tPin">T-PIN</label>
+          <input id="tPin" type="number" pInputText formControlName="tPin" placeholder="e.g. 123456" maxlength="6" class="w-full" />
+          <small *ngIf="tPin?.errors?.['tPin']" class="p-error">T-Pin is required.</small>
+        </div>
+      </div>
       <!-- Buttons -->
       <div class="flex flex-wrap gap-2 justify-center">
         <p-button label="Back" icon="pi pi-arrow-left" (onClick)="goBack()" severity="info" type="button" />
