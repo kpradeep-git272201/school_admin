@@ -20,6 +20,9 @@ import { UserComponent } from '../../tracker/user/user.component';
 import { CreateUserComponent } from '../../tracker/create-user/create-user.component';
 import { RolesComponent } from '../../tracker/roles/roles.component';
 import { SettingComponent } from '../../tracker/setting/setting.component';
+import { IssueStatusComponent } from '../../master/issue-status/issue-status.component';
+import { DesignationComponent } from '../../master/designation/designation.component';
+import { IssueTypeComponent } from '../../master/issue-type/issue-type.component';
 
 export default [
     { path: 'manage-bug', data: { breadcrumb: 'ManageBug' }, component: ManageBugComponent },
@@ -27,6 +30,10 @@ export default [
     { path: 'manage-user', data: { breadcrumb: 'User' }, component: UserComponent },
     { path: 'createUser', data: { breadcrumb: 'createUser' }, component: CreateUserComponent },
     { path: 'roles', data: { breadcrumb: 'Roles' }, component: RolesComponent },
+    { path: 'userStatus', data: { breadcrumb: 'UserStatus' }, component: IssueStatusComponent },
+    { path: 'designation', data: { breadcrumb: 'Designation' }, component: DesignationComponent },
+    { path: 'issueType', data: { breadcrumb: 'Issue Type' }, component: IssueTypeComponent },
+
     { path: 'setting', data: { breadcrumb: 'Setting' }, component: SettingComponent },
     { path: 'button', data: { breadcrumb: 'Button' }, component: ButtonDemo },
     { path: 'charts', data: { breadcrumb: 'Charts' }, component: ChartDemo },

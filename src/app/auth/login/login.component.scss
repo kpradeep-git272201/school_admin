@@ -1,15 +1,16 @@
 .login-container {
     display: flex;
     height: 100vh;
-    background-color: #f6f8fc;
 
     .left-pane {
-        flex: 1;
-        background: linear-gradient(135deg, #00373E, #045F60);
+        flex: 0 0 65%;
+        // background: linear-gradient(180deg, #fefcea,#f3edbf, #f5e14e);
+        // background: linear-gradient(180deg, #f3e5f5, #9c27b0);
+        background: linear-gradient(0deg, #bfc395, #d1c9a2, #dfcfb1, #ebd7c2, #f3dfd3, #f9e9e3, #fdf3f1, #fffefe);
         display: flex;
         align-items: center;
         justify-content: center;
-
+        border-radius: 20px;
         img {
             width: 80%;
             max-width: 500px;
@@ -17,18 +18,17 @@
     }
 
     .right-pane {
-        flex: 1;
-        // background-color: #002f6c;
+        flex: 0 0 35%;
         color: white;
         display: flex;
         align-items: center;
         justify-content: center;
 
         .login-card {
-            width: 80%;
-            max-width: 400px;
-            background: white;
-            color: black;
+            width: 90%;
+            max-width: 500px;
+            // background: white;
+            // color: black;
             border-radius: 8px;
             padding: 32px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
@@ -103,39 +103,61 @@
 }
 
 .email-icon {
-    color: #ff4343; /* Use any color you want */
+    color: #ff4343;
 }
 
 .account {
     font-weight: 500;
     font-size: 20px;
     letter-spacing: 0%;
-    // text-align: center;
 }
 
 .logo-wrapper {
-  display: flex;
-//   align-items: center;   /* Vertically center image + text */
-//   justify-content: center; /* Horizontally center the whole group */
-  gap: 10px; /* Space between icon and text */
-  margin-bottom: 1rem;
+    display: flex;
+    gap: 10px;
+    margin-bottom: 1rem;
 }
 
 .logo-wrapper .emblem {
-  height: 40px; /* or set width: 40px; as needed */
+    height: 40px;
 }
-.Fix{
-    color: #1EC9B0; font-size: 20px; font-weight: 700;
+
+.Fix {
+    color: #1EC9B0;
+    font-size: 20px;
+    font-weight: 700;
 }
-.Point{
-    color: #E34C4C; font-size: 20px; font-weight: 700;
+
+.Point {
+    color: #E34C4C;
+    font-size: 20px;
+    font-weight: 700;
 }
-.p-error{
+
+.p-error {
     color: rgb(184, 39, 39);
 }
 
-
-a:hover{
+a:hover {
     text-decoration: underline;
-    color: linear-gradient(135deg, #00373E, #045F60);
+    color: linear-gradient(135deg, #00373E, #045F60); // Note: this won't work as color
+}
+
+.main{
+    display: flex;
+    width: 100%;
+    background: #FFFFFF;
+    padding-left: 30px;
+    padding-bottom: 30px;
+    padding-top: 30px;
+    // background: linear-gradient(180deg, #fefcea, #f1da36);
+// background: linear-gradient(180deg, #f3e5f5, #9c27b0);
+// background: linear-gradient(180deg, #e0f2f1,#e0f2f1,#c1e6e4, #4caf50);
+}
+
+label{
+    color: black;
+}
+p{
+    color: black;
 }
