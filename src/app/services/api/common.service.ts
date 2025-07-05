@@ -400,10 +400,44 @@ export class CommonService {
             })
         );
     }
+    createRoles(role: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.roles}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.request('POST', url, {
+            body: role,
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
     getIssueType() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueType}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
+        const headers = new HttpHeaders().set('content-type', 'application/json');
         return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
+    addIssueType(issueType: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueType}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.request('POST', url, {
+            body: issueType,
             headers: headers,
             reportProgress: false,
             observe: 'response'
@@ -418,8 +452,25 @@ export class CommonService {
     }
     getIssueStatus() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueStatus}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
+        const headers = new HttpHeaders().set('content-type', 'application/json');
         return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
+    addStatus(status: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueStatus}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
+        return this.request('POST', url, {
+            body: status,
             headers: headers,
             reportProgress: false,
             observe: 'response'
@@ -434,7 +485,7 @@ export class CommonService {
     }
     getDesignation() {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.designation}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
+        const headers = new HttpHeaders().set('content-type', 'application/json');
         return this.request('GET', url, {
             headers: headers,
             reportProgress: false,
@@ -448,7 +499,23 @@ export class CommonService {
             })
         );
     }
-
+    addDesignation(designation: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.designation}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.request('POST', url, {
+            body: designation,
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
     createUser(data: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}`;
         const headers = new HttpHeaders().set('Authorization', `${this.token}`);
@@ -459,7 +526,6 @@ export class CommonService {
         );
     }
 
-    
     updateUser(userId: any, data: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.user}/${userId}`;
         const headers = new HttpHeaders().set('Authorization', `${this.token}`);
@@ -514,8 +580,8 @@ export class CommonService {
         );
     }
 
-    getIssueById(issueId:any){
-    const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issues}/${issueId}`;
+    getIssueById(issueId: any) {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issues}/${issueId}`;
         const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
         return this.request('GET', url, {
             headers: headers,
@@ -552,10 +618,9 @@ export class CommonService {
         const headers = new HttpHeaders().set('Authorization', `${this.token}`);
         return this.http.post<Blob>(url, data, {
             headers: headers,
-            responseType: 'blob' as 'json' 
+            responseType: 'blob' as 'json'
         });
     }
-
 
     sendEmail(mailBody: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.sendMail}`;

@@ -51,16 +51,16 @@
                             </div>
                         </div>
 
-                        <div class="card flex flex-col gap-4 mt-4">
+                        <div class="flex flex-col gap-4 mt-10">
                             <div class="flex flex-wrap gap-2 justify-center">
                                 <p-button [disabled]="loading" styleClass="w-full" type="submit" [label]="buttonName"></p-button>
                             </div>
                         </div>
                     </form>
-                    <p>Don't have an account? <span style="cursor: pointer" (click)="getSignUp()">Sign Up</span></p>
+                    <p style="margin-top: 30px;">Don't have an account? <span id="span" style="cursor: pointer" (click)="getSignUp()">Sign Up</span></p>
                 </div>
                 <div *ngIf="loginTemplate == 'signUp'">
-                    <div class="card mx-auto" style="max-width: 500px; padding:0px;">
+                    <div class="mx-auto" style="max-width: 500px; padding:0px;">
                         <h2 class="text-left mb-4">Sign Up</h2>
                         <div *ngIf="loading" class="custom-loading-container">
                             <div class="spinner"></div>
@@ -113,7 +113,7 @@
                         <div class="flex justify-center">
                             <p style="margin-top: 20px">{{ timerDisplay }}</p>
                         </div>
-                        <div class="card flex flex-col gap-4">
+                        <div class="flex flex-col gap-4">
                             <div class="flex flex-wrap gap-2 justify-center">
                                 <p-button *ngIf="!resendAvailable" [disabled]="!(otpInput.length == 6)" styleClass="w-full" (onClick)="verifyCode()" label="Verify Code" />
                                 <p-button *ngIf="resendAvailable" styleClass="w-full" (onClick)="resendCode()" label="Resend Code" />
@@ -131,7 +131,7 @@
                             <p-inputotp [readonly]="loading" [(ngModel)]="otpInput" [integerOnly]="true" [length]="6" [mask]="true" />
                         </div>
 
-                        <div class="card flex flex-col gap-4">
+                        <div class="flex flex-col gap-10" style="margin-top: 20px;">
                             <div class="flex flex-wrap gap-2 justify-center">
                                 <p-button [disabled]="!(otpInput.length == 6)" styleClass="w-full" (onClick)="verifyCode()" label="Verify Code" />
                             </div>

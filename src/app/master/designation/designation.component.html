@@ -1,1 +1,116 @@
-<p>designation works!</p>
+<div class="card" style="padding-top: 24px">
+    <div class="flex justify-between items-center flex-column sm:flex-row mb-6">
+        <div class="font-semibold text-xl">Designation</div>
+        <div class="flex flex-wrap gap-2">
+            <p-button label="Add Designation" icon="pi pi-plus" (onClick)="createDesignation()" outlined />
+        </div>
+    </div>
+
+    <p-table
+        #userTable
+        [value]="designationList"
+        class="auto-width-table"
+        dataKey="id"
+        [rows]="10"
+        [paginator]="designationList.length > 10 ? true : false"
+        [rowHover]="true"
+        [loading]="loading"
+        [showGridlines]="true"
+        responsiveLayout="scroll"
+        scrollHeight="410px"
+        tableStyleClass="nowrap-cell"
+    >
+        <ng-template #header>
+            <tr>
+                <th style="width: 4rem; padding-top: 0; padding-bottom: 0; text-align: center" class="font-bold">S.No.</th>
+                <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0">
+                    <div class="flex justify-between items-center font-bold">
+                        Designation
+                        <p-columnFilter type="text" field="name" display="menu" placeholder="Search Name" />
+                    </div>
+                </th>
+                <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0">
+                    <div class="flex justify-between items-center font-bold">Designation Code</div>
+                </th>
+                <th style="min-width: 16rem; padding-top: 0; padding-bottom: 0">
+                    <div class="flex justify-between items-center font-bold">Description</div>
+                </th>
+                <th style="min-width: 8rem; padding-top: 0; padding-bottom: 0" class="text-center">
+                    <div class="flex justify-between items-center font-bold">Active?</div>
+                </th>
+            </tr>
+        </ng-template>
+
+        <ng-template #body let-data let-rowIndex="rowIndex">
+            <tr>
+                <td style="text-align: center">{{ rowIndex + 1 }}</td>
+                <td class="ellipsis-cell">{{ data.name }}</td>
+                <td class="ellipsis-cell">{{ data.code }}</td>
+                <td class="ellipsis-cell">{{ data.description }}</td>
+                <td class="ellipsis-cell">{{ data.isActive }}</td>
+            </tr>
+        </ng-template>
+
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="7" class="text-center">No users found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<p-dialog header="Add Designation" [(visible)]="showRoleDialog" [modal]="true" [style]="{ width: '30rem' }" [closable]="false" [draggable]="false">
+    <p-fluid [formGroup]="designationForm">
+        <div class="flex">
+            <div class="flex flex-col gap-6 w-full">
+                <!-- Name & Code -->
+                <div class="flex flex-col md:flex-col gap-6">
+                    <!-- Designation Name -->
+                    <div class="flex flex-col gap-2 w-full">
+                        <label>Designation Name</label>
+                        <p-iconfield iconPosition="left">
+                            <p-inputicon styleClass="pi pi-tag" />
+                            <input pInputText formControlName="name" placeholder="Enter Designation Name" [ngClass]="{ 'p-invalid': designationForm.controls['name'].invalid && (designationForm.controls['name'].touched || submitted) }" />
+                        </p-iconfield>
+                        <small *ngIf="designationForm.controls['name'].errors?.['required']" class="p-error">Designation Name is required.</small>
+                    </div>
+
+                    <!-- Designation Code -->
+                    <div class="flex flex-col gap-2 w-full">
+                        <label>Designation Code</label>
+                        <p-iconfield iconPosition="left">
+                            <p-inputicon styleClass="pi pi-code" />
+                            <input pInputText formControlName="code" placeholder="Enter Designation Code" [ngClass]="{ 'p-invalid': designationForm.controls['code'].invalid && (designationForm.controls['code'].touched || submitted) }" />
+                        </p-iconfield>
+                        <small *ngIf="designationForm.controls['code'].errors?.['required']" class="p-error">Designation Code is required.</small>
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>Description</label>
+                    <textarea pInputTextarea formControlName="description" rows="3" placeholder="Enter Description"></textarea>
+                </div>
+
+                <!-- Is Active -->
+                <div class="flex flex-col gap-2 w-full">
+                    <label>Active?</label>
+                    <p-dropdown
+                        [options]="[
+                            { label: 'Yes', value: true },
+                            { label: 'No', value: false }
+                        ]"
+                        placeholder="Select"
+                        formControlName="isActive"
+                    ></p-dropdown>
+                </div>
+
+                <!-- Buttons -->
+                <div class="flex flex-wrap gap-2 justify-center">
+                    <p-button label="Cancel" icon="pi pi-times" (onClick)="cancelDesignation()" severity="secondary" type="button" />
+                    <p-button label="Save" icon="pi pi-check" (onClick)="saveDesignation()" severity="success" type="button" [disabled]="designationForm.invalid" />
+                </div>
+            </div>
+        </div>
+    </p-fluid>
+</p-dialog>
+<p-toast position="top-right"></p-toast>

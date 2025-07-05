@@ -17,7 +17,14 @@ ALTER TABLE IF EXISTS tracker.users
 ALTER TABLE tracker.users
 ADD COLUMN t_pin INTEGER;
 
-
+INSERT INTO tracker.users (designation, email, is_active, user_name, t_pin)
+VALUES (
+    'Sr. Software Developer',
+    'pradeep.vishwakarma@example.com',
+    'Y',
+    'Pradeep Vishwakarma',
+    118608
+);
 UPDATE tracker.users SET t_pin = 118608 WHERE email = 'pradeep.epri@gmail.com';
 UPDATE tracker.users SET t_pin = 115723 WHERE email = 'surajmishra9318@gmail.com';
 UPDATE tracker.users SET t_pin = 468245 WHERE email = 'pradeep.epri@gmailcom';
