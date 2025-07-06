@@ -5,6 +5,7 @@ import { AuthService } from '../../services/authentication/auth.service';
 import { MessageService } from 'primeng/api';
 import { CommonService } from '../../services/api/common.service';
 import { Router } from '@angular/router';
+import { EncryptDecryptService } from '../../services/encrypt/encrypt-decrypt.service';
 
 @Component({
     selector: 'app-designation',
@@ -27,16 +28,15 @@ export class DesignationComponent {
         private messageService: MessageService,
         private router: Router,
         private fb: FormBuilder,
-        private commonService: CommonService
+        private commonService: CommonService,
+        private encrypDecryptService: EncryptDecryptService
     ) {}
     ngOnInit() {
-        const user = this.authService.getLoggedUser();
+        const encrypted = localStorage.getItem('encrypted');
+        const user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.userId = user.userId;
         this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
-        const designation = localStorage.getItem('designation');
-        if (designation) {
-            this.designationList = JSON.parse(designation);
-        }
+        this.getDesigantion();
         this.createDesignationForm();
     }
     createDesignationForm() {
@@ -74,7 +74,7 @@ export class DesignationComponent {
         if (this.designationForm.invalid) return;
 
         const designationData = this.designationForm.getRawValue();
-        designationData.code=designationData.code.toUpperCase();
+        designationData.code = designationData.code.toUpperCase();
         console.log('Saving Designation:', designationData);
 
         this.commonService.addDesignation(designationData).subscribe({
@@ -92,17 +92,11 @@ export class DesignationComponent {
         this.showRoleDialog = false;
     }
 
-      getDesigantion() {
+    getDesigantion() {
         this.commonService.getDesignation().subscribe((user) => {
             if (user.status == 200) {
                 const designation = user.body;
-                this.designationList=designation;
-                localStorage.setItem('designation', JSON.stringify(designation));
-                const designationDisplay: any = {};
-                designation.forEach((designation: any) => {
-                    designationDisplay[designation.code] = designation.name;
-                });
-                localStorage.setItem('designationDisplay', JSON.stringify(designationDisplay));
+                this.designationList = designation;
             }
         });
     }

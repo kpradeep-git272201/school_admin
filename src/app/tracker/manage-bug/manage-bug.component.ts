@@ -1,15 +1,15 @@
-import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { PrimengModule } from '../../primeng/primeng.module';
-import { Product, ProductService } from '../../pages/service/product.service';
+import { ProductService } from '../../pages/service/product.service';
 import { Table } from 'primeng/table';
-import { Customer, CustomerService, Representative } from '../../pages/service/customer.service';
+import { CustomerService, Representative } from '../../pages/service/customer.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonService } from '../../services/api/common.service';
-import { OverlayPanel } from 'primeng/overlaypanel';
 import { AuthService } from '../../services/authentication/auth.service';
 import moment from 'moment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { EncryptDecryptService } from '../../services/encrypt/encrypt-decrypt.service';
 
 interface Column {
     field: string;
@@ -64,14 +64,15 @@ export class ManageBugComponent implements OnInit {
     constructor(
         private router: Router,
         private commonService: CommonService,
-        private authService: AuthService,
+        private encrypDecryptService: EncryptDecryptService,
         private fb: FormBuilder
     ) {}
 
     ngOnInit() {
         this.typeColors = this.commonService.typeColors;
         this.statusColors = this.commonService.statusColors;
-        this.user = this.authService.getLoggedUser();
+        const encrypted = localStorage.getItem('encrypted');
+        this.user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.selectedQuery = this.user.roleIds.includes('ROLE_ADMIN') ? 1 : 2;
         this.userId = this.user.userId;
         this.isAdmin = this.user.roleIds.includes('ROLE_ADMIN') || this.user.roleIds.includes('ROLE_MANAGER');
@@ -81,18 +82,8 @@ export class ManageBugComponent implements OnInit {
     }
 
     getUser() {
-        const typeCombo = localStorage.getItem('typeComboObj');
-        const statusCombo = localStorage.getItem('statusDisplay');
-        if (statusCombo) {
-            this.statusDisplay = JSON.parse(statusCombo);
-        } else {
-            this.getIssueStatus();
-        }
-        if (typeCombo) {
-            this.typeComboObj = JSON.parse(typeCombo);
-        } else {
-            this.getIssueType();
-        }
+        this.getIssueStatus();
+        this.getIssueType();
         this.commonService.getUserList().subscribe((user) => {
             if (user.status == 200) {
                 const userList = user.body;
@@ -154,14 +145,11 @@ export class ManageBugComponent implements OnInit {
     getIssueStatus() {
         this.commonService.getIssueStatus().subscribe((status) => {
             if (status.status == 200) {
-                const statusCombo = status.body;
-                localStorage.setItem('statusCombo', JSON.stringify(statusCombo));
                 if (status.body) {
                     const statusDisplay: any = {};
                     status.body.forEach((status: any) => {
                         statusDisplay[status.code] = status.name;
                     });
-                    localStorage.setItem('statusDisplay', JSON.stringify(statusDisplay));
                     this.statusDisplay = statusDisplay;
                 }
             }
@@ -171,14 +159,11 @@ export class ManageBugComponent implements OnInit {
     getIssueType() {
         this.commonService.getIssueType().subscribe((type) => {
             if (type.status == 200) {
-                const typeCombo = type.body;
-                localStorage.setItem('typeCombo', JSON.stringify(typeCombo));
                 if (type.body) {
                     const typeComboObj: any = {};
                     type.body.forEach((type: any) => {
                         typeComboObj[type.code] = type.name;
                     });
-                    localStorage.setItem('typeComboObj', JSON.stringify(this.typeComboObj));
                     this.typeComboObj = typeComboObj;
                 }
             }
@@ -199,6 +184,8 @@ export class ManageBugComponent implements OnInit {
     this.commonService.downloadDocx(data).subscribe({
         next: (blob: Blob) => {
             if (blob && blob.size > 0) {
+                this.loading=false;
+                this.visible=false;
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -208,10 +195,13 @@ export class ManageBugComponent implements OnInit {
                 document.body.removeChild(a);
                 window.URL.revokeObjectURL(url);
             } else {
+                this.visible=false;
+                this.loading=false;
                 console.error('Empty file received');
             }
         },
         error: (err) => {
+            this.loading=false;
             console.error('Error while downloading MPR:', err);
         }
     });
@@ -223,27 +213,33 @@ export class ManageBugComponent implements OnInit {
     }
 
     createVendorForm() {
+        const designationDisplay = localStorage.getItem('designationDisplay');
+        let designationObj:any={};
+        if (designationDisplay) {
+            designationObj = JSON.parse(designationDisplay);
+        }
         const today = new Date();
 
         const startDate = new Date(today.getFullYear(), today.getMonth() - 1, 25);
         const endDate = today;
         this.vendorForm = this.fb.group({
+            header: [`Monthly Progress Report (MPR): ${moment().format('MMM-YYYY')}`],
+            name:[this.user.username],
+            designation: [designationObj[this.user.designation]],
             basId: [null, Validators.required],
             vendorName: [''],
             startDate: [startDate, Validators.required],
-            endDate: [endDate]
+            endDate: [endDate],
+            showEndDate: [moment().format('YYYY-MM-DD')]
         });
     }
 
     onSubmit() {
+        this.loading=true;
         if (this.vendorForm.valid) {
-            this.visible=false;
-            console.log('Form Submitted:', this.vendorForm.getRawValue());
-            const data = this.vendorForm.getRawValue();
-            // data.startDate = data.startDate.toISOString().slice(0, 10);
-            // data.endDate = data.endDate.toISOString().slice(0, 10);
             this.downloadMpr(this.vendorForm.getRawValue());
         }else{
+            this.loading=false;
             this.vendorForm.markAllAsTouched();
         }
     }
@@ -253,5 +249,9 @@ export class ManageBugComponent implements OnInit {
     }
     get startDate() {
         return this.vendorForm.get('startDate');
+    }
+
+    cancel(){
+        this.visible=false;
     }
 }

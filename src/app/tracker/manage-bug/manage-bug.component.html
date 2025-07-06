@@ -165,9 +165,11 @@
 </div>
 
 <!-- MPR Input dialog -->
-<p-dialog header="MPR Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }" [closable]="true">
+<p-dialog header="MPR Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
     <span class="p-text-secondary block mb-3">Update your information.</span>
-
+        <div *ngIf="loading" class="custom-loading-container">
+            <div class="spinner"></div>
+        </div>
     <form [formGroup]="vendorForm" (ngSubmit)="onSubmit()" class="p-fluid">
         <div class="flex flex-col md:flex-row gap-6">
             <div class="flex flex-col gap-2 w-full">
@@ -194,16 +196,20 @@
                 <small *ngIf="startDate?.errors?.['required'] && (startDate?.touched || startDate?.dirty)" class="p-error"> Start Date is required. </small>
             </div>
 
-            <!-- <div class="flex flex-col gap-2 w-full">
+            <div class="flex flex-col gap-2 w-full">
                 <label>End Date <span style="font-size: 10px;">(yyyy-mm-dd)</span></label>
+                <!-- <p-iconfield iconPosition="right">
+                   <p-calendar [disabled]="true" inputId="endDate" formControlName="endDate" dateFormat="yy-mm-dd" appendTo="body"></p-calendar>
+                </p-iconfield> -->
                 <p-iconfield iconPosition="right">
-                   <p-calendar inputId="endDate" formControlName="endDate" dateFormat="yy-mm-dd" appendTo="body"></p-calendar>
+                    <input readonly id="showEndDate" type="text" pInputText formControlName="showEndDate" placeholder="Enter Vendor Name" />
                 </p-iconfield>
-            </div> -->
+            </div>
         </div>
 
         <div class="flex flex-wrap gap-2 justify-center mt-5">
-            <p-button label="Submit" severity="success" (onClick)="onSubmit()" type="button" />
+            <p-button label="Cancel" icon="pi pi-times" (onClick)="cancel()" severity="secondary" type="button" />
+            <p-button label="Submit" icon="pi pi-check" severity="success" (onClick)="onSubmit()" type="button" />
         </div>
     </form>
 </p-dialog>

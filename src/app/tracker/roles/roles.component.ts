@@ -5,6 +5,7 @@ import { CommonService } from '../../services/api/common.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../services/authentication/auth.service';
 import { MessageService } from 'primeng/api';
+import { EncryptDecryptService } from '../../services/encrypt/encrypt-decrypt.service';
 
 @Component({
     selector: 'app-roles',
@@ -21,35 +22,25 @@ export class RolesComponent {
     roleForm!: FormGroup;
     showRoleDialog = false;
     submitted = false;
-    private authService = inject(AuthService);
+    private encrypDecryptService = inject(EncryptDecryptService);
     userId: any;
     isAdmin: any;
     constructor(
         private messageService: MessageService,
-        private router: Router,
         private fb: FormBuilder,
         private commonService: CommonService
     ) {}
 
     ngOnInit() {
-        const user = this.authService.getLoggedUser();
+        const encrypted = localStorage.getItem('encrypted');
+        const user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.userId = user.userId;
         this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
-        const roleDisplay = localStorage.getItem('roleDisplay');
-        if (roleDisplay) {
-            this.roleDisplay = JSON.parse(roleDisplay);
-        }
-        const rolesList = localStorage.getItem('rolesList');
-        if (rolesList) {
-            this.rolesList = JSON.parse(rolesList);
-        }else{
-            this.getRoles();
-        }
+        this.getRoles();
         this.loading = false;
 
         this.createFormControl();
     }
-
     createRole() {
         this.showRoleDialog = true;
     }
@@ -103,13 +94,13 @@ export class RolesComponent {
         this.commonService.getRoles().subscribe((user) => {
             if (user.status == 200) {
                 const rolesList = user.body;
-                this.rolesList=rolesList;
+                this.rolesList = rolesList;
                 localStorage.setItem('rolesList', JSON.stringify(rolesList));
                 const roleDisplay: any = {};
                 rolesList.forEach((role: any) => {
                     roleDisplay[role.code] = role.name;
                 });
-                localStorage.setItem('roleDisplay', JSON.stringify(roleDisplay));
+                this.roleDisplay = roleDisplay;
             }
         });
     }

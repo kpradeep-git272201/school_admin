@@ -6,6 +6,7 @@ import { CommonService } from '../../services/api/common.service';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../services/authentication/auth.service';
 import { AppConfig } from '../../config/app.config';
+import { EncryptDecryptService } from '../../services/encrypt/encrypt-decrypt.service';
 
 @Component({
     selector: 'app-login',
@@ -32,7 +33,9 @@ export class LoginComponent {
         private fb: FormBuilder,
         private router: Router,
         private authService: AuthService,
-        private messageService: MessageService
+        private messageService: MessageService,
+        private commonService: CommonService,
+        private encrypDecryptService: EncryptDecryptService
     ) {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
@@ -116,7 +119,8 @@ export class LoginComponent {
             this.authService.verifyTpin(data).subscribe((resp: any) => {
                 if (resp?.status == 200) {
                     this.loading = false;
-                    localStorage.setItem('user', JSON.stringify(resp.body));
+                    // localStorage.setItem('user', JSON.stringify(resp.body));
+                    this.encrypDecryptService.getEncryptedData(resp.body);
                     const token = resp.headers.get('Authorization');
                     localStorage.setItem('token', token);
                     this.router.navigate(['/dashboard']);
@@ -170,16 +174,24 @@ export class LoginComponent {
     }
     getSignUp() {
         this.loginTemplate = 'signUp';
+        this.commonService.getAdminCount().subscribe((count) => {
+            if (count.status == 200) {
+                const admin = count.body;
+              this.createSignUpForm(admin);
+            }else{
+                this.createSignUpForm();
+            }
+        });
         this.createSignUpForm();
     }
 
-    createSignUpForm() {
+    createSignUpForm(admin?:any) {
         this.signupForm = this.fb.group({
             username: ['', Validators.required],
-            designation: ['SD', Validators.required],
+            designation: [(admin?.count>=1)?'SD' : 'SSD', Validators.required],
             email: ['', [Validators.required, Validators.email]],
             isActive: ['Y'],
-            roleIds: [['ROLE_USER'], Validators.required],
+            roleIds: [[(admin?.count>=1)?'ROLE_USER' : 'ROLE_ADMIN'], Validators.required],
             tPin: [null, [Validators.required, Validators.min(10000)]]
         });
     }

@@ -20,7 +20,7 @@ export class AppMenu {
     model: MenuItem[] = [];
     constructor(private commonService: CommonService) {}
     ngOnInit() {
-        this.getMasterData();
+        // this.getMasterData();
         this.model = [
             {
                 label: 'Home',

@@ -5,6 +5,7 @@ import { AuthService } from '../../services/authentication/auth.service';
 import { MessageService } from 'primeng/api';
 import { CommonService } from '../../services/api/common.service';
 import { Router } from '@angular/router';
+import { EncryptDecryptService } from '../../services/encrypt/encrypt-decrypt.service';
 
 @Component({
     selector: 'app-issue-type',
@@ -27,16 +28,15 @@ export class IssueTypeComponent {
         private messageService: MessageService,
         private router: Router,
         private fb: FormBuilder,
-        private commonService: CommonService
+        private commonService: CommonService,
+        private encrypDecryptService: EncryptDecryptService
     ) {}
     ngOnInit() {
-        const user = this.authService.getLoggedUser();
+        const encrypted = localStorage.getItem('encrypted');
+        const user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.userId = user.userId;
         this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
-        const typeCombo = localStorage.getItem('typeCombo');
-        if (typeCombo) {
-            this.typeCombo = JSON.parse(typeCombo);
-        }
+        this.getIssueType(); 
         this.createIssueForm();
     }
 
@@ -91,14 +91,6 @@ export class IssueTypeComponent {
             if (type.status == 200) {
                 const typeCombo = type.body;
                 this.typeCombo = typeCombo;
-                localStorage.setItem('typeCombo', JSON.stringify(typeCombo));
-                if (type.body) {
-                    const typeComboObj: any = {};
-                    type.body.forEach((type: any) => {
-                        typeComboObj[type.code] = type.name;
-                    });
-                    localStorage.setItem('typeComboObj', JSON.stringify(typeComboObj));
-                }
             }
         });
     }

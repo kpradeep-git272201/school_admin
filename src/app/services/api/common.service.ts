@@ -348,8 +348,11 @@ export class CommonService {
             localStorage.removeItem('assignToOpt');
             localStorage.removeItem('requesterCombo');
             localStorage.removeItem('displayUser');
-            localStorage.getItem('user');
-            localStorage.getItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('token');
+            localStorage.removeItem('typeComboObj');
+            localStorage.removeItem('statusDisplay');
+            localStorage.removeItem('designation');
         }
     }
 
@@ -499,6 +502,24 @@ export class CommonService {
             })
         );
     }
+
+    getAdminCount() {
+        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.adminCount}`;
+        const headers = new HttpHeaders().set('content-type', 'application/json');
+        return this.request('GET', url, {
+            headers: headers,
+            reportProgress: false,
+            observe: 'response'
+        }).pipe(
+            map((resp) => {
+                return resp;
+            }),
+            catchError((error) => {
+                return of(error);
+            })
+        );
+    }
+
     addDesignation(designation: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.designation}`;
         const headers = new HttpHeaders().set('content-type', 'application/json');

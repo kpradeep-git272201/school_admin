@@ -7,6 +7,7 @@ import { CommonService } from '../../services/api/common.service';
 import moment from 'moment';
 import { EmailService } from '../../services/mail/email.service';
 import { AuthService } from '../../services/authentication/auth.service';
+import { EncryptDecryptService } from '../../services/encrypt/encrypt-decrypt.service';
 
 @Component({
     selector: 'app-createbug',
@@ -29,19 +30,19 @@ export class CreatebugComponent {
     action: any;
     issueId: any;
     isAdmin: any;
-    loading:boolean=false;
+    loading: boolean = false;
     constructor(
         private fb: FormBuilder,
         private messageService: MessageService,
         private router: Router,
         private commonService: CommonService,
         private route: ActivatedRoute,
-        private emailTemplate: EmailService,
-        private authService: AuthService
+        private encrypDecryptService: EncryptDecryptService
     ) {}
 
     ngOnInit(): void {
-        const user = this.authService.getLoggedUser();
+        const encrypted = localStorage.getItem('encrypted');
+        const user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
         this.getUser();
         this.createFormControle();
@@ -55,27 +56,39 @@ export class CreatebugComponent {
         }
     }
     getUser() {
-        const typeCombo = localStorage.getItem('typeCombo');
-        const statusCombo = localStorage.getItem('statusCombo');
-        const requesterCombo = localStorage.getItem('requesterCombo');
-        const assignToOpt = localStorage.getItem('assignToOpt');
-        const displayUser = localStorage.getItem('displayUser');
+        this.getIssueType();
+        this.getIssueStatus();
+        this.getUserList();
+    }
 
-        if (statusCombo) {
-            this.statusCombo = JSON.parse(statusCombo);
-        }
-        if (typeCombo) {
-            this.typeCombo = JSON.parse(typeCombo);
-        }
-        if (requesterCombo) {
-            this.requesterCombo = JSON.parse(requesterCombo);
-        }
-        if (assignToOpt) {
-            this.assignToOpt = JSON.parse(assignToOpt);
-        }
-        if (displayUser) {
-            this.displayUser = JSON.parse(displayUser);
-        }
+    getIssueStatus() {
+        this.commonService.getIssueStatus().subscribe((status) => {
+            if (status.status == 200) {
+                this.statusCombo = status.body;
+            }
+        });
+    }
+    getIssueType() {
+        this.commonService.getIssueType().subscribe((type) => {
+            if (type.status == 200) {
+                this.typeCombo = type.body;
+            }
+        });
+    }
+    getUserList() {
+        this.commonService.getUserList().subscribe((user) => {
+            if (user.status == 200) {
+                const userList = user.body;
+                this.assignToOpt = [];
+                this.requesterCombo = [];
+                this.displayUser = {};
+                userList.forEach((user: any) => {
+                    this.assignToOpt.push({ name: user.username, code: user.id + '' });
+                    this.requesterCombo.push({ name: user.username, code: user.id + '' });
+                    this.displayUser[user.id] = user.username;
+                });
+            }
+        });
     }
     createFormControle() {
         const defaultStatus = this.statusCombo.find((status: { code: string }) => status.code === '1');
@@ -175,7 +188,7 @@ export class CreatebugComponent {
 
     updateIssue() {
         if (this.issueForm.valid) {
-            this.loading=true;
+            this.loading = true;
             let formValue: any = this.issueForm.getRawValue();
             formValue.status = formValue.status;
             formValue.assignTo = formValue.assignTo;
@@ -197,13 +210,15 @@ export class CreatebugComponent {
             }
             console.log(JSON.stringify(formValue));
             this.commonService.updatedIssue(formData, this.issueId).subscribe({
-                
                 next: (res) => {
-                     this.loading=false;
+                    this.loading = false;
                     this.sucessMessage('Issue updated successfully!');
                     this.reloadIssue();
                 },
-                error: (err) => { this.loading=false;this.errorMessage(err)}
+                error: (err) => {
+                    this.loading = false;
+                    this.errorMessage(err);
+                }
             });
         } else {
             this.issueForm.markAllAsTouched();

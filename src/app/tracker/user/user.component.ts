@@ -7,6 +7,7 @@ import { Customer, CustomerService, Representative } from '../../pages/service/c
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonService } from '../../services/api/common.service';
 import { AuthService } from '../../services/authentication/auth.service';
+import { EncryptDecryptService } from '../../services/encrypt/encrypt-decrypt.service';
 
 @Component({
     selector: 'app-user',
@@ -29,39 +30,51 @@ export class UserComponent {
     isAdmin: any;
     constructor(
         private router: Router,
-        private authService: AuthService,
+        private encrypDecryptService: EncryptDecryptService,
         private commonService: CommonService
     ) {}
 
     ngOnInit() {
-        this.user = this.authService.getLoggedUser();
+        const encrypted = localStorage.getItem('encrypted');
+        this.user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.isAdmin = this.user.roleIds.includes('ROLE_ADMIN') || this.user.roleIds.includes('ROLE_MANAGER');
-        const designationDisplay = localStorage.getItem('designationDisplay');
-        if (designationDisplay) {
-            this.designationDisplay = JSON.parse(designationDisplay);
-        } else {
-            const designation = localStorage.getItem('designation');
-            if (designation) {
-                const designationList = JSON.parse(designation);
+        this.getDesigantion();
+        this.getRoles();
+        this.getUserList();
+        
+    }
+    getUserList() {
+        this.commonService.getUserList().subscribe((user) => {
+            this.loading=false;
+            if (user.status == 200) {
+                this.userList = user.body;
+            }
+        });
+    }
+    getRoles() {
+        this.commonService.getRoles().subscribe((user) => {
+            if (user.status == 200) {
+                const rolesList = user.body;
+                const roleDisplay: any = {};
+                rolesList.forEach((role: any) => {
+                    roleDisplay[role.code] = role.name;
+                });
+                this.roleDisplay = roleDisplay;
+            }
+        });
+    }
+    getDesigantion() {
+        this.commonService.getDesignation().subscribe((user) => {
+            if (user.status == 200) {
+                const designation = user.body;
                 const designationDisplay: any = {};
-                designationList.forEach((designation: any) => {
+                designation.forEach((designation: any) => {
                     designationDisplay[designation.code] = designation.name;
                 });
-                localStorage.setItem('designationDisplay', JSON.stringify(designationDisplay));
                 this.designationDisplay = designationDisplay;
             }
-        }
-        const roleDisplay = localStorage.getItem('roleDisplay');
-        if (roleDisplay) {
-            this.roleDisplay = JSON.parse(roleDisplay);
-        }
-        const userList = localStorage.getItem('userList');
-        if (userList) {
-            this.userList = JSON.parse(userList);
-        }
-        this.loading = false;
+        });
     }
-
     createUser() {
         this.router.navigate(['/dashboard/uikit/createUser']);
     }
@@ -74,8 +87,7 @@ export class UserComponent {
     }
 
     editUser(user: any) {
-        if(this.user){
-
+        if (this.user) {
         }
         localStorage.setItem('editUser', JSON.stringify(user));
         this.router.navigate(['/dashboard/uikit/createUser'], {

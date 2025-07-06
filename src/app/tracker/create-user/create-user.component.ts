@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../services/api/common.service';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../services/authentication/auth.service';
+import { EncryptDecryptService } from '../../services/encrypt/encrypt-decrypt.service';
 
 @Component({
     selector: 'app-create-user',
@@ -27,32 +28,47 @@ export class CreateUserComponent {
         private messageService: MessageService,
         private commonService: CommonService,
         private route: ActivatedRoute,
-        private authService: AuthService
+        private encrypDecryptService: EncryptDecryptService
+        
     ) {}
 
     ngOnDestroy(): void {
         const userData = localStorage.getItem('editUser');
-        const user = this.authService.getLoggedUser();
-        this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
+       
         if (userData) {
             localStorage.removeItem('editUser');
         }
     }
 
     ngOnInit(): void {
-        const designation = localStorage.getItem('designation');
-        if (designation) {
-            this.designationList = JSON.parse(designation);
-        }
+        const encrypted = localStorage.getItem('encrypted');
+        const user = this.encrypDecryptService.getDecryptedData(encrypted);
+        this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
         const rolesList = localStorage.getItem('rolesList');
         if (rolesList) {
             this.roleOptions = JSON.parse(rolesList);
         }
-
+        this.getRoles();
+        this.getDesigantion()
         this.createUserControle();
         this.patchValue();
     }
 
+ 
+    getDesigantion() {
+        this.commonService.getDesignation().subscribe((user) => {
+            if (user.status == 200) {
+                this.designationList = user.body;
+            }
+        });
+    }
+      getRoles() {
+        this.commonService.getRoles().subscribe((user) => {
+            if (user.status == 200) {
+                this.roleOptions = user.body;
+            }
+        });
+    }
     patchValue(){
         this.route.queryParams.subscribe((params) => {
             const action = params['action'];
@@ -76,7 +92,6 @@ export class CreateUserComponent {
             next: (res) => {
                 this.sucessMessage('User created successfully!');
                 this.createUserControle();
-                this.getUserList();
             },
             error: (err) => {
                 if (err.status === 409) {
@@ -94,7 +109,6 @@ export class CreateUserComponent {
         this.commonService.updateUser(userId, user).subscribe({
             next: (res) => {
                 this.sucessMessage('User updated successfully!');
-                this.getUserList();
             },
             error: (err) => {
                 if (err.status === 404) {
@@ -161,29 +175,6 @@ export class CreateUserComponent {
         });
     }
 
-    getUserList() {
-        this.commonService.getUserList().subscribe((user) => {
-            if (user.status == 200) {
-                localStorage.removeItem('userList');
-                localStorage.removeItem('assignToOpt');
-                localStorage.removeItem('requesterCombo');
-                localStorage.removeItem('displayUser');
-                const userList = user.body;
-                localStorage.setItem('userList', JSON.stringify(userList));
-                const assignToOpt: any = [];
-                const requesterCombo: any = [];
-                const displayUser: any = {};
-                userList.forEach((user: any) => {
-                    assignToOpt.push({ name: user.username, code: user.id + '' });
-                    requesterCombo.push({ name: user.username, code: user.id + '' });
-                    displayUser[user.id] = user.username;
-                });
-                localStorage.setItem('assignToOpt', JSON.stringify(assignToOpt));
-                localStorage.setItem('requesterCombo', JSON.stringify(requesterCombo));
-                localStorage.setItem('displayUser', JSON.stringify(displayUser));
-            }
-        });
-    }
 
     sucessMessage(message: string) {
         this.messageService.add({ severity: 'success', summary: 'Success', detail: message });

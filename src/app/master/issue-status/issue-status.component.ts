@@ -5,6 +5,7 @@ import { CommonService } from '../../services/api/common.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../services/authentication/auth.service';
+import { EncryptDecryptService } from '../../services/encrypt/encrypt-decrypt.service';
 
 @Component({
     selector: 'app-issue-status',
@@ -26,16 +27,15 @@ export class IssueStatusComponent {
         private messageService: MessageService,
         private router: Router,
         private fb: FormBuilder,
-        private commonService: CommonService
+        private commonService: CommonService,
+        private encrypDecryptService: EncryptDecryptService
     ) {}
     ngOnInit() {
-        const user = this.authService.getLoggedUser();
+        const encrypted = localStorage.getItem('encrypted');
+        const user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.userId = user.userId;
         this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
-        const statusCombo = localStorage.getItem('statusCombo');
-        if (statusCombo) {
-            this.statusCombo = JSON.parse(statusCombo);
-        }
+        this.getIssueStatus();
 
         this.createStatusForm();
     }
@@ -101,14 +101,6 @@ export class IssueStatusComponent {
             if (status.status == 200) {
                 const statusCombo = status.body;
                 this.statusCombo=statusCombo;
-                localStorage.setItem('statusCombo', JSON.stringify(statusCombo));
-                if(status.body){
-                    const statusDisplay:any={};
-                    status.body.forEach((status:any)=>{
-                        statusDisplay[status.code]=status.name;
-                    });
-                    localStorage.setItem('statusDisplay', JSON.stringify(statusDisplay));
-                }
             }
         });
     }
