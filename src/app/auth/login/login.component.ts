@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CommonService } from '../../services/api/common.service';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../services/authentication/auth.service';
+import { AppConfig } from '../../config/app.config';
 
 @Component({
     selector: 'app-login',
@@ -25,6 +26,8 @@ export class LoginComponent {
     isExistEmail: boolean | undefined;
     buttonName: string = 'Submit';
     signupForm: FormGroup | any;
+    appVersion: any;
+    lastUpdated:any;
     constructor(
         private fb: FormBuilder,
         private router: Router,
@@ -37,7 +40,10 @@ export class LoginComponent {
         });
     }
 
-    ngOnInit() {}
+    ngOnInit() {
+        this.appVersion=AppConfig.APP_VERSION;
+        this.lastUpdated=AppConfig.LAST_UPDATED;
+    }
     onChecked(event: any, method: any) {
         this.buttonName = method == 'tpin' ? 'Submit' : 'Send Verification Code';
         this.loginForm.controls['loginMethod'].setValue(method);
@@ -170,10 +176,10 @@ export class LoginComponent {
     createSignUpForm() {
         this.signupForm = this.fb.group({
             username: ['', Validators.required],
-            designation: ['SSD', Validators.required],
+            designation: ['SD', Validators.required],
             email: ['', [Validators.required, Validators.email]],
             isActive: ['Y'],
-            roleIds: [['ROLE_ADMIN'], Validators.required],
+            roleIds: [['ROLE_USER'], Validators.required],
             tPin: [null, [Validators.required, Validators.min(10000)]]
         });
     }

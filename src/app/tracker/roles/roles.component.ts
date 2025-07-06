@@ -23,6 +23,7 @@ export class RolesComponent {
     submitted = false;
     private authService = inject(AuthService);
     userId: any;
+    isAdmin: any;
     constructor(
         private messageService: MessageService,
         private router: Router,
@@ -33,6 +34,7 @@ export class RolesComponent {
     ngOnInit() {
         const user = this.authService.getLoggedUser();
         this.userId = user.userId;
+        this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
         const roleDisplay = localStorage.getItem('roleDisplay');
         if (roleDisplay) {
             this.roleDisplay = JSON.parse(roleDisplay);

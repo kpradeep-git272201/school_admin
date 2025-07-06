@@ -80,7 +80,7 @@
         </div>
       </div>
       <!-- Buttons -->
-      <div class="flex flex-wrap gap-2 justify-center">
+      <div class="flex flex-wrap gap-2 justify-center" *ngIf="isAdmin">
         <p-button label="Back" icon="pi pi-arrow-left" (onClick)="goBack()" severity="info" type="button" />
         <p-button label="Reset" (onClick)="userForm.reset()" severity="danger" type="button" />
         <p-button label="Submit" (onClick)="onSubmit()" severity="success" type="button" [disabled]="userForm.invalid" />

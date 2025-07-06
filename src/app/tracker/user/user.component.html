@@ -8,7 +8,7 @@
                 <input type="text" (input)="onGlobalFilter(userTable, $event)" pInputText placeholder="Search" />
             </p-iconfield>
 
-            <p-button label="Add User" icon="pi pi-plus" (onClick)="createUser()" outlined/>
+            <p-button *ngIf="isAdmin" label="Add User" icon="pi pi-plus" (onClick)="createUser()" outlined/>
             <p-button icon="pi pi-filter-slash" (click)="clear(userTable)" label="Clear" severity="warn" outlined/>
         </div>
     </div>
@@ -64,7 +64,7 @@
                 <th style="min-width: 8rem; padding-top: 0; padding-bottom: 0; text-align: center">Action</th>
             </tr>
         </ng-template>
-
+        
         <ng-template #body let-user let-rowIndex="rowIndex">
             <tr  (dblclick)="editUser(user)" style="cursor: pointer;">
                 <td style="text-align: center">{{ rowIndex + 1 }}</td>

@@ -21,6 +21,7 @@ export class IssueStatusComponent {
     submitted = false;
     private authService = inject(AuthService);
     showRoleDialog: boolean = false;
+    isAdmin: any;
     constructor(
         private messageService: MessageService,
         private router: Router,
@@ -30,6 +31,7 @@ export class IssueStatusComponent {
     ngOnInit() {
         const user = this.authService.getLoggedUser();
         this.userId = user.userId;
+        this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
         const statusCombo = localStorage.getItem('statusCombo');
         if (statusCombo) {
             this.statusCombo = JSON.parse(statusCombo);

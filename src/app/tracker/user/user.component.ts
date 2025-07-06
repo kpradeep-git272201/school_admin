@@ -6,6 +6,7 @@ import { Table } from 'primeng/table';
 import { Customer, CustomerService, Representative } from '../../pages/service/customer.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonService } from '../../services/api/common.service';
+import { AuthService } from '../../services/authentication/auth.service';
 
 @Component({
     selector: 'app-user',
@@ -24,12 +25,17 @@ export class UserComponent {
     @ViewChild('dt') dt!: Table;
     roleDisplay: any = {};
     designationDisplay: any = {};
+    user: any;
+    isAdmin: any;
     constructor(
         private router: Router,
+        private authService: AuthService,
         private commonService: CommonService
     ) {}
 
     ngOnInit() {
+        this.user = this.authService.getLoggedUser();
+        this.isAdmin = this.user.roleIds.includes('ROLE_ADMIN') || this.user.roleIds.includes('ROLE_MANAGER');
         const designationDisplay = localStorage.getItem('designationDisplay');
         if (designationDisplay) {
             this.designationDisplay = JSON.parse(designationDisplay);
@@ -68,6 +74,9 @@ export class UserComponent {
     }
 
     editUser(user: any) {
+        if(this.user){
+
+        }
         localStorage.setItem('editUser', JSON.stringify(user));
         this.router.navigate(['/dashboard/uikit/createUser'], {
             queryParams: {

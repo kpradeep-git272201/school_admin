@@ -17,8 +17,8 @@ import { CommonService } from '../../../services/api/common.service';
                         <i class="pi pi-shopping-cart text-blue-500 !text-xl"></i>
                     </div>
                 </div>
-                <span class="text-primary font-medium">24 new </span>
-                <span class="text-muted-color">since last visit</span>
+                <!-- <span class="text-primary font-medium">24 new </span>
+                <span class="text-muted-color">since last visit</span> -->
             </div>
         </div>
         <div class="col-span-12 lg:col-span-6 xl:col-span-3">
@@ -32,8 +32,8 @@ import { CommonService } from '../../../services/api/common.service';
                         <i class="pi pi-dollar text-orange-500 !text-xl"></i>
                     </div>
                 </div>
-                <span class="text-primary font-medium">%52+ </span>
-                <span class="text-muted-color">since last week</span>
+                <!-- <span class="text-primary font-medium">%52+ </span>
+                <span class="text-muted-color">since last week</span> -->
             </div>
         </div>
         
@@ -48,8 +48,8 @@ import { CommonService } from '../../../services/api/common.service';
                         <i class="pi pi-users text-cyan-500 !text-xl"></i>
                     </div>
                 </div>
-                <span class="text-primary font-medium">520 </span>
-                <span class="text-muted-color">newly registered</span>
+                <!-- <span class="text-primary font-medium">520 </span>
+                <span class="text-muted-color">newly registered</span> -->
             </div>
         </div>
         <div class="col-span-12 lg:col-span-6 xl:col-span-3">
@@ -63,8 +63,8 @@ import { CommonService } from '../../../services/api/common.service';
                         <i class="pi pi-users text-cyan-500 !text-xl"></i>
                     </div>
                 </div>
-                <span class="text-primary font-medium">520 </span>
-                <span class="text-muted-color">newly registered</span>
+                <!-- <span class="text-primary font-medium">520 </span>
+                <span class="text-muted-color">newly registered</span> -->
             </div>
         </div>
         <div class="col-span-12 lg:col-span-6 xl:col-span-3">
@@ -78,8 +78,8 @@ import { CommonService } from '../../../services/api/common.service';
                         <i class="pi pi-comment text-purple-500 !text-xl"></i>
                     </div>
                 </div>
-                <span class="text-primary font-medium">85 </span>
-                <span class="text-muted-color">responded</span>
+                <!-- <span class="text-primary font-medium">85 </span>
+                <span class="text-muted-color">responded</span> -->
             </div>
         </div>`
 })

@@ -1,7 +1,7 @@
 <div class="card" style="padding-top: 24px">
     <div class="flex justify-between items-center flex-column sm:flex-row mb-6">
         <div class="font-semibold text-xl">Issue Status</div>
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap gap-2" *ngIf="isAdmin">
             <p-button label="Add Status" icon="pi pi-plus" (onClick)="createStatus()" outlined />
         </div>
     </div>

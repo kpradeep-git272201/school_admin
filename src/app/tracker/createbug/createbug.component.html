@@ -2,7 +2,9 @@
     <div class="flex">
         <div class="card flex flex-col gap-6 w-full">
             <div class="font-semibold text-xl">Create Issue</div>
-
+            <div *ngIf="loading" class="custom-loading-container">
+                <div class="spinner"></div>
+            </div>
             <div class="flex flex-col md:flex-row gap-6">
                 <!-- Project Code -->
                 <div class="flex flex-col gap-2 w-full">
@@ -38,9 +40,17 @@
                     <label>Requester</label>
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-user" />
-                        <p-dropdown [options]="requesterCombo" optionLabel="name" optionValue="code" formControlName="requester" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': requester?.invalid && (requester?.dirty || requester?.touched) }" />
+                        <p-dropdown
+                            [options]="requesterCombo"
+                            optionLabel="name"
+                            optionValue="code"
+                            formControlName="requester"
+                            placeholder="Select One"
+                            class="w-full"
+                            [ngClass]="{ 'p-invalid': requester?.invalid && (requester?.dirty || requester?.touched) }"
+                        />
                     </p-iconfield>
-                     <small *ngIf="requester?.errors?.['required'] && (requester?.touched || requester?.dirty)" class="p-error"> Requester is required. </small>
+                    <small *ngIf="requester?.errors?.['required'] && (requester?.touched || requester?.dirty)" class="p-error"> Requester is required. </small>
                 </div>
             </div>
 
@@ -50,7 +60,7 @@
                     <label>Status</label>
                     <p-iconfield iconPosition="left">
                         <p-inputicon styleClass="pi pi-flag" />
-                        <p-dropdown [options]="statusCombo" optionLabel="name" optionValue="code"  formControlName="status" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': status?.invalid && (status?.dirty || status?.touched) }" />
+                        <p-dropdown [options]="statusCombo" optionLabel="name" optionValue="code" formControlName="status" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': status?.invalid && (status?.dirty || status?.touched) }" />
                         <small *ngIf="status?.errors?.['required'] && (status?.touched || status?.dirty)" class="p-error"> Status is required. </small>
                     </p-iconfield>
                 </div>
@@ -59,7 +69,15 @@
                 <div class="flex flex-col gap-2 w-full">
                     <label>Assign To</label>
                     <p-iconfield iconPosition="left">
-                        <p-dropdown [options]="assignToOpt" optionLabel="name" optionValue="code"  formControlName="assignTo" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': assignTo?.invalid && (assignTo?.dirty || assignTo?.touched) }" />
+                        <p-dropdown
+                            [options]="assignToOpt"
+                            optionLabel="name"
+                            optionValue="code"
+                            formControlName="assignTo"
+                            placeholder="Select One"
+                            class="w-full"
+                            [ngClass]="{ 'p-invalid': assignTo?.invalid && (assignTo?.dirty || assignTo?.touched) }"
+                        />
                     </p-iconfield>
                     <small *ngIf="assignTo?.errors?.['required'] && (assignTo?.touched || assignTo?.dirty)" class="p-error"> Assign To is required. </small>
                 </div>
@@ -73,7 +91,7 @@
                         <p-inputicon styleClass="pi pi-tag" />
                         <p-dropdown [options]="typeCombo" optionLabel="name" optionValue="code" formControlName="type" placeholder="Select One" class="w-full" [ngClass]="{ 'p-invalid': type?.invalid && (type?.dirty || type?.touched) }" />
                     </p-iconfield>
-                     <small *ngIf="type?.errors?.['required'] && (type?.touched || type?.dirty)" class="p-error"> Type is required. </small>
+                    <small *ngIf="type?.errors?.['required'] && (type?.touched || type?.dirty)" class="p-error"> Type is required. </small>
                 </div>
 
                 <!-- Start Date -->
@@ -122,7 +140,6 @@
                     chooseLabel="Upload"
                     cancelLabel="Clear"
                 >
-                
                     <!-- Empty Drop Zone -->
                     <ng-template pTemplate="empty">
                         <div>Drag and drop files to here to upload.</div>
@@ -137,7 +154,7 @@
                 </p-fileUpload>
             </div>
 
-            <div class="flex flex-wrap gap-2 justify-center">
+            <div class="flex flex-wrap gap-2 justify-center" *ngIf="isAdmin">
                 <p-button label="Back" icon="pi pi-arrow-left" (onClick)="backToPerevious()" severity="info" type="button" />
                 <p-button label="Reset" (onClick)="issueForm.reset()" severity="danger" type="button" />
                 <p-button label="Submit" severity="success" (onClick)="onSubmit()" type="button" />

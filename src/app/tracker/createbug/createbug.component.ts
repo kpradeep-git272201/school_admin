@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../../services/api/common.service';
 import moment from 'moment';
 import { EmailService } from '../../services/mail/email.service';
+import { AuthService } from '../../services/authentication/auth.service';
 
 @Component({
     selector: 'app-createbug',
@@ -27,16 +28,21 @@ export class CreatebugComponent {
     displayUser: any = {};
     action: any;
     issueId: any;
+    isAdmin: any;
+    loading:boolean=false;
     constructor(
         private fb: FormBuilder,
         private messageService: MessageService,
         private router: Router,
         private commonService: CommonService,
         private route: ActivatedRoute,
-        private emailTemplate: EmailService
+        private emailTemplate: EmailService,
+        private authService: AuthService
     ) {}
 
     ngOnInit(): void {
+        const user = this.authService.getLoggedUser();
+        this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
         this.getUser();
         this.createFormControle();
         this.patchValue();
@@ -169,6 +175,7 @@ export class CreatebugComponent {
 
     updateIssue() {
         if (this.issueForm.valid) {
+            this.loading=true;
             let formValue: any = this.issueForm.getRawValue();
             formValue.status = formValue.status;
             formValue.assignTo = formValue.assignTo;
@@ -190,11 +197,13 @@ export class CreatebugComponent {
             }
             console.log(JSON.stringify(formValue));
             this.commonService.updatedIssue(formData, this.issueId).subscribe({
+                
                 next: (res) => {
+                     this.loading=false;
                     this.sucessMessage('Issue updated successfully!');
                     this.reloadIssue();
                 },
-                error: (err) => this.errorMessage(err)
+                error: (err) => { this.loading=false;this.errorMessage(err)}
             });
         } else {
             this.issueForm.markAllAsTouched();

@@ -20,6 +20,7 @@ export class CreateUserComponent {
     loading: boolean | undefined;
     action: any;
     userId: any;
+    isAdmin: any;
     constructor(
         private fb: FormBuilder,
         private router: Router,
@@ -31,6 +32,8 @@ export class CreateUserComponent {
 
     ngOnDestroy(): void {
         const userData = localStorage.getItem('editUser');
+        const user = this.authService.getLoggedUser();
+        this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
         if (userData) {
             localStorage.removeItem('editUser');
         }

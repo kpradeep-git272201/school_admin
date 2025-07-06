@@ -68,7 +68,7 @@ export class AuthService {
 
     veryfyOtp(userData: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.verifyOtp}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
+        const headers = new HttpHeaders().set('content-type', 'application/json');
         return this.request('POST', url, { body: userData, headers: headers, reportProgress: false, observe: 'response' }).pipe(
             map((resp) => {
                 this.loggedIn = true;
@@ -82,7 +82,7 @@ export class AuthService {
     }
     verifyTpin(userData: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.verifyTpin}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json').set('Accept', 'application/json');
+        const headers = new HttpHeaders().set('content-type', 'application/json');
         return this.request('POST', url, { body: userData, headers: headers, reportProgress: false, observe: 'response' }).pipe(
             map((resp) => {
                 this.loggedIn = true;

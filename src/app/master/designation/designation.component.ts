@@ -22,6 +22,7 @@ export class DesignationComponent {
     private authService = inject(AuthService);
     showRoleDialog: boolean = false;
     designationForm: any;
+    isAdmin: any;
     constructor(
         private messageService: MessageService,
         private router: Router,
@@ -31,6 +32,7 @@ export class DesignationComponent {
     ngOnInit() {
         const user = this.authService.getLoggedUser();
         this.userId = user.userId;
+        this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
         const designation = localStorage.getItem('designation');
         if (designation) {
             this.designationList = JSON.parse(designation);

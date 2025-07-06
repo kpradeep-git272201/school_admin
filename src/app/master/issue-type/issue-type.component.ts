@@ -22,6 +22,7 @@ export class IssueTypeComponent {
     showIssueTypeDialog = false;
     private authService = inject(AuthService);
     showRoleDialog: boolean = false;
+    isAdmin: any;
     constructor(
         private messageService: MessageService,
         private router: Router,
@@ -31,6 +32,7 @@ export class IssueTypeComponent {
     ngOnInit() {
         const user = this.authService.getLoggedUser();
         this.userId = user.userId;
+        this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
         const typeCombo = localStorage.getItem('typeCombo');
         if (typeCombo) {
             this.typeCombo = JSON.parse(typeCombo);

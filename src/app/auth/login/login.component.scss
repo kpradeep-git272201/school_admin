@@ -123,13 +123,13 @@
 }
 
 .Fix {
-    color: #1EC9B0;
+    color: #1ec9b0;
     font-size: 20px;
     font-weight: 700;
 }
 
 .Point {
-    color: #E34C4C;
+    color: #e34c4c;
     font-size: 20px;
     font-weight: 700;
 }
@@ -140,34 +140,46 @@
 
 a:hover {
     text-decoration: underline;
-    color: linear-gradient(135deg, #00373E, #045F60); // Note: this won't work as color
+    color: linear-gradient(135deg, #00373e, #045f60); // Note: this won't work as color
 }
 
-.main{
+.main {
     display: flex;
     width: 100%;
-    background: #FFFFFF;
+    background: #ffffff;
     padding-left: 30px;
     padding-bottom: 30px;
     padding-top: 30px;
     background: linear-gradient(0deg, #a8edea, #fed6e3);
-// background: linear-gradient(135deg, #43e97b, #38f9d7);
-// background: linear-gradient(135deg, #d9afd9, #97d9e1);
-// background: linear-gradient(135deg, #c2e9fb, #a1c4fd);
-// background: linear-gradient(135deg, #43e97b, #38f9d7);
+    // background: linear-gradient(135deg, #43e97b, #38f9d7);
+    // background: linear-gradient(135deg, #d9afd9, #97d9e1);
+    // background: linear-gradient(135deg, #c2e9fb, #a1c4fd);
+    // background: linear-gradient(135deg, #43e97b, #38f9d7);
     // background: linear-gradient(180deg, #fefcea, #f1da36);
-// background: linear-gradient(180deg, #f3e5f5, #9c27b0);
-// background: linear-gradient(180deg, #e0f2f1,#e0f2f1,#c1e6e4, #4caf50);
+    // background: linear-gradient(180deg, #f3e5f5, #9c27b0);
+    // background: linear-gradient(180deg, #e0f2f1,#e0f2f1,#c1e6e4, #4caf50);
 }
 
-label{
+label {
     color: black;
 }
-p{
+p {
     color: black;
 }
-#span:hover{
+#span:hover {
     text-decoration: underline;
     color: #431ec9;
     font-size: 16px;
+}
+.version {
+    display: flex;
+}
+.updatedOn {
+    margin-bottom: 5px;
+    color: black;
+    // display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+    font-size: 10px;
 }
