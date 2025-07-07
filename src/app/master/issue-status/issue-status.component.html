@@ -1,108 +1,142 @@
 <div class="card" style="padding-top: 24px">
-    <div class="flex justify-between items-center flex-column sm:flex-row mb-6">
-        <div class="font-semibold text-xl">Issue Status</div>
-        <div class="flex flex-wrap gap-2" *ngIf="isAdmin">
-            <p-button label="Add Status" icon="pi pi-plus" (onClick)="createStatus()" outlined />
-        </div>
+  <div class="flex items-center justify-between mb-6">
+    <div class="font-semibold text-xl">Issue Status</div>
+
+    <div *ngIf="isAdmin">
+      <p-button
+        class="hidden sm:inline-flex"
+        label="Add Status"
+        icon="pi pi-plus"
+        (onClick)="createStatus()"
+        outlined
+      />
+      <p-button
+        class="inline-flex sm:hidden"
+        icon="pi pi-plus"
+        (onClick)="createStatus()"
+        outlined
+        pTooltip="Add Status"
+        tooltipPosition="top"
+      />
     </div>
+  </div>
 
-    <p-table
-        #userTable
-        [value]="statusCombo"
-        class="auto-width-table"
-        dataKey="id"
-        [rows]="10"
-        [paginator]="statusCombo.length > 10 ? true : false"
-        [rowHover]="true"
-        [loading]="loading"
-        [showGridlines]="true"
-        responsiveLayout="scroll"
-        scrollHeight="410px"
-        tableStyleClass="nowrap-cell"
-    >
-        <ng-template #header>
-            <tr>
-                <th style="width: 4rem; padding-top: 0; padding-bottom: 0; text-align: center" class="font-bold">S.No.</th>
-                <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0">
-                    <div class="flex justify-between items-center font-bold">
-                        Designation
-                        <p-columnFilter type="text" field="name" display="menu" placeholder="Search Name" />
-                    </div>
-                </th>
-                <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0">
-                    <div class="flex justify-between items-center font-bold">Designation Code</div>
-                </th>
-                <th style="min-width: 16rem; padding-top: 0; padding-bottom: 0">
-                    <div class="flex justify-between items-center font-bold">Description</div>
-                </th>
-                <th style="min-width: 8rem; padding-top: 0; padding-bottom: 0" class="text-center">
-                    <div class="flex justify-between items-center font-bold">Active?</div>
-                </th>
-            </tr>
-        </ng-template>
+  <p-table
+    #userTable
+    [value]="statusCombo"
+    class="auto-width-table"
+    dataKey="id"
+    [rows]="10"
+    [paginator]="statusCombo.length > 10"
+    [rowHover]="true"
+    [loading]="loading"
+    [showGridlines]="true"
+    responsiveLayout="scroll"
+    scrollHeight="410px"
+    tableStyleClass="nowrap-cell"
+  >
+    <ng-template #header>
+      <tr>
+        <th class="font-bold text-center" style="width: 4rem">S.No.</th>
+        <th style="min-width: 12rem">
+          <div class="flex justify-between items-center font-bold">
+            Status Name
+            <p-columnFilter type="text" field="name" display="menu" placeholder="Search Name" />
+          </div>
+        </th>
+        <th style="min-width: 12rem" class="font-bold">Code</th>
+        <th style="min-width: 16rem" class="font-bold">Description</th>
+        <th class="font-bold text-center" style="min-width: 8rem">Active?</th>
+      </tr>
+    </ng-template>
 
-        <ng-template #body let-data let-rowIndex="rowIndex">
-            <tr>
-                <td style="text-align: center">{{ rowIndex + 1 }}</td>
-                <td class="ellipsis-cell">{{ data.name }}</td>
-                <td class="ellipsis-cell">{{ data.code }}</td>
-                <td class="ellipsis-cell">{{ data.description }}</td>
-                <td class="ellipsis-cell">{{ data.isActive }}</td>
-            </tr>
-        </ng-template>
+    <ng-template #body let-data let-rowIndex="rowIndex">
+      <tr>
+        <td class="text-center">{{ rowIndex + 1 }}</td>
+        <td class="ellipsis-cell">{{ data.name }}</td>
+        <td class="ellipsis-cell">{{ data.code }}</td>
+        <td class="ellipsis-cell">{{ data.description }}</td>
+        <td class="ellipsis-cell text-center">{{ data.isActive ? 'Yes' : 'No' }}</td>
+      </tr>
+    </ng-template>
 
-        <ng-template #emptymessage>
-            <tr>
-                <td colspan="7" class="text-center">No users found.</td>
-            </tr>
-        </ng-template>
-    </p-table>
+    <ng-template #emptymessage>
+      <tr>
+        <td colspan="5" class="text-center">No status found.</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </div>
 
-<p-dialog header="Add Status" [(visible)]="showRoleDialog" [modal]="true" [style]="{ width: '30rem' }" [closable]="false" [draggable]="false">
-    <p-fluid [formGroup]="statusForm">
-        <div class="flex">
-            <div class="flex flex-col gap-6 w-full">
-                <!-- Name & Code -->
-                <div class="flex flex-col md:flex-row gap-6">
-                    <!-- Status Name -->
-                    <div class="flex flex-col gap-2 w-full">
-                        <label>Status Name</label>
-                        <p-iconfield iconPosition="left">
-                            <p-inputicon styleClass="pi pi-tag" />
-                            <input (blur)="onChange($event)" pInputText formControlName="name" placeholder="Enter Status Name" [ngClass]="{ 'p-invalid': statusForm.controls['name'].invalid && (statusForm.controls['name'].touched || submitted) }" />
-                        </p-iconfield>
-                        <small *ngIf="statusForm.controls['name'].errors?.['required']" class="p-error">Status Name is required.</small>
-                    </div>
-                </div>
-
-                <!-- Description -->
-                <div class="flex flex-col gap-2 w-full">
-                    <label>Description</label>
-                    <textarea pInputTextarea formControlName="description" rows="3" placeholder="Enter Description"></textarea>
-                </div>
-
-                <!-- Is Active -->
-                <div class="flex flex-col gap-2 w-full">
-                    <label>Active?</label>
-                    <p-dropdown
-                        [options]="[
-                            { label: 'Yes', value: true },
-                            { label: 'No', value: false }
-                        ]"
-                        placeholder="Select"
-                        formControlName="isActive"
-                    ></p-dropdown>
-                </div>
-
-                <!-- Buttons -->
-                <div class="flex flex-wrap gap-2 justify-center">
-                    <p-button label="Cancel" icon="pi pi-times" (onClick)="cancelStatus()" severity="secondary" type="button" />
-                    <p-button label="Save" icon="pi pi-check" (onClick)="saveStatus()" severity="success" type="button" [disabled]="statusForm.invalid" />
-                </div>
-            </div>
+<p-dialog
+  header="Add Status"
+  [(visible)]="showRoleDialog"
+  [modal]="true"
+  [style]="{ width: '30rem' }"
+  [closable]="false"
+  [draggable]="false"
+>
+  <p-fluid [formGroup]="statusForm">
+    <div class="flex">
+      <div class="flex flex-col gap-6 w-full">
+        <div class="flex flex-col md:flex-row gap-6">
+          <div class="flex flex-col gap-2 w-full">
+            <label>Status Name</label>
+            <p-iconfield iconPosition="left">
+              <p-inputicon styleClass="pi pi-tag" />
+              <input
+                pInputText
+                (blur)="onChange($event)"
+                formControlName="name"
+                placeholder="Enter Status Name"
+                [ngClass]="{
+                  'p-invalid': statusForm.controls['name'].invalid &&
+                  (statusForm.controls['name'].touched || submitted)
+                }"
+              />
+            </p-iconfield>
+            <small *ngIf="statusForm.controls['name'].errors?.['required']" class="p-error">
+              Status Name is required.
+            </small>
+          </div>
         </div>
-    </p-fluid>
+
+        <div class="flex flex-col gap-2 w-full">
+          <label>Description</label>
+          <textarea
+            pInputTextarea
+            formControlName="description"
+            rows="3"
+            placeholder="Enter Description"
+          ></textarea>
+        </div>
+
+        <div class="flex flex-col gap-2 w-full">
+          <label>Active?</label>
+          <p-dropdown
+            [options]="[
+              { label: 'Yes', value: true },
+              { label: 'No', value: false }
+            ]"
+            placeholder="Select"
+            formControlName="isActive"
+          ></p-dropdown>
+        </div>
+
+        <div class="flex flex-wrap gap-2 justify-center">
+          <p-button label="Cancel" icon="pi pi-times" (onClick)="cancelStatus()" severity="secondary" type="button" />
+          <p-button
+            label="Save"
+            icon="pi pi-check"
+            (onClick)="saveStatus()"
+            severity="success"
+            type="button"
+            [disabled]="statusForm.invalid"
+          />
+        </div>
+      </div>
+    </div>
+  </p-fluid>
 </p-dialog>
 
 <p-toast position="top-right"></p-toast>

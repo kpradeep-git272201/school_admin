@@ -134,7 +134,7 @@
 
                         <div class="flex flex-col gap-10" style="margin-top: 20px">
                             <div class="flex flex-wrap gap-2 justify-center">
-                                <p-button [disabled]="!(otpInput.length == 6)" styleClass="w-full" (onClick)="verifyCode()" label="Verify Code" />
+                                <p-button [disabled]="otpInput.length !== 6 || loading" styleClass="w-full" (onClick)="verifyCode()" label="Verify Code" />
                             </div>
                         </div>
                     </div>

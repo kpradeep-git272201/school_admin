@@ -36,6 +36,7 @@ export class DesignationComponent {
         const user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.userId = user.userId;
         this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
+        this.loading=true;
         this.getDesigantion();
         this.createDesignationForm();
     }
@@ -94,6 +95,7 @@ export class DesignationComponent {
 
     getDesigantion() {
         this.commonService.getDesignation().subscribe((user) => {
+            this.loading=false;
             if (user.status == 200) {
                 const designation = user.body;
                 this.designationList = designation;

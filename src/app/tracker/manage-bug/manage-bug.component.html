@@ -1,20 +1,28 @@
 <div class="card" style="padding-top: 24px">
-    <div class="flex justify-between items-center flex-column sm:flex-row mb-6">
-        <div class="flex flex-wrap gap-2">
-            <div class="font-semibold text-xl" style="line-height: 2.1"><span>Report Bug</span></div>
-            <p-iconfield iconPosition="left">
-                <p-dropdown [options]="queryList" (onChange)="onQueryChange($event)" optionLabel="name" optionValue="code" [(ngModel)]="selectedQuery" class="w-full" />
+    <div class="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center mb-6">
+        <!-- Left Side: Title + Dropdown -->
+        <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4">
+            <div class="font-semibold text-xl">Report Bug</div>
+            <p-iconfield iconPosition="left" class="min-w-[200px]">
+                <p-dropdown [options]="queryList" (onChange)="onQueryChange($event)" optionLabel="name" optionValue="code" [(ngModel)]="selectedQuery" class="w-full sm:w-60" />
             </p-iconfield>
         </div>
-        <div class="flex flex-wrap gap-2">
-            <p-iconfield>
+
+        <!-- Right Side: Search + Buttons -->
+        <div class="flex flex-wrap sm:flex-nowrap gap-2 justify-end">
+            <p-iconfield class="flex-1 min-w-[150px] sm:w-60">
                 <p-inputicon styleClass="pi pi-search" />
-                <input type="text" (input)="onGlobalFilter(dt, $event)" pInputText placeholder="Search" />
+                <input type="text" pInputText (input)="onGlobalFilter(dt, $event)" placeholder="Search" class="w-full" />
             </p-iconfield>
 
-            <p-button label="Add" icon="pi pi-plus" (onClick)="createBug()" outlined />
-            <p-button icon="pi pi-filter-slash" (click)="clear(dt)" label="Clear" severity="warn" outlined />
-            <p-button icon="pi pi-download" (click)="showDialog()" label="MPR" severity="success" outlined />
+            <p-button label="Add" icon="pi pi-plus" (onClick)="createBug()" class="hidden sm:inline-flex" outlined />
+            <p-button icon="pi pi-plus" (onClick)="createBug()" class="inline-flex sm:hidden" pTooltip="Add" tooltipPosition="top" outlined />
+
+            <p-button label="Clear" icon="pi pi-filter-slash" severity="warn" (click)="clear(dt)" class="hidden sm:inline-flex" outlined />
+            <p-button icon="pi pi-filter-slash" (click)="clear(dt)" class="inline-flex sm:hidden" pTooltip="Clear" severity="warn" outlined />
+
+            <p-button label="MPR" icon="pi pi-download" severity="success" (click)="showDialog()" class="hidden sm:inline-flex" outlined />
+            <p-button icon="pi pi-download" (click)="showDialog()" class="inline-flex sm:hidden" pTooltip="Download MPR" severity="success" outlined />
         </div>
     </div>
 
@@ -155,21 +163,20 @@
         </ng-template>
     </p-table>
 
-    <p-dialog header="Attachment Preview" [(visible)]="showPreview" [modal]="true" [style]="{ width: '600px' }">
+    <p-dialog header="Attachment Preview" [(visible)]="showPreview" [modal]="true" [style]="{ width: '95vw', maxWidth: '600px' }" [contentStyle]="{ padding: '0' }" [breakpoints]="{ '960px': '90vw', '640px': '100vw' }">
         <img *ngIf="previewAttachment" [src]="'data:image/png;base64,' + previewAttachment" alt="attachment" style="width: 100%; height: auto; border-radius: 6px" />
 
-        <div class="p-mt-3" style="text-align: right">
+        <div class="p-3 flex justify-end">
             <button pButton type="button" label="Download" icon="pi pi-download" (click)="downloadAttachment()"></button>
         </div>
     </p-dialog>
 </div>
 
-<!-- MPR Input dialog -->
 <p-dialog header="MPR Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
     <span class="p-text-secondary block mb-3">Update your information.</span>
-        <div *ngIf="loading" class="custom-loading-container">
-            <div class="spinner"></div>
-        </div>
+    <div *ngIf="loading" class="custom-loading-container">
+        <div class="spinner"></div>
+    </div>
     <form [formGroup]="vendorForm" (ngSubmit)="onSubmit()" class="p-fluid">
         <div class="flex flex-col md:flex-row gap-6">
             <div class="flex flex-col gap-2 w-full">
@@ -197,10 +204,8 @@
             </div>
 
             <div class="flex flex-col gap-2 w-full">
-                <label>End Date <span style="font-size: 10px;">(yyyy-mm-dd)</span></label>
-                <!-- <p-iconfield iconPosition="right">
-                   <p-calendar [disabled]="true" inputId="endDate" formControlName="endDate" dateFormat="yy-mm-dd" appendTo="body"></p-calendar>
-                </p-iconfield> -->
+                <label>End Date <span style="font-size: 10px">(yyyy-mm-dd)</span></label>
+
                 <p-iconfield iconPosition="right">
                     <input readonly id="showEndDate" type="text" pInputText formControlName="showEndDate" placeholder="Enter Vendor Name" />
                 </p-iconfield>

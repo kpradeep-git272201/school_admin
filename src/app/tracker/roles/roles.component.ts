@@ -36,8 +36,9 @@ export class RolesComponent {
         const user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.userId = user.userId;
         this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
+        this.loading=true;
         this.getRoles();
-        this.loading = false;
+        
 
         this.createFormControl();
     }
@@ -92,6 +93,7 @@ export class RolesComponent {
 
     getRoles() {
         this.commonService.getRoles().subscribe((user) => {
+            this.loading=false;
             if (user.status == 200) {
                 const rolesList = user.body;
                 this.rolesList = rolesList;

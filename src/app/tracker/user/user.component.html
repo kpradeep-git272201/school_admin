@@ -1,25 +1,26 @@
 <div class="card" style="padding-top: 24px">
-    <div class="flex justify-between items-center flex-column sm:flex-row mb-6">
-        <div class="font-semibold text-xl">Users</div>
+    <div class="flex items-center justify-between mb-6">
+        <div class="font-semibold text-xl" style="padding-right: 10px;">Users </div>
 
-        <div class="flex flex-wrap gap-2">
-            <p-iconfield>
+        <div class="flex gap-2">
+            <p-iconfield class="flex-1 min-w-[120px]">
                 <p-inputicon styleClass="pi pi-search" />
-                <input type="text" (input)="onGlobalFilter(userTable, $event)" pInputText placeholder="Search" />
+                <input type="text" pInputText (input)="onGlobalFilter(userTable, $event)" placeholder="Search" class="w-full" />
             </p-iconfield>
-
-            <p-button *ngIf="isAdmin" label="Add User" icon="pi pi-plus" (onClick)="createUser()" outlined/>
-            <p-button icon="pi pi-filter-slash" (click)="clear(userTable)" label="Clear" severity="warn" outlined/>
+            <p-button *ngIf="isAdmin" class="hidden sm:inline-flex" label="Add Role" icon="pi pi-plus" (onClick)="createUser()" outlined />
+            <p-button *ngIf="isAdmin" class="inline-flex sm:hidden" icon="pi pi-plus" (onClick)="createUser()" outlined pTooltip="Add Role" tooltipPosition="top" />
+            <p-button class="hidden sm:inline-flex" label="Clear" icon="pi pi-filter-slash" severity="warn" (click)="clear(userTable)" outlined />
+            <p-button class="inline-flex sm:hidden" icon="pi pi-filter-slash" (click)="clear(userTable)" outlined pTooltip="Clear" severity="warn" tooltipPosition="top" />
         </div>
     </div>
-
+ 
     <p-table
         #userTable
         [value]="userList"
         class="auto-width-table"
         dataKey="id"
         [rows]="10"
-        [paginator]="userList?.length > 10 ? true : false"
+        [paginator]="userList?.length > 10"
         [rowHover]="true"
         [loading]="loading"
         [globalFilterFields]="['username', 'email']"
@@ -30,55 +31,51 @@
     >
         <ng-template #header>
             <tr>
-                <th style="width: 4rem; padding-top: 0; padding-bottom: 0; text-align: center">S.No.</th>
-                <th style="min-width: 12rem; padding-top: 0; padding-bottom: 0">
+                <th style="width: 4rem" class="text-center font-bold">S.No.</th>
+                <th style="min-width: 12rem">
                     <div class="flex justify-between items-center font-bold">
                         User Name
                         <p-columnFilter type="text" field="username" display="menu" placeholder="Search Name" />
                     </div>
                 </th>
-                <th style="min-width: 15rem; padding-top: 0; padding-bottom: 0">
+                <th style="min-width: 15rem">
                     <div class="flex justify-between items-center font-bold">
                         Designation
                         <p-columnFilter type="text" field="designation" display="menu" placeholder="Search Designation" />
                     </div>
                 </th>
-                <th style="min-width: 16rem; padding-top: 0; padding-bottom: 0">
+                <th style="min-width: 16rem">
                     <div class="flex justify-between items-center font-bold">
                         Email
                         <p-columnFilter type="text" field="email" display="menu" placeholder="Search Email" />
                     </div>
                 </th>
-                <th style="min-width: 16rem; padding-top: 0; padding-bottom: 0">
+                <th style="min-width: 16rem">
                     <div class="flex justify-between items-center font-bold">
                         Role
                         <p-columnFilter type="text" field="roleIds" display="menu" placeholder="Search Role" />
                     </div>
                 </th>
-                <th style="min-width: 8rem; padding-top: 0; padding-bottom: 0" class="text-center">
-                    <div class="flex justify-between items-center font-bold">
+                <th style="min-width: 8rem" class="text-center font-bold">
+                    <div class="flex justify-between items-center">
                         Active?
                         <p-columnFilter type="text" field="isActive" display="menu" placeholder="Active?" />
                     </div>
                 </th>
-                <th style="min-width: 8rem; padding-top: 0; padding-bottom: 0; text-align: center">Action</th>
+                <th style="min-width: 8rem" class="text-center font-bold">Action</th>
             </tr>
         </ng-template>
-        
+
         <ng-template #body let-user let-rowIndex="rowIndex">
-            <tr  (dblclick)="editUser(user)" style="cursor: pointer;">
-                <td style="text-align: center">{{ rowIndex + 1 }}</td>
+            <tr (dblclick)="editUser(user)" style="cursor: pointer">
+                <td class="text-center">{{ rowIndex + 1 }}</td>
                 <td class="ellipsis-cell">{{ user.username }}</td>
                 <td class="ellipsis-cell">{{ designationDisplay[user.designation] || user.designation }}</td>
                 <td class="ellipsis-cell">{{ user.email }}</td>
                 <td class="ellipsis-cell">
-                    <span *ngFor="let roleCode of user.roleIds; let i=index">
-                        <span *ngIf="i>=1">, </span>{{ roleDisplay[roleCode] }} 
-                    </span>
+                    <span *ngFor="let roleCode of user.roleIds; let i = index"> <span *ngIf="i >= 1">, </span>{{ roleDisplay[roleCode] }} </span>
                 </td>
-                <td class="ellipsis-cell text-center">
-                    {{ user.isActive ? 'Y' : 'N' }}
-                </td>
+                <td class="text-center ellipsis-cell">{{ user.isActive ? 'Y' : 'N' }}</td>
                 <td class="text-center">
                     <i class="pi pi-pencil cursor-pointer text-primary" (click)="editUser(user)"></i>
                 </td>

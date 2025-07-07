@@ -35,6 +35,7 @@ export class IssueStatusComponent {
         const user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.userId = user.userId;
         this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
+        this.loading=true;
         this.getIssueStatus();
 
         this.createStatusForm();
@@ -98,6 +99,7 @@ export class IssueStatusComponent {
 
      getIssueStatus() {
         this.commonService.getIssueStatus().subscribe((status) => {
+            this.loading=false;
             if (status.status == 200) {
                 const statusCombo = status.body;
                 this.statusCombo=statusCombo;

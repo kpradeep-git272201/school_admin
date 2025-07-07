@@ -36,6 +36,7 @@ export class IssueTypeComponent {
         const user = this.encrypDecryptService.getDecryptedData(encrypted);
         this.userId = user.userId;
         this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
+        this.loading=true;
         this.getIssueType(); 
         this.createIssueForm();
     }
@@ -88,6 +89,7 @@ export class IssueTypeComponent {
     }
     getIssueType() {
         this.commonService.getIssueType().subscribe((type) => {
+            this.loading=false;
             if (type.status == 200) {
                 const typeCombo = type.body;
                 this.typeCombo = typeCombo;
