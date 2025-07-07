@@ -180,78 +180,83 @@ export class ManageBugComponent implements OnInit {
         });
     }
 
-   downloadMpr(data: any) {
-    this.commonService.downloadDocx(data).subscribe({
-        next: (blob: Blob) => {
-            if (blob && blob.size > 0) {
-                this.loading=false;
-                this.visible=false;
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `Monthly_Progress_Report(MPR)-${moment().format('MMM-YYYY')}.docx`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            } else {
-                this.visible=false;
-                this.loading=false;
-                console.error('Empty file received');
+    downloadMpr(data: any) {
+        this.commonService.downloadDocx(data).subscribe({
+            next: (blob: Blob) => {
+                if (blob && blob.size > 0) {
+                    this.loading = false;
+                    this.visible = false;
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `Monthly_Progress_Report(MPR)-${moment().format('MMM-YYYY')}.docx`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                } else {
+                    this.visible = false;
+                    this.loading = false;
+                    console.error('Empty file received');
+                }
+            },
+            error: (err) => {
+                this.loading = false;
+                console.error('Error while downloading MPR:', err);
             }
-        },
-        error: (err) => {
-            this.loading=false;
-            console.error('Error while downloading MPR:', err);
-        }
-    });
-}
-
+        });
+    }
 
     showDialog() {
         this.visible = true;
     }
 
     createVendorForm() {
-        const designationDisplay = localStorage.getItem('designationDisplay');
-        let designationObj:any={};
-        if (designationDisplay) {
-            designationObj = JSON.parse(designationDisplay);
-        }
-        const today = new Date();
+        this.commonService.getDesignation().subscribe((user) => {
+            if (user.status == 200) {
+                const designation = user.body;
+                localStorage.setItem('designation', JSON.stringify(designation));
+                const designationDisplay: any = {};
+                designation.forEach((designation: any) => {
+                    designationDisplay[designation.code] = designation.name;
+                });
+                const today = new Date();
 
-        const startDate = new Date(today.getFullYear(), today.getMonth() - 1, 25);
-        const endDate = today;
-        this.vendorForm = this.fb.group({
-            header: [`Monthly Progress Report (MPR): ${moment().format('MMM-YYYY')}`],
-            name:[this.user.username],
-            designation: [designationObj[this.user.designation]],
-            basId: [null, Validators.required],
-            vendorName: [''],
-            startDate: [startDate, Validators.required],
-            endDate: [endDate],
-            showEndDate: [moment().format('YYYY-MM-DD')]
+                const startDate = new Date(today.getFullYear(), today.getMonth() - 1, 25);
+                const endDate = today;
+                this.vendorForm = this.fb.group({
+                    header: [`Monthly Progress Report (MPR): ${moment().format('MMM-YYYY')}`],
+                    name: [this.user.username],
+                    designation: [designationDisplay[this.user.designation]],
+                    basId: [null, Validators.required],
+                    vendorName: [''],
+                    startDate: [startDate, Validators.required],
+                    endDate: [endDate],
+                    showEndDate: [moment().format('YYYY-MM-DD')]
+                });
+            } else {
+            }
         });
     }
 
     onSubmit() {
-        this.loading=true;
+        this.loading = true;
         if (this.vendorForm.valid) {
             this.downloadMpr(this.vendorForm.getRawValue());
-        }else{
-            this.loading=false;
+        } else {
+            this.loading = false;
             this.vendorForm.markAllAsTouched();
         }
     }
 
-     get basId() {
+    get basId() {
         return this.vendorForm.get('basId');
     }
     get startDate() {
         return this.vendorForm.get('startDate');
     }
 
-    cancel(){
-        this.visible=false;
+    cancel() {
+        this.visible = false;
     }
 }

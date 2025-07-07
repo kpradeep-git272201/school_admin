@@ -177,7 +177,8 @@
     <div *ngIf="loading" class="custom-loading-container">
         <div class="spinner"></div>
     </div>
-    <form [formGroup]="vendorForm" (ngSubmit)="onSubmit()" class="p-fluid">
+    
+    <form *ngIf="vendorForm" [formGroup]="vendorForm" (ngSubmit)="onSubmit()" class="p-fluid">
         <div class="flex flex-col md:flex-row gap-6">
             <div class="flex flex-col gap-2 w-full">
                 <label>BAS ID</label>
@@ -214,7 +215,7 @@
 
         <div class="flex flex-wrap gap-2 justify-center mt-5">
             <p-button label="Cancel" icon="pi pi-times" (onClick)="cancel()" severity="secondary" type="button" />
-            <p-button label="Submit" icon="pi pi-check" severity="success" (onClick)="onSubmit()" type="button" />
+            <p-button [disabled]="loading" label="Submit" icon="pi pi-check" severity="success" (onClick)="onSubmit()" type="button" />
         </div>
     </form>
 </p-dialog>
