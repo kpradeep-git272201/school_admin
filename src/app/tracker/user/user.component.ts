@@ -35,9 +35,9 @@ export class UserComponent {
     ) {}
 
     ngOnInit() {
-        const encrypted = localStorage.getItem('encrypted');
-        this.user = this.encrypDecryptService.getDecryptedData(encrypted);
-        this.isAdmin = this.user.roleIds.includes('ROLE_ADMIN') || this.user.roleIds.includes('ROLE_MANAGER');
+        // const encrypted = localStorage.getItem('encrypted');
+        // this.user = this.encrypDecryptService.getDecryptedData(encrypted);
+        // this.isAdmin = this.user.roleIds.includes('ROLE_ADMIN') || this.user.roleIds.includes('ROLE_MANAGER');
         this.getDesigantion();
         this.getRoles();
         this.getUserList();

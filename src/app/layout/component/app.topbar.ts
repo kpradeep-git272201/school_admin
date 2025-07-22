@@ -20,7 +20,7 @@ import { AuthService } from '../../services/authentication/auth.service';
                 <i class="pi pi-bars"></i>
             </button>
             <a class="layout-topbar-logo" routerLink="/">
-                <img src="icons/FixPoint.png" alt="Emblem" class="emblem" height="28" width="28" />
+                <!-- <img src="icons/FixPoint.png" alt="Emblem" class="emblem" height="28" width="28" /> -->
                 <!-- <svg viewBox="0 0 54 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         fill-rule="evenodd"
@@ -38,7 +38,7 @@ import { AuthService } from '../../services/authentication/auth.service';
                         />
                     </g>
                 </svg> -->
-                <p style="line-height: 2"><span class="Fix">Fix</span> <span class="Point">Point</span></p>
+                <p style="line-height: 2"><span class="Fix">Logo</span> <span class="Point">Here</span></p>
             </a>
         </div>
 

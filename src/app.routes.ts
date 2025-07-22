@@ -7,9 +7,9 @@ import { Notfound } from './app/pages/notfound/notfound';
 import { authGuard } from './app/guard/auth.guard';
 
 export const appRoutes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
+    { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
     {
-        path: '',
+        path: 'login',
         loadChildren: () => import('./app/auth/auth.module').then((m) => m.AuthModule)
     },
     {

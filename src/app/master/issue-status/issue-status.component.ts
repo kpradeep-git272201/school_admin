@@ -31,11 +31,11 @@ export class IssueStatusComponent {
         private encrypDecryptService: EncryptDecryptService
     ) {}
     ngOnInit() {
-        const encrypted = localStorage.getItem('encrypted');
-        const user = this.encrypDecryptService.getDecryptedData(encrypted);
-        this.userId = user.userId;
-        this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
-        this.loading=true;
+        // const encrypted = localStorage.getItem('encrypted');
+        // const user = this.encrypDecryptService.getDecryptedData(encrypted);
+        // this.userId = user.userId;
+        // this.isAdmin = user.roleIds.includes('ROLE_ADMIN') || user.roleIds.includes('ROLE_MANAGER');
+        // this.loading=true;
         this.getIssueStatus();
 
         this.createStatusForm();

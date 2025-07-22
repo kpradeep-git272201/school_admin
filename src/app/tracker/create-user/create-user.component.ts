@@ -56,7 +56,7 @@ export class CreateUserComponent {
 
  
     getDesigantion() {
-        this.commonService.getDesignation().subscribe((user) => {
+        this.commonService.getDesignation().subscribe((user:any) => {
             if (user.status == 200) {
                 this.designationList = user.body;
             }
