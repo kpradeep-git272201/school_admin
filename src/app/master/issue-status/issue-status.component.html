@@ -76,7 +76,7 @@
   [closable]="false"
   [draggable]="false"
 >
-  <p-fluid [formGroup]="statusForm">
+  <p-fluid *ngIf="statusForm" [formGroup]="statusForm">
     <div class="flex">
       <div class="flex flex-col gap-6 w-full">
         <div class="flex flex-col md:flex-row gap-6">

@@ -70,7 +70,7 @@
 
 <!-- Create User role -->
 <p-dialog header="Add New Role" [(visible)]="showRoleDialog" [modal]="true" [style]="{ width: '30rem' }" [closable]="false" [draggable]="false">
-    <p-fluid [formGroup]="roleForm">
+    <p-fluid *ngIf="roleForm" [formGroup]="roleForm">
         <div class="flex">
             <div class="flex flex-col gap-6 w-full">
                 <!-- Role Name and Code -->

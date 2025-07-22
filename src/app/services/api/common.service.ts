@@ -388,20 +388,48 @@ export class CommonService {
         );
     }
     getRoles() {
-        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.roles}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
-        return this.request('GET', url, {
-            headers: headers,
-            reportProgress: false,
-            observe: 'response'
-        }).pipe(
-            map((resp) => {
-                return resp;
-            }),
-            catchError((error) => {
-                return of(error);
-            })
-        );
+        // const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.roles}`;
+        // const headers = new HttpHeaders().set('content-type', 'application/json').set('Authorization', `${this.token}`);
+        // return this.request('GET', url, {
+        //     headers: headers,
+        //     reportProgress: false,
+        //     observe: 'response'
+        // }).pipe(
+        //     map((resp) => {
+        //         return resp;
+        //     }),
+        //     catchError((error) => {
+        //         return of(error);
+        //     })
+        // );
+        return of({status: 200,
+            body: [
+                {
+                    "name": "Admin",
+                    "code": "ROLE_ADMIN",
+                    "description": "System administrator with full access",
+                    "isActive": true,
+                    "createdBy": null,
+                    "updatedBy": null
+                },
+                {
+                    "name": "Manager",
+                    "code": "ROLE_MANAGER",
+                    "description": "Manager with elevated permissions",
+                    "isActive": true,
+                    "createdBy": null,
+                    "updatedBy": null
+                },
+                {
+                    "name": "User",
+                    "code": "ROLE_USER",
+                    "description": "Regular user with limited access",
+                    "isActive": true,
+                    "createdBy": null,
+                    "updatedBy": null
+                }
+            ]
+        })
     }
     createRoles(role: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.roles}`;
@@ -421,20 +449,56 @@ export class CommonService {
         );
     }
     getIssueType() {
-        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueType}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json');
-        return this.request('GET', url, {
-            headers: headers,
-            reportProgress: false,
-            observe: 'response'
-        }).pipe(
-            map((resp) => {
-                return resp;
-            }),
-            catchError((error) => {
-                return of(error);
-            })
-        );
+        // const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueType}`;
+        // const headers = new HttpHeaders().set('content-type', 'application/json');
+        // return this.request('GET', url, {
+        //     headers: headers,
+        //     reportProgress: false,
+        //     observe: 'response'
+        // }).pipe(
+        //     map((resp) => {
+        //         return resp;
+        //     }),
+        //     catchError((error) => {
+        //         return of(error);
+        //     })
+        // );
+        return of({
+            status:200,
+            body:[
+                {
+                    "name": "Bug",
+                    "code": "BUG",
+                    "description": "Bug-related issues",
+                    "isActive": true,
+                    "createdBy": null,
+                    "updatedBy": null
+                },
+                {
+                    "name": "Issue",
+                    "code": "ISSUE",
+                    "description": "General issue category",
+                    "isActive": true,
+                    "createdBy": null,
+                    "updatedBy": null
+                },
+                {
+                    "name": "Feature",
+                    "code": "FEATURE",
+                    "description": "New feature request",
+                    "isActive": true,
+                    "createdBy": null,
+                    "updatedBy": null
+                },
+                {
+                    "name": "Enhancement",
+                    "code": "ENHANCEMENT",
+                    "description": "Improvements on existing features",
+                    "isActive": true,
+                    "createdBy": null,
+                    "updatedBy": null
+                }
+            ]})
     }
     addIssueType(issueType: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueType}`;
@@ -454,20 +518,65 @@ export class CommonService {
         );
     }
     getIssueStatus() {
-        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueStatus}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json');
-        return this.request('GET', url, {
-            headers: headers,
-            reportProgress: false,
-            observe: 'response'
-        }).pipe(
-            map((resp) => {
-                return resp;
-            }),
-            catchError((error) => {
-                return of(error);
-            })
-        );
+        // const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueStatus}`;
+        // const headers = new HttpHeaders().set('content-type', 'application/json');
+        // return this.request('GET', url, {
+        //     headers: headers,
+        //     reportProgress: false,
+        //     observe: 'response'
+        // }).pipe(
+        //     map((resp) => {
+        //         return resp;
+        //     }),
+        //     catchError((error) => {
+        //         return of(error);
+        //     })
+        // );
+        return of({
+            status:200,
+            body: [
+    {
+        "name": "Pending",
+        "code": "PENDING",
+        "description": "Waiting to be processed",
+        "isActive": true,
+        "createdBy": null,
+        "updatedBy": null
+    },
+    {
+        "name": "In Progress",
+        "code": "IN_PROGRESS",
+        "description": "Currently being worked on",
+        "isActive": true,
+        "createdBy": null,
+        "updatedBy": null
+    },
+    {
+        "name": "Completed",
+        "code": "COMPLETED",
+        "description": "Work finished successfully",
+        "isActive": true,
+        "createdBy": null,
+        "updatedBy": null
+    },
+    {
+        "name": "Rejected",
+        "code": "REJECTED",
+        "description": "Issue was rejected",
+        "isActive": true,
+        "createdBy": null,
+        "updatedBy": null
+    },
+    {
+        "name": "Resolved",
+        "code": "RESOLVED",
+        "description": "Issue has been resolved",
+        "isActive": true,
+        "createdBy": null,
+        "updatedBy": null
+    }
+            ]
+        })
     }
     addStatus(status: any) {
         const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.issueStatus}`;
@@ -487,20 +596,74 @@ export class CommonService {
         );
     }
     getDesignation() {
-        const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.designation}`;
-        const headers = new HttpHeaders().set('content-type', 'application/json');
-        return this.request('GET', url, {
-            headers: headers,
-            reportProgress: false,
-            observe: 'response'
-        }).pipe(
-            map((resp) => {
-                return resp;
-            }),
-            catchError((error) => {
-                return of(error);
-            })
-        );
+        // const url = `${AppConfig.BASE_API}${AppConfig.endpointPath.designation}`;
+        // const headers = new HttpHeaders().set('content-type', 'application/json');
+        // return this.request('GET', url, {
+        //     headers: headers,
+        //     reportProgress: false,
+        //     observe: 'response'
+        // }).pipe(
+        //     map((resp) => {
+        //         return resp;
+        //     }),
+        //     catchError((error) => {
+        //         return of(error);
+        //     })
+        // );
+        return of({
+            status: 200,
+        body: [
+            {
+                "id": 1,
+                "name": "Software Developer",
+                "code": "SD",
+                "description": "Handles development tasks",
+                "isActive": true
+            },
+            {
+                "id": 2,
+                "name": "Software Engineer",
+                "code": "SE",
+                "description": "Handles development tasks",
+                "isActive": true
+            },
+            {
+                "id": 3,
+                "name": "Senior Software Developer",
+                "code": "SSD",
+                "description": "Handles complex development tasks and mentorship",
+                "isActive": true
+            },
+            {
+                "id": 4,
+                "name": "Tester",
+                "code": "QA",
+                "description": "Performs software testing and QA",
+                "isActive": true
+            },
+            {
+                "id": 5,
+                "name": "UI/UX Designer",
+                "code": "UIUX",
+                "description": "Designs user interfaces and user experiences",
+                "isActive": true
+            },
+            {
+                "id": 6,
+                "name": "Business Analyst",
+                "code": "BA",
+                "description": "Analyzes business requirements and bridges the gap between business and tech teams",
+                "isActive": true
+            },
+            {
+                "id": 7,
+                "name": "Manager",
+                "code": "MGR",
+                "description": "Manages team operations and delivery",
+                "isActive": true
+            }
+        ]
+        })
     }
 
     getAdminCount() {

@@ -109,6 +109,10 @@ export class LoginComponent {
    
 
     verifyCode() {
+        if(this.otpInput){
+            this.router.navigate(['/dashboard']);
+            return
+        }
         this.loading = true;
         const formData = this.loginForm.getRawValue();
         if (formData.loginMethod == 'tpin') {

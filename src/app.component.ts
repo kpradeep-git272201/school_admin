@@ -20,7 +20,7 @@ export class AppComponent {
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe((event: any) => {
             localStorage.setItem('lastVisitedRoute', event.urlAfterRedirects);
         });
-        this.restoreLastVisitedRoute();
+        // this.restoreLastVisitedRoute();
     }
     restoreLastVisitedRoute() {
         const currentUrl = this.router.url;
