@@ -1,0 +1,101 @@
+@media only screen and (max-width: 1200px){
+
+.banner-section .banner-content .banner-text h1 {
+    font-size: 2.8rem;
+}
+}
+
+
+@media only screen and (max-width: 991px){
+ p, a, li {
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 24px;
+}
+.web-headings .main-heading{
+    font-size: 2rem;
+}
+.banner-section .banner-content .banner-text h1 {
+    font-size: 2.1rem;
+}
+.banner-section .banner-content .banner-text {
+    padding: 50px 0 0 0;
+}
+.banner-section .banner-content .banner-img {
+    padding: 40px 0 0 0;
+}
+.services-section,
+.work-process-section,
+.choose-us-section,
+.team-section,
+.faq-section,
+.news-and-event-section,
+footer .footor-middle {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+.faq-row{
+    flex-direction: column-reverse;
+}
+.faq-section .faq-left{
+    padding: 30px 0 0 0;
+}
+.work-process-section .steps-container .arrow .fas {
+    font-size: 55px;
+}
+
+}
+
+@media only screen and (max-width: 768px){
+
+    .services-section,
+.work-process-section,
+.choose-us-section,
+.team-section,
+.faq-section,
+.news-and-event-section,
+footer .footor-middle {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+    .web-headings .main-heading{
+    font-size: 1.5rem;
+}
+.steps-container{
+    flex-direction: column;
+}
+.web-headings .main-heading{
+    font-size: 1.5rem;
+}
+.banner-section .banner-content .banner-text h1 {
+    font-size: 1.7rem;
+}
+.faq-right {
+    margin-top: 30px;
+}
+.work-process-section .steps-container .step.first-step, 
+.work-process-section .steps-container .step.second-step,
+.work-process-section .steps-container .step.third-step{
+    padding-top: 40px;
+}
+.work-process-section .steps-container .arrow{
+    display: none;
+}
+.top-bar .topbar-right ul li{
+    margin-left: 0;
+}
+}
+
+
+
+@media only screen and (max-width: 600px){
+
+.choose-us-section .contact-info{
+    flex-direction: column;
+}
+.top-bar .topbar-right ul li a,
+.top-bar .topbar-left ul li{
+    font-size: 0.8rem;
+}
+}

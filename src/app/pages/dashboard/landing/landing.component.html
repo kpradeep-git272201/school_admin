@@ -1,1 +1,225 @@
-<p>landing works!</p>
+<!-- ================= HEADER ================= -->
+<!-- <header>
+  <div class="top-bar">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="topbar-left">
+            <ul>
+              <li>
+                <span><em class="fa fa-map-marker"></em></span>
+                California, TX 70240
+              </li>
+              <li>
+                <span><em class="fa fa-envelope"></em></span>
+                <span>{{ 'Info@gmail.com' }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="topbar-right float-end">
+            <ul>
+              <li>
+                <a class="text-decoration-none">
+                  <em class="fa fa-clock"></em>
+                  <span> Office Hours : 8:00 AM - 7:45 PM </span>
+                </a>
+              </li>
+              <li><a><em class="fa fa-facebook-f"></em></a></li>
+              <li><a><em class="fa fa-twitter"></em></a></li>
+              <li><a><em class="fa fa-linkedin"></em></a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-header">
+    <div class="container">
+      <nav class="navbar">
+        <div class="data-container">
+          <div class="logo-sec">
+            <img src="icons/assets/images/logo.svg" class="logo" />
+          </div>
+
+          <div class="menu-row">
+            <div id="mainmenu">
+              <ul class="menu">
+                <li><a class="active">Home</a></li>
+
+                <li>
+                  <a>Company</a>
+                  <ul class="submenu">
+                    <li><a>Company 1</a></li>
+                    <li><a>Company 2</a></li>
+                    <li><a>Company 3</a></li>
+                  </ul>
+                </li>
+
+                <li>
+                  <a>Services</a>
+                  <ul class="submenu">
+                    <li>
+                      <a>Services level 11</a>
+                      <ul class="submenu">
+                        <li><a>Services level 21</a></li>
+                        <li><a>Services level 22</a></li>
+                      </ul>
+                    </li>
+                    <li><a>Services level 12</a></li>
+                    <li><a>Services level 13</a></li>
+                  </ul>
+                </li>
+
+                <li><a>Case studies</a></li>
+
+                <li>
+                  <a>Blog</a>
+                  <ul class="submenu">
+                    <li><a>Blog 1</a></li>
+                    <li><a>Blog 2</a></li>
+                    <li><a>Blog 3</a></li>
+                  </ul>
+                </li>
+
+                <li><a>Contact</a></li>
+
+                <li class="searchbox">
+                  <a><em class="fa fa-search"></em></a>
+                  <div class="websiteSearch search-form-container">
+                    <form>
+                      <input type="search" placeholder="Search here..." />
+                      <button type="submit">
+                        <em class="fa fa-search"></em>
+                      </button>
+                    </form>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
+      </nav>
+    </div>
+  </div>
+</header> -->
+
+<!-- ================= BANNER ================= -->
+<section class="banner-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-md-6">
+        <div class="banner-text">
+          <h1>Powerful Digital IT Solutions Company</h1>
+          <p>Affixed Pretend account ten natural.</p>
+          <a class="btn btn-custom white-btn">Find Out More</a>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <img src="icons/assets/images/banner-img.png" class="img-fluid" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SERVICES ================= -->
+<section class="services-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-6" *ngFor="let s of [1,2,3,4,5]">
+        <div class="services-box">
+          <img src="icons/assets/images/analytic-solution.jpg" />
+          <h3 class="fw-bold">IT Services</h3>
+          <p>Lorem ipsum dolor sit amet consectetur.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= WORK PROCESS ================= -->
+<section class="work-process-section">
+  <div class="container text-center text-white">
+    <h2>How we help your business grow</h2>
+    <div class="steps-container">
+      <div class="step">Choose a Service</div>
+      <div class="step">Request a Meeting</div>
+      <div class="step">Let's Make it Happen</div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CHOOSE US ================= -->
+<section class="choose-us-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h2>We promise high quality IT Services</h2>
+        <ul>
+          <li>Experts around the world</li>
+          <li>Best Practice for industry</li>
+        </ul>
+        <h4><em class="fa fa-phone"></em> +123 456 7890</h4>
+      </div>
+      <div class="col-lg-6">
+        <img src="icons/assets/images/choose-us.png" class="img-fluid" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= TEAM ================= -->
+<section class="team-section">
+  <div class="container">
+    <div class="team-carousel owl-carousel owl-theme">
+      <div class="item" *ngFor="let t of [1,2,3,4,5,6]">
+        <div class="card text-center">
+          <img src="icons/assets/images/team-member.jpg" />
+          <h4>Adham Jones</h4>
+          <span>Web Developer</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section class="faq-section">
+  <div class="container">
+    <div class="accordion accordion-flush">
+      <div class="accordion-item">
+        <button class="accordion-button">
+          Lorem ipsum dolor sit amet?
+        </button>
+        <div class="accordion-body">
+          Lorem ipsum dolor sit amet consectetur.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= BLOG ================= -->
+<section class="news-and-event-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4" *ngFor="let b of [1,2,3]">
+        <div class="card">
+          <img src="icons/assets/images/event-1.svg" />
+          <h4>Latest Blog</h4>
+          <a>Read More</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer>
+  <div class="container text-center">
+    <p>Copyright © 2025. Designed by ValidThemes</p>
+  </div>
+</footer>

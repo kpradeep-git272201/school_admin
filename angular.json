@@ -32,9 +32,19 @@
                             }
                         ],
                         "styles": [
-                            "src/styles.scss"
+                            "src/styles.scss",
+                            "src/assets/css/bootstrap.min.css",
+                            "src/assets/css/main.css",
+                            "src/assets/css/extra.css",
+                            "src/assets/css/responsive.css",
+                            "src/assets/css/owl-Carousel.min.css",
+                            "src/assets/fontawesome/css/all.css"
                         ],
-                        "scripts": []
+                        "scripts": [
+                            "src/assets/js/jquery.js",
+                            "src/assets/js/bootstrap.bundle.js",
+                            "src/assets/js/owl.carousel.js"
+                        ]
                     },
                     "configurations": {
                         "production": {
